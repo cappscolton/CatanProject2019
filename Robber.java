@@ -86,6 +86,6 @@ public class Robber {
 			}//end outer for
 		}//end if
 		
-	}//end blockResources
+	}//end blockResources 
 	
 }//end class
