@@ -1,5 +1,6 @@
 # CatanProject
 Project: The Board Game Catan
+
 Group Members: Coby Walsh, Sarah Diener, Colton Capps, Abby Butel
 
 
