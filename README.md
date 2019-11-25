@@ -1,5 +1,8 @@
 # CatanProject
 Project: The Board Game Catan
+Group Members: Coby Walsh, Sarah Diener, Colton Capps, Abby Butel
+
+
 
 	The game Catan is a turn-based board game for 2-4 players. The winning player is the first player to acquire 10 victory points. There are a lot of rules to the game that are not explained in this paper. If you have any questions, I would recommend looking up the rules which have been linked here (https://www.catan.com/en/download/?SoC_rv_Rules_091907.pdf).
 	One of the first problems that was brought up was the layout of the board itself. The board is hexagonal and requires that there be different classes to make up its components. One would be the individual vertices of the tile. These will hold information on whether or not a city or settlement has been placed their,  and will also be used as objects to create the tile class. The tile class will hold information of the resource and the dice roll required for that resource. The final class will be made up of the edges of the tiles to hold the roads. The roads will be used to calculate who has the longest road and see where a player is capable of building. This needs to be done because there is no viable way that we found to be able to fit all of this information into one array or even properly put it together with one class. This is to be done by Colton and is expected to be done by October 28.  
