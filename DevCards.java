@@ -1,4 +1,4 @@
-/* DevCards2.java
+/* DevCards.java
  * Allows user to create a devcards object that will hold a "deck" (arraylist) of development cards. getCard() method
  * returns a random card (a character) for the user, and the updateCards updates the deck by removing the appropriate card
  * from the arraylist.
