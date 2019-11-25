@@ -50,7 +50,7 @@ public class Robber {
  * @param p1- The player being robbed
  * @param p2- the player getting resources
  */
-	public Player[] moveResources(Player p1,Player p2) { //brick, lumber, wool, grain, and ore
+	public static Player[] moveResources(Player p1,Player p2) { //brick, lumber, wool, grain, and ore
 		Random r = new Random();
 		
 		ArrayList<Integer> player1 = p1.getArr(); //Getting the current player resources (this assumes a method 'getArr' in player class)
