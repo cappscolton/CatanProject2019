@@ -1,13 +1,10 @@
-import java.util.*;
-import javafx.util.Pair;
-
 public class Tile{
     public Vertex[] vertices;
     public Road[] roads;
     private int row;
-    private int col;//TODO
-    private int tileRollNumber; //TODO
-    private String tileResource; //TODO
+    private int col;//TODO: for UI stuff
+    private int tileRollNumber;
+    private String tileRollResource;
 
     boolean isRobbed = false;
 
@@ -21,21 +18,26 @@ public class Tile{
         }
     }
 
-    public void copyResourceToVertices(){
-        for(Vertex v : vertices){
-            v.adjacentResources.add(tileResource);
-        }
-    }
-
     public void createRoads(){
         for(int i=0; i<6; i++){
-            roads[i] = new Road(vertices[i], vertices[Math.floorMod(i+1,6)]);
+            roads[i] = new Road(vertices[i], vertices[Math.floorMod(i+1,6)]); //floor mod to link 5 to 0
         }
     }
 
-    private Pair<Integer, String> getResourcePair(){
-    //TODO: see Board.giveVerticesResourcePairs()
-        return new Pair<Integer, String>(tileRollNumber,tileResource);
+    public void setTileRollNumber(int n){
+        tileRollNumber = n;
+    }
+
+    public void setTileRollResource(String n){
+        tileRollResource = n;
+    }
+
+    public int getTileRollNumber(){
+        return tileRollNumber;
+    }
+
+    public String getTileRollResource(){
+        return tileRollResource;
     }
 
     public Tile(int y, int x){
