@@ -1,3 +1,5 @@
+package app;
+
 import java.util.Collections;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,6 +8,7 @@ public class Board {
 
     private Tile[][] tiles;
     private Vertex[][] vertices;
+    public Robber robber;
 
     public Board(){
         tiles = createTileArray();
@@ -14,6 +17,7 @@ public class Board {
         linkTilesToVertices(tiles, vertices);
         createRoads();
         setTileResourcesAndNumbers();
+        initializeRobber();
     }
 
     private Tile[][] createTileArray(){
@@ -118,4 +122,16 @@ public class Board {
             }
         }
     }
+
+    public void initializeRobber(){
+        for(int i=0; i<tiles.length; i++){
+            for (int j=0; j<tiles[0].length; j++){
+                if (tiles[i][j].getTileRollResource().equals("desert")){
+                    robber = new Robber(tiles[i][j]);
+                }
+            }
+        }
+    }
+
+    
 }

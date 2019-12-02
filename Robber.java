@@ -7,49 +7,37 @@
 import java.util.*;
 public class Robber {
 
-	private int[] position; //Current position of robber
-
+	private Tile position; //Current position of robber
 	
-	
-	//constructor
-	public Robber() {
-		position=new int[2]; 
-		//Sets initial position of the robber at (3,3), the desert
-		position[0]=3;
-		position[1]=3;
-		
+	public Robber(Tile t) {
+		position=t;		
 	}
 	
-	
-/* getPosition
- * gets the current position of the robber
- * No parameters
- * @return- the position of the robber (in an array- position[0] is row and position[1] is column)
- */
-	public int[] getPosition() {
+	public Tile getPosition() {
 		return position;
-	}//end getPosition
+	}
 	
+	public void setPosition(Tile newPosition) {
+		position = newPosition;
+	}
 	
-/* setPosition
- * Sets the new position of the robber
- * @param a- the new row of the robber
- * @param b- the new column of the robber
- * Returns no values
- */
-	public void setPosition(int a,int b) {
-		position[0]=a;
-		position[1]=b;
-	}//end setPosition
-	
-	
-	
-	
+	public void moveRobber(Tile newPosition){
+        position.setTileRollNumber(position.getTileRollNumberCache());
+
+        newPosition.setTileRollNumberCache(newPosition.getTileRollNumber());
+        newPosition.setTileRollNumber(0);
+
+        setPosition(newPosition);
+    }
+		
+
+
 /* moveResources
  * Allows transfer of "robbed" resources
  * @param p1- The player being robbed
  * @param p2- the player getting resources
  */
+
 	public static Player[] moveResources(Player p1,Player p2) { //brick, lumber, wool, grain, and ore
 		Random r = new Random();
 		
@@ -68,24 +56,6 @@ public class Robber {
 		return p;
 	}//end moveResources
 	
-	
-	
-/* blockResources
- * Blocks resources from being given out while robber is present on the tile
- */
-	public void blockResources() {
-		int[] rowLengths = {3, 4, 5, 4, 3};
-		if((position[0]!=3)&&(position[1]!=3)) { //if the robber is not in the desert
-			for(int i=0;i<5;i++) { //rows
-				for(int j=0;j<rowLengths[i];j++) { //columns, only goes through how many there are in current row
-					
-					if((i==position[0])&&(j==position[1])) { //if the index is where the robber is
-						//TODO- Code to block resources from being given out
-					}
-				}//end inner for
-			}//end outer for
-		}//end if
-		
-	}//end blockResources 
+
 	
 }//end class
