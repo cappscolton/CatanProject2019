@@ -76,5 +76,8 @@ public class Player{
 		}
 	}
 	
+	public ArrayList<Integer> getArr(){
+		return playerResources; 
+	}
 	
 }
