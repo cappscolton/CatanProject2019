@@ -7,43 +7,45 @@ public class Player{
 	private int numCities; 
 	
 	//This array list contains all of the development cards that a particular user has 
-	private ArrayList<DevelopmentCards>developmentCards = null; //TODO -- will contain the development cards a player has 
-	//This hash map contains the names and numbers of all of the resources that a given user possesses
+	private ArrayList<DevCards>developmentCards = new ArrayList<DevCards>; 
+	/*
+	This HashMap contains the names and numbers of all of the resources that a given user possesses; the ArrayList with the same name was substituted in order for this class to be compatible 
+	with the Robber class
 	private HashMap<String, Integer>playerResources = new HashMap<>(); 
+	*/
+	private ArrayList<Integer>playerResources = new ArrayList<Integer>(5); 
+	//NOTE: it may make more since for this to be an int array instead of an ArrayList because there are exactly 5 types of resources and this does not change; this would require modification of Robber
 	
     public Player(){
 		victoryPoints = 0; 
+		
+		//This for loop is used to populate the ArrayList containing the numbers of each resource that a player possesses
+		for(int i = 0; i < 5; i++){
+			playerResources.set(i, 0); 
+		}
+		/*
+		This code was used to populate the HashMap
 		playerResources.put("Brick", 0); 
 		playerResources.put("Lumber", 0); 
 		playerResources.put("Ore", 0); 
 		playerResources.put("Grain", 0); 
 		playerResources.put("Wool", 0); 
+		*/
 	}
 	
 	//TODO -- use tileRollNumber and tileResource from tile class to add resources to hash map
-	//TODO -- figure out how to calculate largest army and longest road
 	//Figure out how to facilitate trading between players and maritime trade (would need information about a player's location)
 	
 	//this method should be called after each turn 
-	
-	
 	public int calculateVictoryPoints(){
 		victoryPoints = 0; 
 		victoryPoints += (numSettlements); 
 		victoryPoints += (2 * numCities); 
 		// TODO -- if player has largest army or longest road, victory points += 2
 		for (int i=0; i < developmentCards.size(); i++){
-			if(developmentCards.get(i).equalsIgnoreCase("Market")){
+			if(developmentCards.get(i) == 'V'){
 				victoryPoints += 1; 
-			} else if (developmentCards.get(i).equalsIgnoreCase("University")){
-				victoryPoints += 1; 
-			} else if (developmentCards.get(i).equalsIgnoreCase("Great Hall")){
-				victoryPoints += 1; 
-			} else if (developmentCards.get(i).equalsIgnoreCase("Chapel")) {
-				victoryPoints += 1; 
-			} else if (developmentCards.get(i).equalsIgnoreCase("Library")){
-				victoryPoints += 1;
-			}
+			} 
 		}
 		return victoryPoints; 
 	}
