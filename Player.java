@@ -20,6 +20,7 @@ public class Player{
 		victoryPoints = 0; 
 		
 		//This for loop is used to populate the ArrayList containing the numbers of each resource that a player possesses
+		//The elements in the ArrayList correspond to the number of bricks, lumber, ore, grain, and wool respectively 
 		for(int i = 0; i < 5; i++){
 			playerResources.set(i, 0); 
 		}
