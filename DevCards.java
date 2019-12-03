@@ -6,7 +6,7 @@
  */
 import java.util.*;
 public class DevCards {
-	private ArrayList<Character> remaining;
+	private static ArrayList<Character> remaining;
 	
 	
 	//Constructor
@@ -43,7 +43,7 @@ public class DevCards {
  * Takes no parameters
  * @return- the char representation of a card (or 'N' if there are no cards left)
  */
-	public char getCard() {
+	public static char getCard() {
 		Random r = new Random();
 		
 		if(remaining.size()>0) {

@@ -5,37 +5,21 @@ public class Player{
 	private int numRoads; 
 	private int numSettlements;
 	private int numCities; 
-	
 	//This array list contains all of the development cards that a particular user has 
-	private ArrayList<DevCards>developmentCards = new ArrayList<DevCards>; 
-	/*
-	This HashMap contains the names and numbers of all of the resources that a given user possesses; the ArrayList with the same name was substituted in order for this class to be compatible 
-	with the Robber class
-	private HashMap<String, Integer>playerResources = new HashMap<>(); 
-	*/
-	private ArrayList<Integer>playerResources = new ArrayList<Integer>(5); 
-	//NOTE: it may make more since for this to be an int array instead of an ArrayList because there are exactly 5 types of resources and this does not change; this would require modification of Robber
+	private ArrayList<Character>developmentCards = new ArrayList<Character>(); 
+	
+	private int [] playerResources = new int [5]; 
 	
     public Player(){
 		victoryPoints = 0; 
-		
-		//This for loop is used to populate the ArrayList containing the numbers of each resource that a player possesses
-		//The elements in the ArrayList correspond to the number of bricks, lumber, ore, grain, and wool respectively 
-		for(int i = 0; i < 5; i++){
-			playerResources.set(i, 0); 
+		//This for loop is used to populate the array containing the numbers of each resource that a player possesses
+		//The elements in the array correspond to the number of bricks, lumber, ore, grain, and wool respectively 
+		for(int i = 0; i < playerResources.length; i++){
+			playerResources[i] = 0;  
 		}
-		/*
-		This code was used to populate the HashMap
-		playerResources.put("Brick", 0); 
-		playerResources.put("Lumber", 0); 
-		playerResources.put("Ore", 0); 
-		playerResources.put("Grain", 0); 
-		playerResources.put("Wool", 0); 
-		*/
 	}
 	
-	//TODO -- use tileRollNumber and tileResource from tile class to add resources to hash map
-	//Figure out how to facilitate trading between players and maritime trade (would need information about a player's location)
+	//TODO -- use tileRollNumber and tileResource from tile class 
 	
 	//this method should be called after each turn 
 	public int calculateVictoryPoints(){
@@ -44,41 +28,58 @@ public class Player{
 		victoryPoints += (2 * numCities); 
 		// TODO -- if player has largest army or longest road, victory points += 2
 		for (int i=0; i < developmentCards.size(); i++){
-			if(developmentCards.get(i) == 'V'){
+			if(developmentCards.get(i).equals('V')){
 				victoryPoints += 1; 
 			} 
 		}
 		return victoryPoints; 
 	}
-	
+
+
+	//resources in order of index: brick, lumber, ore, grain, wool
 	public void buildOrBuyDevelopmentCard(String choice){
-		if(choice.equalsIgnoreCase("Road") && playerResources.get("Brick") > 0 && playerResources.get("Lumber") > 0){
-			playerResources.put("Brick", playerResources.get("Brick") -1);
-			playerResources.put("Lumber", playerResources.get("Lumber") -1); 
+		//Roads cost 1 brick, 1 lumber
+		if(choice.equalsIgnoreCase("Road") && playerResources[0] > 0 && playerResources[1] > 0){
+			playerResources[0]--;
+			playerResources[1]--; 
 			numRoads ++; 
-		} else if (choice.equalsIgnoreCase("Settlement") && playerResources.get("Brick") > 0 && 
-		playerResources.get("Lumber") > 0 && playerResources.get("Wool") > 0 && playerResources.get("Grain") > 0) {
-			playerResources.put("Brick", playerResources.get("Brick") -1); 
-			playerResources.put("Lumber", playerResources.get("Lumber") -1); 
-			playerResources.put("Wool", playerResources.get("Wool") -1); 
-			playerResources.put("Grain", playerResources.get("Grain") -1); 
+		} 
+		//Settlements cost 1 brick, 1 lumber, 1 wool, 1 grain 
+		else if (choice.equalsIgnoreCase("Settlement") && playerResources[0] > 0 && 
+		playerResources[1] > 0 && playerResources[4] > 0 && playerResources[3] > 0) {
+			playerResources[0]--; 
+			playerResources[1]--; 
+			playerResources[4]--; 
+			playerResources[3]--; 
 			numSettlements ++; 
-		} else if (choice.equalsIgnoreCase("City") && playerResources.get("Ore") >= 3 && playerResources.get("Grain") >= 2){
-			playerResources.put("Ore", playerResources.get("Ore") -3); 
-			playerResources.put("Grain", playerResources.get("Grain") -2);
+		}
+		//Cities cost three ore and 2 grain 
+		else if (choice.equalsIgnoreCase("City") && playerResources[2] >= 3 && playerResources[3] >= 2){
+			playerResources[2]-=3; 
+			playerResources[3]-=2;
 			numCities ++; 
-		} else if (choice.equalsIgnoreCase("Buy a Development Card") && playerResources.get("Ore") > 0 &&
-		playerResources.get("Wool") > 0 && playerResources.get("Grain") > 0) {
-			//the exact name of this choice is subject to change; "Buying a Development Card is just a place holder
-			playerResources.put("Ore", playerResources.get("Ore") -1);
-			playerResources.put("Wool", playerResources.get("Wool") -1);			
-			playerResources.put("Grain", playerResources.get("Grain") -1);
+		} 
+		//Development cards cost 1 ore, 1 wool, 1 grain 
+		else if (choice.equalsIgnoreCase("Buy a Development Card") && playerResources[2] > 0 &&
+		playerResources[4] > 0 && playerResources[3] > 0) {
+			//the exact name of this choice is subject to change; "Buying a Development Card" is just a place holder
+			playerResources[2]--;
+			playerResources[4]--;			
+			playerResources[3]--;
 			//add a random development card to the array list of player's development cards
+			Character newDevCard = DevCards.getCard(); 
+			if(newDevCard != 'N'){
+				developmentCards.add(newDevCard); 
+			}
 		}
 	}
 	
-	public ArrayList<Integer> getArr(){
+	public int[] getPlayerResources(){
 		return playerResources; 
+	}
+	
+	public void setPlayerResources(int[] updatedArray){
+		playerResources = updatedArray; 
 	}
 	
 }
