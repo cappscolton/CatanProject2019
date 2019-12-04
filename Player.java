@@ -82,4 +82,8 @@ public class Player{
 		playerResources = updatedArray; 
 	}
 	
+	public ArrayList<Character> getDevelopmentCards(){
+		return developmentCards; 
+	}
+	
 }
