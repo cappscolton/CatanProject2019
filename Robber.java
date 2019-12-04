@@ -63,4 +63,36 @@ public class Robber {
 	
 
 	
+	 /** cutHand
+	 * Takes half of a player's hand if they have 8 or more resource cards when the robber is rolled
+	 * @param p1- The player who's hand is being changed
+	 */
+	public static void cutHand(Player p1) {
+		Random r = new Random();
+			 
+			
+		int [] player = p1.getPlayerResources();
+		int sum = 0; //sum of resource cards
+		int take=0; //how many cards to take
+			
+		for (int i=0;i<player.length;i++) { //Adds up all resource cards
+			sum+=player[i];
+		}
+			
+		if(sum>7) {
+			take=sum/2; //Will round down like rules require
+				
+			for(int i=0;i<take;i++) { //Takes out as many resources as necessary
+				int randomResource = r.nextInt(4);
+					
+					while (player[randomResource]==0) { //loops until resource is one the player has
+						randomResource = r.nextInt(4);
+					}
+					
+				player[randomResource]--;
+			}
+		}//end if
+			
+		p1.setPlayerResources(player);
+	}
 }

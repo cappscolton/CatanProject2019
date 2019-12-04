@@ -85,6 +85,7 @@ public class Player{
 		playerResources = updatedArray; 
 	}
 	
+
 	public void setHasLargestArmy (boolean b){
 		hasLargestArmy = b; 
 	}
@@ -93,4 +94,9 @@ public class Player{
 		hasLongestRoad = b; 
 	}
 	
+	public ArrayList<Character> getDevelopmentCards(){
+		return developmentCards; 
+	}
 }
+	
+	
