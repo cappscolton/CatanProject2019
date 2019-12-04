@@ -7,6 +7,9 @@ public class Player{
 	private int numCities; 
 	//This array list contains all of the development cards that a particular user has 
 	private ArrayList<Character>developmentCards = new ArrayList<Character>(); 
+	private boolean hasLargestArmy = false; 
+	private boolean hasLongestRoad = false; 
+	//include locations of settlements and cities (array of vertices?)
 	
 	private int [] playerResources = new int [5]; 
 	
@@ -80,6 +83,14 @@ public class Player{
 	
 	public void setPlayerResources(int[] updatedArray){
 		playerResources = updatedArray; 
+	}
+	
+	public void setHasLargestArmy (boolean b){
+		hasLargestArmy = b; 
+	}
+	
+	public void setHasLongestRoad (boolean b){
+		hasLongestRoad = b; 
 	}
 	
 }
