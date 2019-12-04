@@ -3,8 +3,8 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.*;
 public class GameBoard extends JPanel{
-	private Dimension size;
 	private int bgW;
 	private int bgH;
 	private Image bg;
@@ -24,6 +24,8 @@ public class GameBoard extends JPanel{
 	private Image number10;
 	private Image number11;
 	private Image number12;
+	private Image redSettlement;
+	private Image redCity;
 	private Image[] row1;
 	private Image[] row2;
 	private Image[] row3;
@@ -31,10 +33,13 @@ public class GameBoard extends JPanel{
 	private Image[] row5;
 	private Image[][] images;
 	private int[][] tileNumber;
+	private int baseX;
+	private int baseY;
+	
 	
 	public GameBoard(Tile[][] tiles){
 		//loadBackGround();
-		setPreferredSize(new Dimension(1200, 800));
+		setPreferredSize(new Dimension(1520, 1001));
 		setVisible(true);
 		loadImages();
 		//setTiles(tiles);
@@ -43,24 +48,21 @@ public class GameBoard extends JPanel{
 		
 	}
 	
-	public void paintComponent(Graphics g) {
+	protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
         doDrawing(g);
     }
 	
-	private void doDrawing(Graphics g) {
-        
+	private void doDrawing(Graphics g) {   
         Graphics2D g2d = (Graphics2D) g;
-
-        //g2d.drawImage(bg, 0, 0, this);
 		
 		//get the size of the panel
-		size = getSize();
+		Dimension size = getSize();
 		int sizeW = (int) size.getWidth();
         int sizeH = (int) size.getHeight();
-		int baseX = ((sizeW / 2) - 520);
-		int baseY = ((sizeH / 2) - 420);
+		baseX = ((sizeW / 2) - 520);
+		baseY = ((sizeH / 2) - 420);
 		
 		if (baseX < 0)
 			baseX = 0;
@@ -76,28 +78,13 @@ public class GameBoard extends JPanel{
 				int y = (baseY + (160 * (countRow)));
                 g2d.drawImage(i, x, y, this);
 				g2d.drawImage(getNumberImage(tileNumber[countRow][countCol]), (x + adjustX(tileNumber[countRow][countCol])), (y + 75), this);
-				System.out.print(tileNumber[countRow][countCol] + "\t");
+				g2d.drawImage(redSettlement, x-25, y+20, this);
+				g2d.drawImage(redCity, x+80, y-20, this);
 				countCol++;
             }
-			System.out.println();
 			countRow++;
         }
 		
-		
-		/*
-		g2d.drawImage(desert, 0, 0, this);
-		System.out.println("desert");
-		g2d.drawImage(field, 200, 0, this);
-		System.out.println("field");
-		g2d.drawImage(forest, 0, 200, this);
-		System.out.println("forest");
-		g2d.drawImage(mountain, 200, 200, this);
-		System.out.println("mountain");
-		g2d.drawImage(plain, 400, 0, this);
-		System.out.println("plain");
-		g2d.drawImage(plateau, 400, 200, this);
-		System.out.println("plateau");
-		*/
     }
 	
 	private void loadImages(){
@@ -117,6 +104,8 @@ public class GameBoard extends JPanel{
 		number10 = new ImageIcon("numbers/10.png").getImage();
 		number11 = new ImageIcon("numbers/11.png").getImage();
 		number12 = new ImageIcon("numbers/12.png").getImage();
+		redSettlement = new ImageIcon("pieces/redSettlement.png").getImage();
+		redCity = new ImageIcon("pieces/redCity.png").getImage();
 	}
 	
 	private void createImageArrays(Tile[][] tiles){
@@ -166,6 +155,7 @@ public class GameBoard extends JPanel{
 		repaint();
 	}
 	
+	//gets what image to use
 	private Image getTileImage(Tile t){
 		if (t.getTileRollResource().equals("desert"))
 			return desert;
@@ -182,6 +172,7 @@ public class GameBoard extends JPanel{
 		return null;
 	}
 	
+	//decide which image to use
 	private Image getNumberImage(int i){
 		switch (i){
 			case 2:
@@ -208,6 +199,7 @@ public class GameBoard extends JPanel{
 		return null;
 	}
 	
+	//switch case for adjusting tile number positions
 	private int adjustX(int i){
 		switch (i){
 			case 2:
@@ -234,6 +226,7 @@ public class GameBoard extends JPanel{
 		return 0;
 	}
 	
+	//creates the main array of images
 	private void createMainArray(){
 		images = new Image[5][];
 		images[0] = row1;
@@ -242,4 +235,5 @@ public class GameBoard extends JPanel{
 		images[3] = row4;
 		images[4] = row5;
 	}
-}
+	
+}//end class
