@@ -104,6 +104,7 @@ public class ApplicationOutline{
 					
 					//build settlement
 					if (action == 1){
+						boolean [][] availableVertexArray = getAvailabilityArray(board); 
 					/*
 						boolean of what vertices that a settlement can be placed on 
 						io.showAvailableVertices(boolean array variable)
@@ -204,4 +205,54 @@ public class ApplicationOutline{
 		}
 	}
 	
+	public static boolean [][] getAvailabilityArray (Board board){
+		boolean [][] availabilityArray = new boolean[6][];
+        int[] availabilityArrayRowLengths = {7,9,11,11,9,7};
+        for(int i=0; i<availabilityArray.length; i++){
+            Vertex[] row = new Vertex[availabilityArrayRowLengths[i]];
+            for(int j=0; j<availabilityArrayRowLengths.length; j++){
+                if(board.getVertexArray()[i][j].getOccupant() == null){
+					availabilityArray[i][j] = true; 
+				} else {
+					availabilityArray[i][j] = false; 
+				}
+            }
+        }
+		return availabilityArray; 
+	}
+	
+	
+	public static int biggestArmy(Player[] p,int f) {
+		int currentBiggest=0; //The player with the biggest army
+		int toBeat = 0;//the number of knight cards needed for a player to get the biggest army
+			if(f!=0) { //If someone already has the largest army
+				ArrayList <Character> beatDevCards = p[f-1].getDevelopmentCards(); 
+				currentBiggest=f;
+					for(int j=0;j<beatDevCards.size();j++) { //Finds all knights in player's devcards
+						if(beatDevCards.get(j)=='K') {
+							toBeat++; 
+						}
+					}
+			}//end if
+			
+			int[] sum = new int[p.length]; //array to hold the sum of knight cards for all players
+			for(int i=0;i<p.length;i++) {//goes through all players
+				ArrayList <Character> devCards = p[i].getDevelopmentCards(); //Gets the development cards of current player
+				
+				for(int j=0;j<devCards.size();j++) { //Finds all knights in player's devcards
+					if(devCards.get(j)=='K') {
+						sum[i]++;
+					}
+				}//end inner for
+			}//end for
+			for(int k=0;k<p.length;k++) { 
+				if((sum[k]>toBeat)&&(sum[k]>=3)) { //Changes current biggest if the player has more knight cars than toBeat and more than 3
+					currentBiggest=k+1;
+				}
+			}
+			return currentBiggest;
+		}//end biggestArmy
+	
+		//NOTE: ADD HAS LONGEST ROAD METHOD
+
 }//end class

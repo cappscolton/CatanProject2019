@@ -1,3 +1,4 @@
+import java.util.*; 
 import javax.swing.*; 
 import java.awt.*; 
 
@@ -6,7 +7,7 @@ public class Application{
         Board board = new Board();
         Tile[][] tiles = board.getTiles();// every other method in Board.java is internal
 
-		IO io = new IO(tiles);
+		IO io = new IO();
 	int currentBiggestArmy=0; //Holds the player number who holds the biggest army
 	}
 		//-----------------------------------------------------------------------------------------------------------
@@ -109,10 +110,6 @@ public class Application{
 		}//end biggestArmy
 	
 		//public boolean hasLongestRoad()
-<<<<<<< HEAD
 
 }
-=======
-    
-}
->>>>>>> 25cb83d8cdad824ec3c91d640a5e4669597b13d3
+

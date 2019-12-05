@@ -9,7 +9,16 @@ public class Player{
 	private ArrayList<Character>developmentCards = new ArrayList<Character>(); 
 	private boolean hasLargestArmy = false; 
 	private boolean hasLongestRoad = false; 
-	//include locations of settlements and cities (array of vertices?)
+	
+	//These variables to be decremented each time a user places a settlement, city, or road so that user cannot place more than the number aloted to them 
+	private int distanceFromMaxSettlements = 5; 
+	private int distanceFromMaxCities = 4; 
+	private int distanceFromMaxRoads = 15; 
+	
+	//include locations of settlements and cities (array of vertices!!!!)
+	//create array list of road locations 
+	
+	
 	
 	private int [] playerResources = new int [5]; 
 	

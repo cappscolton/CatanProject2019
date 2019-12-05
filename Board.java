@@ -89,6 +89,14 @@ public class Board {
         }
         return vertices;
     }
+	
+	/**getVertexArray
+	* getter for the 2d array of vertex objects 
+	* @return 2d array of vertices
+	*/
+	public Vertex[][] getVertexArray(){
+		return vertices; 
+	}
 
     /** linkTileVerticesForRow
      * For a given row, connects elements of the board's Tile array to elements of the
