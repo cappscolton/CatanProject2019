@@ -3,11 +3,11 @@ import java.util.*;
 public class ApplicationOutline{
 	public static void main(String[] args){
 		//initialize array/arraylist of players
-		
+		ArrayList<Player>playerList = new ArrayList<Player>(4); 
 		
 		//initialize the board
 		Board board = new Board();
-		Tile[][] tiles = board.getBoardData();
+		Tile[][] tiles = board.getTiles();
 		
 		//load the inital launch and home
 		IO io = new IO();
@@ -42,13 +42,29 @@ public class ApplicationOutline{
 					numPlayers = getNumberOfPlayers(io);
 				}
 				
+				//adding player objects to the array list
+				Player player1 = new Player(); 
+				playerList.add(player1); 
+				if (numPlayers >= 2) {
+					Player player2 = new Player(); 
+					playerList.add(player2); 
+				}
+				if (numPlayers >= 3) {
+					Player player3 = new Player(); 
+					playerList.add(player3);
+				}
+				if (numPlayers == 4) {
+					Player player4 = new Player(); 
+					playerList.add(player4); 
+				}
+				
 				//gets the action of the player
 				int action = io.getNewGameAction();
 				
 				//player wants to make a new board
 				if (action == 1){
 					board = new Board();
-					tiles = board.getBoardData();
+					tiles = board.getTiles();
 					io.newBoard(tiles);
 				}
 				//wants to start the game
@@ -77,12 +93,10 @@ public class ApplicationOutline{
 					
 					//check if a player has won
 					for (int i = 0; i < numPlayers; i++){
-					/*
-						if (player VP = 10){
+						if(playerList.get(i).getVictoryPoints() == 10) {
 							inGame = false;
 							endGame = true;
 						}//end if 
-					*/
 					}//end for if
 					
 					//gets the action of the player
@@ -174,6 +188,7 @@ public class ApplicationOutline{
 					return i;
 				else
 					io.errorMessage("ERROR: Number of players must Positive");
+				//should this be vertex number should be positive?
 			}
 			catch (NumberFormatException e){
 				io.errorMessage("ERROR: Please enter a valid integer");

@@ -1,4 +1,4 @@
-package app;
+//package app;
 
 
 import java.util.ArrayList;
@@ -25,6 +25,13 @@ public class Tile{
     public void setTileRollNumberCache(int n){
         tileRollNumberCache = n;
     }
+	
+	/**setTileRollResource
+	* setter. Sets the name of the resource associated with a tile.
+	*/
+	public void setTileRollResource (String s){
+		tileRollResource = s; 	
+	}
 
     /** getTileRollNumber
      *  getter. Gets the number, used for resource distribution.
@@ -47,9 +54,6 @@ public class Tile{
     public String getTileRollResource(){
         return tileRollResource;
     }
-
-
-    
 
     /** Road
      *  A class that represents a connection between two Vertex objects
@@ -84,9 +88,6 @@ public class Tile{
             roads[i] = new Road(vertices[i], vertices[Math.floorMod(i+1,6)]); //floor mod to link 5 to 0
         }
     }
-
-
-
 
     /** Tile
      *  constructor. Creates a new Tile object

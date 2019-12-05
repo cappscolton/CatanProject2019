@@ -2,20 +2,22 @@ import javax.swing.*;
 import java.awt.*; 
 
 public class Application{
-    public static void main(String[] args){
+   public static void main(String[] args){
         Board board = new Board();
         Tile[][] tiles = board.getTiles();// every other method in Board.java is internal
-		IO io = new IO(tiles);
+		//IO io = new IO(board.getTiles());
+        IO io = new IO(); 
 	}
 		//-----------------------------------------------------------------------------------------------------------
 		//BEGINNING OF ABBY'S CODE
 		
 		//Important -- if any attributes of player change, alert IO!!!
-		
+		/*
 		public int getNumFromUser(){
 			JFrame start = new JFrame(); 
+			int numPlayers = 0; 
 			try{
-				int numPlayers = Integer.parseInt(JOptionPane.showInputDialog(start, "Please enter the number of players (2-4):")); 
+				numPlayers = Integer.parseInt(JOptionPane.showInputDialog(start, "Please enter the number of players (2-4):")); 
 				if(numPlayers < 2 || numPlayers > 4){
 					throw new NumberFormatException(); 
 				}
@@ -33,7 +35,14 @@ public class Application{
 			} while(numPlayers == -1);
 			return numPlayers;
 		}
-			
+		*/
+   
+   
+   
+   
+   
+   
+   
 		//have each player place 2 roads and 2 settlements on the board 
 		
 		//TURNS: 
@@ -67,5 +76,5 @@ public class Application{
 		//public int rollDice()
 		//public boolean hasLargestArmy()
 		//public boolean hasLongestRoad()
-    
+
 }
