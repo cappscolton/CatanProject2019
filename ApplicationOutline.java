@@ -2,7 +2,18 @@ import java.util.*;
 
 public class ApplicationOutline{
 	
-
+	public static Player findPlayerWithLongestRoad(Board board, ArrayList<Player> players){
+		Player plrWithLongestRoad=null;
+		int winningLength = 0;
+		for (Player p : players){
+			int length = board.findPlayersLongestRoad(p);
+			if (length > winningLength){
+				plrWithLongestRoad = p;
+				winningLength = length;
+			}
+		}
+		return plrWithLongestRoad;
+	}
 	
 	public static void main(String[] args){
 		//initialize array/arraylist of players
@@ -24,7 +35,6 @@ public class ApplicationOutline{
 		boolean newGame = false;
 		boolean inGame = false;
 		boolean endGame = false;
-		
 		while (true){
 			//loop for the homeScreen
 			while (homeScreen){
@@ -44,20 +54,22 @@ public class ApplicationOutline{
 				//gets the number of players
 				if (numPlayers == 0){
 					numPlayers = getNumberOfPlayers(io);
-					Player player1 = new Player(); 
-					playerList.add(player1); 
-					if (numPlayers >= 2) {
-						Player player2 = new Player(); 
-						playerList.add(player2); 
-					}
-					if (numPlayers >= 3) {
-						Player player3 = new Player(); 
-						playerList.add(player3);
-					}
-					if (numPlayers == 4) {
-						Player player4 = new Player(); 
-						playerList.add(player4); 
-					}
+				}
+				
+				//adding player objects to the array list
+				Player player1 = new Player(); 
+				playerList.add(player1); 
+				if (numPlayers >= 2) {
+					Player player2 = new Player(); 
+					playerList.add(player2); 
+				}
+				if (numPlayers >= 3) {
+					Player player3 = new Player(); 
+					playerList.add(player3);
+				}
+				if (numPlayers == 4) {
+					Player player4 = new Player(); 
+					playerList.add(player4); 
 				}
 				
 				//gets the action of the player
@@ -190,7 +202,8 @@ public class ApplicationOutline{
 				if (i > -1)
 					return i;
 				else
-					io.errorMessage("ERROR: Vertex number must positive");
+					io.errorMessage("ERROR: Number of players must Positive");
+				//should this be vertex number should be positive?
 			}
 			catch (NumberFormatException e){
 				io.errorMessage("ERROR: Please enter a valid integer");
@@ -200,29 +213,24 @@ public class ApplicationOutline{
 	
 	public static int getRoadLocation(IO io){
 		while (true){
-			try{
-				int i = io.getIntegerInput("Enter the number of the road location");
-				if (i > 0)
-					return i;
-				else
-					io.errorMessage("ERROR: Vertex number must positive");
-			}
-			catch (NumberFormatException e){
-				io.errorMessage("ERROR: Please enter a valid integer");
-			}
+			int i = io.getIntegerInput("Enter the number of the Road location");
+			if (i > 0)
+				return i;
 		}
 	}
 	
 	public static boolean [][] getAvailabilityArray (Board board){
-		Vertex[][] vertices = board.getVertexArray();
 		boolean [][] availabilityArray = new boolean[6][];
         int[] availabilityArrayRowLengths = {7,9,11,11,9,7};
         for(int i=0; i<availabilityArray.length; i++){
-            boolean[] row = new boolean[availabilityArrayRowLengths[i]];
-            for(int j=0; j<availabilityArrayRowLengths[i]; j++){
-				row[j] = (vertices[i][j].getOccupant() == null);
-			}
-			availabilityArray[i] = row;
+            Vertex[] row = new Vertex[availabilityArrayRowLengths[i]];
+            for(int j=0; j<availabilityArrayRowLengths.length; j++){
+                if(board.getVertexArray()[i][j].getOccupant() == null){
+					availabilityArray[i][j] = true; 
+				} else {
+					availabilityArray[i][j] = false; 
+				}
+            }
         }
 		return availabilityArray; 
 	}
@@ -259,17 +267,6 @@ public class ApplicationOutline{
 			return currentBiggest;
 		}//end biggestArmy
 	
-		public static Player findPlayerWithLongestRoad(Board board, ArrayList<Player> players){
-			Player plrWithLongestRoad=null;
-			int winningLength = 0;
-			for (Player p : players){
-				int length = board.findPlayersLongestRoad(p);
-				if (length > winningLength){
-					plrWithLongestRoad = p;
-					winningLength = length;
-				}
-			}
-			return plrWithLongestRoad;
-		}
+		//NOTE: ADD HAS LONGEST ROAD METHOD
 
 }//end class
