@@ -152,7 +152,55 @@ public class ApplicationOutline{
 					
 					//development cards 
 					if (action == 4){
-						//Coby need's to work on this 
+						
+						//get the actual arraylist of the player's devcards
+						
+						ArrayList<Character> cards = new ArrayList<>();
+						cards.add('K');
+						cards.add('K');
+						cards.add('K');
+						
+						
+						DevelopmentCards dv = new DevelopmentCards(cards);
+						boolean looking = true;
+						while (looking){
+							int cardAction = dv.getAction();
+							
+							//use Knight
+							if (cardAction == 1){
+								
+								//close window and exit loop
+								looking = false;
+								dv.dispose();
+							}
+							//use monopoly card
+							else if (cardAction == 2){
+								
+								//close window and exit loop
+								looking = false;
+								dv.dispose();
+							}
+							//use Year of Plenty
+							else if (cardAction == 3){
+								
+								//close window and exit loop
+								looking = false;
+								dv.dispose();
+							}
+							//road building
+							else if (cardAction == 4){
+								
+								//close window and exit loop
+								looking = false;
+								dv.dispose();
+							}
+							//close window
+							else if (cardAction == 5){
+								//close window and exit loop
+								looking = false;
+								dv.dispose();
+							}
+						}
 					}
 					
 					//end turn 
