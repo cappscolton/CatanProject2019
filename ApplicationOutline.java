@@ -67,62 +67,74 @@ public class ApplicationOutline{
 			//loop for inGame
 			while (inGame){
 				//set the button to game buttons
-				if (first){
-					io.startGame();
-					io.loadGame();
-					first = false;
-				}
-				
-				//check if a player has won
-				for (int i = 0; i < numPlayers; i++){
-				/*
-					if (player VP = 10){
-						inGame = false;
-						endGame = true;
-					}//end if 
-				*/
-				}//end for if
-				
-				//gets the action of the player
-				int action = io.getInGameAction();
-				
-				//build settlement
-				if (action == 1){
-				/*
-					boolean of what vertices that a settlement can be placed on 
-					io.showAvailableVertices(boolean array variable)
-				*/
-					int vertex = getVertexLocation(io);
-					//-1 from vertex location means they canceled their selection
-					//for loop of the boolean array to get which specific vertex was chosen
+				System.out.println(playerTurn);
+				while (turn){
+					if (first){
+						io.startGame();
+						io.loadGame();
+						first = false;
+					}
 					
-				}
-				
-				//build road
-				if (action == 2){
-				/*
-					boolean array of where roads can be placed
-					io.showAvailableRoads(boolean array variable)
-				*/
-					int vertex = getRoadLocation(io);
-					//for loop of the boolean array to get which specific vertex was chosen
+					//check if a player has won
+					for (int i = 0; i < numPlayers; i++){
+					/*
+						if (player VP = 10){
+							inGame = false;
+							endGame = true;
+						}//end if 
+					*/
+					}//end for if
 					
-				}
-				
-				//upgrade Settlement
-				if (action == 3){
-				/*
-					boolean array of where current settlements are
-					io.showAvailableVertices(boolean array variable)
-				*/
-					int vertex = getVertexLocation(io);
-					//for loop of the boolean array to get which specific vertex was chosen
-				}
-				
-				//development cards 
-				if (action == 4){
-					//Coby need's to work on this 
-				}
+					//gets the action of the player
+					int action = io.getInGameAction();
+					
+					//build settlement
+					if (action == 1){
+					/*
+						boolean of what vertices that a settlement can be placed on 
+						io.showAvailableVertices(boolean array variable)
+					*/
+						int vertex = getVertexLocation(io);
+						//-1 from vertex location means they canceled their selection
+						//for loop of the boolean array to get which specific vertex was chosen
+						
+					}
+					
+					//build road
+					if (action == 2){
+					/*
+						boolean array of where roads can be placed
+						io.showAvailableRoads(boolean array variable)
+					*/
+						int vertex = getRoadLocation(io);
+						//for loop of the boolean array to get which specific vertex was chosen
+						
+					}
+					
+					//upgrade Settlement
+					if (action == 3){
+					/*
+						boolean array of where current settlements are
+						io.showAvailableVertices(boolean array variable)
+					*/
+						int vertex = getVertexLocation(io);
+						//for loop of the boolean array to get which specific vertex was chosen
+					}
+					
+					//development cards 
+					if (action == 4){
+						//Coby need's to work on this 
+					}
+					
+					//end turn 
+					if (action == 5){
+						turn = false;
+					}
+				}//end while turn
+				playerTurn++;
+				if (playerTurn == numPlayers)
+					playerTurn = 0;
+				turn = true;
 			}//end inGame
 			
 			while (endGame){

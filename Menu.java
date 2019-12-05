@@ -15,6 +15,7 @@ public class Menu extends JPanel {
 	private ToggleButton buildRoad;
 	private ToggleButton upgradeSettlement;
 	private ToggleButton developmentCards;
+	private ToggleButton endTurn;
 	//endGame buttons
 	private ToggleButton homeScreen;
 	
@@ -53,6 +54,8 @@ public class Menu extends JPanel {
 		add(upgradeSettlement);
 		developmentCards = new ToggleButton("See Development Cards");
 		add(developmentCards);
+		endTurn = new ToggleButton("End Turn");
+		add(endTurn);
 	}
 	
 	public void endGameMenu(){
@@ -60,6 +63,7 @@ public class Menu extends JPanel {
 		remove(buildRoad);
 		remove(upgradeSettlement);
 		remove(developmentCards);
+		remove(endTurn);
 		
 		homeScreen = new ToggleButton("Go Back To Home Screen");
 		add(homeScreen);
@@ -108,6 +112,10 @@ public class Menu extends JPanel {
 		else if (developmentCards.getNewAction()){
 			developmentCards.resetActionPerformed();
 			return 4;
+		}
+		else if (endTurn.getNewAction()){
+			endTurn.resetActionPerformed();
+			return 5;
 		}
 		else {
 			System.out.print("");
