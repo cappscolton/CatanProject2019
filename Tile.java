@@ -1,13 +1,10 @@
-//package app;
-
-
 import java.util.ArrayList;
 
 public class Tile{
-    public Vertex[] vertices;
-    public Road[] roads;
+    private Vertex[] vertices;
+    private Road[] roads;
     private int row;
-    private int col;//TODO: for UI stuff
+    private int col; //TODO: for UI stuff
     private int tileRollNumber;
     private int tileRollNumberCache = 0; //for robbing
     private String tileRollResource;
@@ -25,13 +22,6 @@ public class Tile{
     public void setTileRollNumberCache(int n){
         tileRollNumberCache = n;
     }
-	
-	/**setTileRollResource
-	* setter. Sets the name of the resource associated with a tile.
-	*/
-	public void setTileRollResource (String s){
-		tileRollResource = s; 	
-	}
 
     /** getTileRollNumber
      *  getter. Gets the number, used for resource distribution.
@@ -55,39 +45,37 @@ public class Tile{
         return tileRollResource;
     }
 
+    public void setTileRollResource(String s){
+        tileRollResource = s;
+    }
+
+    public Road[] getRoads(){
+        return roads;
+    }
+
+    public Vertex[] getVertices(){
+        return vertices;
+    }
+
+
+    
+
     /** Road
      *  A class that represents a connection between two Vertex objects
 	 */
-    public static class Road {
-        Vertex v1;
-        Vertex v2;
-        Player occupant;
-        ArrayList<Road> adjacents = new ArrayList<Road>();
-        /** Road
-         *  Constructor. Takes two Vertex objects and makes them
-         *  reference each other, but also generates a Road object containing both.
-         */
-        public Road(Vertex i, Vertex j){
-            v1 = i;
-            v2 = j;
-            v1.connect(v2);
-            if (v1.adjacentRoads.size() < 3){
-                v1.adjacentRoads.add(this);
-            }
-            if (v2.adjacentRoads.size() < 3){
-                v2.adjacentRoads.add(this);
-            }
-        }
-    }
+
 
     /** createRoads
      *  Creates 6 roads for a tile and stores them in this tile.
      */
     public void createRoads(){
         for(int i=0; i<6; i++){
-            roads[i] = new Road(vertices[i], vertices[Math.floorMod(i+1,6)]); //floor mod to link 5 to 0
+            roads[i] = new Road(); //floor mod to link 5 to 0
         }
     }
+
+
+
 
     /** Tile
      *  constructor. Creates a new Tile object

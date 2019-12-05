@@ -1,6 +1,3 @@
-//package app;
-
-
 import java.util.*;
 
 public class Vertex {
@@ -8,7 +5,7 @@ public class Vertex {
     private int rollMultiplier = 0;
     private ArrayList<Vertex> adjacents = new ArrayList<Vertex>(2); // at least 2 adjacent vertices, most have 3
     public ArrayList<Tile> adjacentTiles = new ArrayList<Tile>(); // nearby tiles
-    public ArrayList<Tile.Road> adjacentRoads = new ArrayList<Tile.Road>();
+    public ArrayList<Road> adjacentRoads = new ArrayList<Road>();
 
 
     /** getOccupant

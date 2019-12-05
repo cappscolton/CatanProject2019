@@ -1,5 +1,3 @@
-//package app;
-
 /**
  * <Board.java>
  * <Colton Capps - CIS200 S>
@@ -18,6 +16,7 @@ public class Board {
 
     private Tile[][] tiles;
     private Vertex[][] vertices;
+    private Road[][] roads;
     private Robber robber;
 
     /** getTiles
@@ -28,6 +27,32 @@ public class Board {
         return tiles;
     }
 
+    public Vertex[][] getVertexArray(){
+        return vertices;
+    }
+
+    public Road[][] getRoadArray(){
+        return roads;
+    }
+
+    public int findPlayersLongestRoad(Player p){
+        Road startingRoad = null;
+        ArrayList<Road> checkedRoads = new ArrayList<Road>();
+        outerloop:
+        for(Tile[] tRow : tiles){
+            for (Tile t : tRow){
+                for (Road r : t.getRoads()){
+                    if (r.getOccupant()==p && !checkedRoads.contains(r)){
+                        checkedRoads.add(r);
+                        startingRoad = r;
+                        break outerloop;
+                    }
+                }
+            }
+        }
+        return lengthOfRoad(checkedRoads, startingRoad, 1);
+    }
+
     /** getRobber
      * getter for boards Robber
      * @return Robber object - there should only be one on the board.
@@ -36,9 +61,6 @@ public class Board {
         return robber;
     }
 
-
-
-    
     /** Board
      * Constructor. Instantiates tile and vertex arrays then
      * creates necessary links between objects in the arrays
@@ -47,12 +69,23 @@ public class Board {
     public Board(){
         tiles = createTileArray();
         vertices = createVertexArray();
+        roads = createRoadArray();
 
         linkTilesToVertices(tiles, vertices);
-        createRoads();
+        linkRoadsToVertices(roads, vertices);
+        linkAdjacentRoads();
+        linkTilesToRoads(tiles, roads);
+        
         setTileResourcesAndNumbers();
         initializeRobber();
     }
+
+
+
+    
+    /* INTERNAL METHODS BELOW */
+
+
 
     /** createTileArray
      * Creates a two dimensional jagged array of Tile objects
@@ -72,6 +105,24 @@ public class Board {
         return tiles;
     }
 
+    /** createRoadArray
+     * Creates a two dimensional jagged array of Road objects
+     * with 5 rows of lengths 3, 4, 5, 4, 3
+     * @return 2D jagged array of instatiated Roads
+     */
+    private Road[][] createRoadArray(){
+        Road[][] roads = new Road[11][];
+        int[] roadRowLengths = {6, 4, 8, 5, 10, 6, 10, 5, 8, 4, 6};
+        for(int i=0; i<roadRowLengths.length; i++){
+            Road[] row = new Road[roadRowLengths[i]];
+            for(int j=0; j<row.length; j++){
+                row[j] = new Road();
+            }
+            roads[i] = row;
+        }
+        return roads;
+    }
+
     /** createVertexArray
      * Creates a two dimensional jagged array of Vertex objects
      * with 5 rows of lengths 7,9,11,11,9,7
@@ -89,14 +140,56 @@ public class Board {
         }
         return vertices;
     }
-	
-	/**getVertexArray
-	* getter for the 2d array of vertex objects 
-	* @return 2d array of vertices
-	*/
-	public Vertex[][] getVertexArray(){
-		return vertices; 
-	}
+
+    private void linkAdjacentRoads(){
+        for (Road[] rRow : roads){
+            for (Road r : rRow){
+                for (Road r1 : r.v1.adjacentRoads)
+                    if (!r1.equals(r))
+                        r.adjacents.add(r1);
+                for (Road r1 : r.v2.adjacentRoads)
+                    if (!r1.equals(r))
+                        r.adjacents.add(r1);
+            }
+        }
+    }
+
+    private void linkTilesToRoads(Tile[][] tiles, Road[][] roads){
+        for (int i=0; i<tiles.length; i++){
+            linkTilesToRoadsForRow(roads, tiles, i);
+        }
+    }
+
+    private void linkTilesToRoadsForRow(Road[][] roads, Tile[][] tiles, int row){
+        for (int i=0; i<tiles[row].length; i++){
+            Road r = roads[row*2][i*2];
+            for (int j=0; j<2; j++){
+                tiles[row][i].getRoads()[j] = r;
+                r = r.adjacents.get(r.adjacents.size()-1);
+            }
+            tiles[row][i].getRoads()[2] = r;
+            for (int j=3; j<6; j++){
+                r = r.adjacents.get(0);
+                tiles[row][i].getRoads()[j] = r;
+                
+            }
+        }
+    }
+
+    private int lengthOfRoad(ArrayList<Road> checkedRoads, Road r, int length){
+        int longestAdjacent = length;
+        for (Road adj : r.adjacents){
+            if (adj.getOccupant() != null){
+                if(adj.getOccupant().equals(r.getOccupant()) && !checkedRoads.contains(adj)){
+                    checkedRoads.add(adj);
+                    int lengthAdj = lengthOfRoad(checkedRoads, adj, length+1);
+                    if (lengthAdj > longestAdjacent)
+                        longestAdjacent = lengthAdj;
+                }
+            }
+        }
+        return longestAdjacent;
+    }
 
     /** linkTileVerticesForRow
      * For a given row, connects elements of the board's Tile array to elements of the
@@ -104,11 +197,11 @@ public class Board {
      * Thus, modifying a Vertex of one Tile simultaneously modifies the connected ones 
      * reducing further positional calculations.
      *
-     * @param 2D jagged array of Tile objects
-     * @param 2D jagged array of Vertex objects
-     * @param int row of tiles to modify. important because
-     *        upper rows are increasing in length, while 
-     *        lower rows are decreasing, which changes how we index.
+     * @param tiles jagged array of Tile objects
+     * @param vertices jagged array of Vertex objects
+     * @param row index of row of tiles to modify. important because
+     *            upper rows are increasing in length, while 
+     *            lower rows are decreasing, which changes how we index.
      */
     private void linkTileVerticesForRow(Tile[][] tiles, Vertex[][] vertices, int row){
         int nextRowOffset;
@@ -116,28 +209,27 @@ public class Board {
         else nextRowOffset = (row<2) ? 0 : 1; //determine if row is in upper half of board or lower
         // set tile vertices 0 1 2
         for(int col=0; col<tiles[row].length; col++){
-            tiles[row][col].vertices[0] = vertices[row][nextRowOffset++];
-            tiles[row][col].vertices[1] = vertices[row][nextRowOffset++];
-            tiles[row][col].vertices[2] = vertices[row][nextRowOffset];
+            tiles[row][col].getVertices()[0] = vertices[row][nextRowOffset++];
+            tiles[row][col].getVertices()[1] = vertices[row][nextRowOffset++];
+            tiles[row][col].getVertices()[2] = vertices[row][nextRowOffset];
         }
 
         if (row==2)  nextRowOffset=0;
         else nextRowOffset = (row>2) ? 0 : 1; //determine if row is in upper half of board or lower
         // set tile vertices 5 4 3
         for(int col=0; col<tiles[row].length; col++){
-            tiles[row][col].vertices[5] = vertices[row+1][nextRowOffset++];
-            tiles[row][col].vertices[4] = vertices[row+1][nextRowOffset++];
-            tiles[row][col].vertices[3] = vertices[row+1][nextRowOffset];
+            tiles[row][col].getVertices()[5] = vertices[row+1][nextRowOffset++];
+            tiles[row][col].getVertices()[4] = vertices[row+1][nextRowOffset++];
+            tiles[row][col].getVertices()[3] = vertices[row+1][nextRowOffset];
         }
     }
-
 
     /** linkTilesToVertices
      * Loops through each row calling the above method, and storing a
      * reference to the Tile within the Vertex for resource distribution.
      *
-     * @param 2D jagged array of Tile objects
-     * @param 2D jagged array of Vertex objects
+     * @param tiles jagged array of Tile objects
+     * @param vertices jagged array of Vertex objects
      */
     private void linkTilesToVertices(Tile[][] tiles, Vertex[][] vertices){
         for(int i=0; i<tiles.length; i++){
@@ -145,20 +237,66 @@ public class Board {
         }
         for (Tile[] row : tiles){
             for (Tile t : row){
-                for (Vertex v : t.vertices){
+                for (Vertex v : t.getVertices()){
                     v.adjacentTiles.add(t);
                 }
             }
         }
     }
 
-    /** createRoads
-     * Loop through all the tiles in the board and create road objects for them
+    /** linkRoadsToVertices
+     * Loops through each row storing a
+     * reference to 2 Vertex objects within the Roads in an array.
+     *
+     * @param roads jagged array of Road objects
+     * @param vertices jagged array of Vertex objects
+     * @param row index of row in 2d array
      */
-    private void createRoads(){
-        for(Tile[] i : tiles){
-            for (Tile t : i){
-                t.createRoads();
+    private void linkRoadsToVerticesForRow(Road[][] roads, Vertex[][] vertices, int row){
+        boolean evenRow = (row % 2 == 0) ? true : false;
+        int vertexRow = row/2;
+        if (evenRow){
+            int offset = 0;
+            for (int col=0; col<roads[row].length; col++){
+                roads[row][col].v1 = vertices[vertexRow][offset++];
+                roads[row][col].v2 = vertices[vertexRow][offset];
+                if (!roads[row][col].v1.adjacentRoads.contains(roads[row][col])){
+                    roads[row][col].v1.adjacentRoads.add(roads[row][col]);
+                }
+                if (!roads[row][col].v2.adjacentRoads.contains(roads[row][col])){
+                    roads[row][col].v2.adjacentRoads.add(roads[row][col]);       
+                }         
+            }
+        }
+        else {
+            int nextRowOffset = (row>4) ? 0 : 1;
+            int offset = 0;
+            for (int col=0; col<roads[row].length; col++){
+                roads[row][col].v1 = vertices[vertexRow+1][offset+nextRowOffset];
+                roads[row][col].v2 = vertices[vertexRow][offset];
+                if (!roads[row][col].v1.adjacentRoads.contains(roads[row][col])){
+                    roads[row][col].v1.adjacentRoads.add(roads[row][col]);
+                }
+                if (!roads[row][col].v2.adjacentRoads.contains(roads[row][col])){
+                    roads[row][col].v2.adjacentRoads.add(roads[row][col]);
+                }
+                offset += 2;
+            }
+        }
+
+    }
+
+    /** linkRoadsToVertices
+     * Loop through all rows of roads calling linkRoadsToVerticesForRow()
+     * to connect vertices to roads.
+     */
+    private void linkRoadsToVertices(Road[][] roads, Vertex[][] vertices){
+        for (int i=0; i<roads.length; i++){
+            linkRoadsToVerticesForRow(roads, vertices, i);
+        }
+        for (Road[] rRow : roads){
+            for (Road r : rRow){
+                r.v1.connect(r.v2);
             }
         }
     }
@@ -199,16 +337,15 @@ public class Board {
      * Loops thourgh Tile objects in the board to find desert and set the
      * robber's starting location by constructing a new robber with that Tile.
      */
-    public void initializeRobber(){
+    private void initializeRobber(){
         for(int i=0; i<tiles.length; i++){
-            for (int j=0; j<tiles[0].length; j++){
+            for (int j=0; j<tiles[i].length; j++){
                 if (tiles[i][j].getTileRollResource().equals("desert")){
                     robber = new Robber(tiles[i][j]);
                 }
             }
         }
     }
-    
 
     
 }

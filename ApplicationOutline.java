@@ -1,6 +1,20 @@
 import java.util.*;
 
 public class ApplicationOutline{
+	
+	public static Player findPlayerWithLongestRoad(Board board, ArrayList<Player> players){
+		Player plrWithLongestRoad=null;
+		int winningLength = 0;
+		for (Player p : players){
+			int length = board.findPlayersLongestRoad(p);
+			if (length > winningLength){
+				plrWithLongestRoad = p;
+				winningLength = length;
+			}
+		}
+		return plrWithLongestRoad;
+	}
+	
 	public static void main(String[] args){
 		//initialize array/arraylist of players
 		ArrayList<Player>playerList = new ArrayList<Player>(4); 
