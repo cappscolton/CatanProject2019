@@ -6,6 +6,7 @@ public class Application{
         Board board = new Board();
         Tile[][] tiles = board.getTiles();// every other method in Board.java is internal
 		IO io = new IO(tiles);
+	int currentBiggestArmy=0; //Holds the player number who holds the biggest army
 	}
 		//-----------------------------------------------------------------------------------------------------------
 		//BEGINNING OF ABBY'S CODE
@@ -65,7 +66,39 @@ public class Application{
 		
 		
 		//public int rollDice()
-		//public boolean hasLargestArmy()
+		
+		//Calculates the biggest army, should be called after a knight card is drawn
+	public static int biggestArmy(Player[] p,int f) {
+		int currentBiggest=0; //The player with the biggest army
+		int toBeat = 0;//the number of knight cards needed for a player to get the biggest army
+			if(f!=0) { //If someone already has the largest army
+				ArrayList <Character> beatDevCards = p[f-1].getDevelopmentCards(); 
+				currentBiggest=f;
+					for(int j=0;j<beatDevCards.size();j++) { //Finds all knights in player's devcards
+						if(beatDevCards.get(j)=='K') {
+							toBeat++; 
+						}
+					}
+			}//end if
+			
+			int[] sum = new int[p.length]; //array to hold the sum of knight cards for all players
+			for(int i=0;i<p.length;i++) {//goes through all players
+				ArrayList <Character> devCards = p[i].getDevelopmentCards(); //Gets the development cards of current player
+				
+				for(int j=0;j<devCards.size();j++) { //Finds all knights in player's devcards
+					if(devCards.get(j)=='K') {
+						sum[i]++;
+					}
+				}//end inner for
+			}//end for
+			for(int k=0;k<p.length;k++) { 
+				if((sum[k]>toBeat)&&(sum[k]>=3)) { //Changes current biggest if the player has more knight cars than toBeat and more than 3
+					currentBiggest=k+1;
+				}
+			}
+			return currentBiggest;
+		}//end biggestArmy
+	
 		//public boolean hasLongestRoad()
     
 }
