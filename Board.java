@@ -1,5 +1,15 @@
 package app;
 
+/**
+ * <Board.java>
+ * <Colton Capps - CIS200 S>
+ * Class to represent the Board which contains information about
+ * most aspects of the game, including an array of Tiles making up
+ * the board, an array of vertices that make up Tiles, and
+ * methods to set up the board. See documentation images for visual
+ * representation of Tile/Road/Vertex relationships.
+*/ 
+
 import java.util.Collections;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,8 +18,32 @@ public class Board {
 
     private Tile[][] tiles;
     private Vertex[][] vertices;
-    public Robber robber;
+    private Robber robber;
 
+    /** getTiles
+     * getter for the array containing our Tiles
+     * @return 2D jagged array of Tile objects
+     */
+    public Tile[][] getTiles(){
+        return tiles;
+    }
+
+    /** getRobber
+     * getter for boards Robber
+     * @return Robber object - there should only be one on the board.
+     */
+    public Robber getRobber(){
+        return robber;
+    }
+
+
+
+    
+    /** Board
+     * Constructor. Instantiates tile and vertex arrays then
+     * creates necessary links between objects in the arrays
+     * as well as initializing the robber on the desert tile.
+     */  
     public Board(){
         tiles = createTileArray();
         vertices = createVertexArray();
@@ -20,6 +54,11 @@ public class Board {
         initializeRobber();
     }
 
+    /** createTileArray
+     * Creates a two dimensional jagged array of Tile objects
+     * with 5 rows of lengths 3, 4, 5, 4, 3
+     * @return 2D jagged array of instatiated Tiles
+     */ 
     private Tile[][] createTileArray(){
         Tile[][] tiles = new Tile[5][];
         int[] tileRowLengths = {3, 4, 5, 4, 3};
@@ -33,6 +72,11 @@ public class Board {
         return tiles;
     }
 
+    /** createVertexArray
+     * Creates a two dimensional jagged array of Vertex objects
+     * with 5 rows of lengths 7,9,11,11,9,7
+     * @return 2D jagged array of instatiated Vertices
+     */  
     private Vertex[][] createVertexArray(){
         Vertex[][] vertices = new Vertex[6][];
         int[] vertexRowLengths = {7,9,11,11,9,7};
@@ -46,11 +90,22 @@ public class Board {
         return vertices;
     }
 
+    /** linkTileVerticesForRow
+     * For a given row, connects elements of the board's Tile array to elements of the
+     * board's Vertex array, such that neighboring Tiles point to the same Vertex objects.
+     * Thus, modifying a Vertex of one Tile simultaneously modifies the connected ones 
+     * reducing further positional calculations.
+     *
+     * @param 2D jagged array of Tile objects
+     * @param 2D jagged array of Vertex objects
+     * @param int row of tiles to modify. important because
+     *        upper rows are increasing in length, while 
+     *        lower rows are decreasing, which changes how we index.
+     */
     private void linkTileVerticesForRow(Tile[][] tiles, Vertex[][] vertices, int row){
-    // Gives all Tiles in one row valid vertices.
         int nextRowOffset;
         if (row==2)  nextRowOffset=0;
-        else nextRowOffset = (row<2) ? 0 : 1;
+        else nextRowOffset = (row<2) ? 0 : 1; //determine if row is in upper half of board or lower
         // set tile vertices 0 1 2
         for(int col=0; col<tiles[row].length; col++){
             tiles[row][col].vertices[0] = vertices[row][nextRowOffset++];
@@ -59,7 +114,7 @@ public class Board {
         }
 
         if (row==2)  nextRowOffset=0;
-        else nextRowOffset = (row>2) ? 0 : 1;
+        else nextRowOffset = (row>2) ? 0 : 1; //determine if row is in upper half of board or lower
         // set tile vertices 5 4 3
         for(int col=0; col<tiles[row].length; col++){
             tiles[row][col].vertices[5] = vertices[row+1][nextRowOffset++];
@@ -68,8 +123,15 @@ public class Board {
         }
     }
 
+
+    /** linkTilesToVertices
+     * Loops through each row calling the above method, and storing a
+     * reference to the Tile within the Vertex for resource distribution.
+     *
+     * @param 2D jagged array of Tile objects
+     * @param 2D jagged array of Vertex objects
+     */
     private void linkTilesToVertices(Tile[][] tiles, Vertex[][] vertices){
-    // Loops through all the rows to store vertices in tiles with no duplicates
         for(int i=0; i<tiles.length; i++){
             linkTileVerticesForRow(tiles, vertices, i);
         }
@@ -82,8 +144,10 @@ public class Board {
         }
     }
 
+    /** createRoads
+     * Loop through all the tiles in the board and create road objects for them
+     */
     private void createRoads(){
-    // Creates roads for each tile
         for(Tile[] i : tiles){
             for (Tile t : i){
                 t.createRoads();
@@ -91,11 +155,11 @@ public class Board {
         }
     }
 
-    public Tile[][] getBoardData(){
-    // Getter
-        return tiles;
-    }
-
+    /** setTileResourcesAndNumbers
+     * There are fixed numbers of each resource and tile roll number on the map.
+     * Given these hardcoded, randomize the board layout, assiging values to the attributes
+     * of Tile objects in the board's array, yet assure that the desert always gets 0.
+     */
     private void setTileResourcesAndNumbers(){
         String[] r = {  "wheat", "wheat", "wheat", "wheat",
                         "sheep", "sheep", "sheep", "sheep",
@@ -123,6 +187,10 @@ public class Board {
         }
     }
 
+    /** initializeRobber
+     * Loops thourgh Tile objects in the board to find desert and set the
+     * robber's starting location by constructing a new robber with that Tile.
+     */
     public void initializeRobber(){
         for(int i=0; i<tiles.length; i++){
             for (int j=0; j<tiles[0].length; j++){

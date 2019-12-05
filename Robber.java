@@ -1,4 +1,4 @@
-/**Robber.java
+/** Robber.java
  * Robber class with a variable to hold position and methods 'getPosition' to return the current position of the robber,
  * 'setPosition' to change the position of the robber, 'moveResources' to allow transfer of stolen resources, and 'blockResources;'
  * to keep resources from being given out if the robber is on a certain tile.
@@ -17,11 +17,26 @@ public class Robber {
 		return position;
 	}
 	
+	/** setPosition
+     * Overwrites the Tile object that is being robbed,
+	 * therefore updating the robber's position.
+     *
+     * @param Tile object to contain the robber
+	 */
 	public void setPosition(Tile newPosition) {
+	
 		position = newPosition;
 	}
-	
+
+	/** moveRobber
+     * Reverts the previously robbed Tile to its roll number
+	 * which is stored in a cache. Prompts the newly robbed Tile
+	 * to change tile roll to 0 (no resources) but store the roll in the cache.
+	 * 
+     * @param newPosition- Tile object to contain the robber
+	 */
 	public void moveRobber(Tile newPosition){
+	
         position.setTileRollNumber(position.getTileRollNumberCache());
 
         newPosition.setTileRollNumberCache(newPosition.getTileRollNumber());
@@ -31,11 +46,11 @@ public class Robber {
     }	
 
 
-/** moveResources
- * Allows transfer of "robbed" resources
- * @param p1- The player being robbed
- * @param p2- the player getting resources
- */
+	/** moveResources
+	 * Allows transfer of "robbed" resources
+	 * @param p1- The player being robbed
+	 * @param p2- the player getting resources
+	 */
 	public static void moveResources(Player p1,Player p2) { //brick, lumber, ore, grain, and wool
 		Random r = new Random();
 		boolean moreThanZero = true; 
