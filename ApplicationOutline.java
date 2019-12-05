@@ -2,18 +2,7 @@ import java.util.*;
 
 public class ApplicationOutline{
 	
-	public static Player findPlayerWithLongestRoad(Board board, ArrayList<Player> players){
-		Player plrWithLongestRoad=null;
-		int winningLength = 0;
-		for (Player p : players){
-			int length = board.findPlayersLongestRoad(p);
-			if (length > winningLength){
-				plrWithLongestRoad = p;
-				winningLength = length;
-			}
-		}
-		return plrWithLongestRoad;
-	}
+
 	
 	public static void main(String[] args){
 		//initialize array/arraylist of players
@@ -35,6 +24,7 @@ public class ApplicationOutline{
 		boolean newGame = false;
 		boolean inGame = false;
 		boolean endGame = false;
+		
 		while (true){
 			//loop for the homeScreen
 			while (homeScreen){
@@ -54,22 +44,20 @@ public class ApplicationOutline{
 				//gets the number of players
 				if (numPlayers == 0){
 					numPlayers = getNumberOfPlayers(io);
-				}
-				
-				//adding player objects to the array list
-				Player player1 = new Player(); 
-				playerList.add(player1); 
-				if (numPlayers >= 2) {
-					Player player2 = new Player(); 
-					playerList.add(player2); 
-				}
-				if (numPlayers >= 3) {
-					Player player3 = new Player(); 
-					playerList.add(player3);
-				}
-				if (numPlayers == 4) {
-					Player player4 = new Player(); 
-					playerList.add(player4); 
+					Player player1 = new Player(); 
+					playerList.add(player1); 
+					if (numPlayers >= 2) {
+						Player player2 = new Player(); 
+						playerList.add(player2); 
+					}
+					if (numPlayers >= 3) {
+						Player player3 = new Player(); 
+						playerList.add(player3);
+					}
+					if (numPlayers == 4) {
+						Player player4 = new Player(); 
+						playerList.add(player4); 
+					}
 				}
 				
 				//gets the action of the player
@@ -152,55 +140,7 @@ public class ApplicationOutline{
 					
 					//development cards 
 					if (action == 4){
-						
-						//get the actual arraylist of the player's devcards
-						
-						ArrayList<Character> cards = new ArrayList<>();
-						cards.add('K');
-						cards.add('K');
-						cards.add('K');
-						
-						
-						DevelopmentCards dv = new DevelopmentCards(cards);
-						boolean looking = true;
-						while (looking){
-							int cardAction = dv.getAction();
-							
-							//use Knight
-							if (cardAction == 1){
-								
-								//close window and exit loop
-								looking = false;
-								dv.dispose();
-							}
-							//use monopoly card
-							else if (cardAction == 2){
-								
-								//close window and exit loop
-								looking = false;
-								dv.dispose();
-							}
-							//use Year of Plenty
-							else if (cardAction == 3){
-								
-								//close window and exit loop
-								looking = false;
-								dv.dispose();
-							}
-							//road building
-							else if (cardAction == 4){
-								
-								//close window and exit loop
-								looking = false;
-								dv.dispose();
-							}
-							//close window
-							else if (cardAction == 5){
-								//close window and exit loop
-								looking = false;
-								dv.dispose();
-							}
-						}
+						//Coby need's to work on this 
 					}
 					
 					//end turn 
@@ -250,8 +190,7 @@ public class ApplicationOutline{
 				if (i > -1)
 					return i;
 				else
-					io.errorMessage("ERROR: Number of players must Positive");
-				//should this be vertex number should be positive?
+					io.errorMessage("ERROR: Vertex number must positive");
 			}
 			catch (NumberFormatException e){
 				io.errorMessage("ERROR: Please enter a valid integer");
@@ -261,24 +200,29 @@ public class ApplicationOutline{
 	
 	public static int getRoadLocation(IO io){
 		while (true){
-			int i = io.getIntegerInput("Enter the number of the Road location");
-			if (i > 0)
-				return i;
+			try{
+				int i = io.getIntegerInput("Enter the number of the road location");
+				if (i > 0)
+					return i;
+				else
+					io.errorMessage("ERROR: Vertex number must positive");
+			}
+			catch (NumberFormatException e){
+				io.errorMessage("ERROR: Please enter a valid integer");
+			}
 		}
 	}
 	
 	public static boolean [][] getAvailabilityArray (Board board){
+		Vertex[][] vertices = board.getVertexArray();
 		boolean [][] availabilityArray = new boolean[6][];
         int[] availabilityArrayRowLengths = {7,9,11,11,9,7};
         for(int i=0; i<availabilityArray.length; i++){
-            Vertex[] row = new Vertex[availabilityArrayRowLengths[i]];
-            for(int j=0; j<availabilityArrayRowLengths.length; j++){
-                if(board.getVertexArray()[i][j].getOccupant() == null){
-					availabilityArray[i][j] = true; 
-				} else {
-					availabilityArray[i][j] = false; 
-				}
-            }
+            boolean[] row = new boolean[availabilityArrayRowLengths[i]];
+            for(int j=0; j<availabilityArrayRowLengths[i]; j++){
+				row[j] = (vertices[i][j].getOccupant() == null);
+			}
+			availabilityArray[i] = row;
         }
 		return availabilityArray; 
 	}
@@ -315,6 +259,17 @@ public class ApplicationOutline{
 			return currentBiggest;
 		}//end biggestArmy
 	
-		//NOTE: ADD HAS LONGEST ROAD METHOD
+		public static Player findPlayerWithLongestRoad(Board board, ArrayList<Player> players){
+			Player plrWithLongestRoad=null;
+			int winningLength = 0;
+			for (Player p : players){
+				int length = board.findPlayersLongestRoad(p);
+				if (length > winningLength){
+					plrWithLongestRoad = p;
+					winningLength = length;
+				}
+			}
+			return plrWithLongestRoad;
+		}
 
 }//end class
