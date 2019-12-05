@@ -33,6 +33,47 @@ public class IO extends JFrame{
 		remove(home);
 	}
 	
+	//row is the y, col is the x, player is the player 0-3
+	//works for upgrading and placing
+	public void setSettlement(int row, int col, int player){
+		board.setSettlementImage(row, col, player);
+	}
+	
+	//will set the robber location and move the number for the tile
+	public void setRobberLocation(int row, int col){
+		board.setRobberLocation(row, col);
+	}
+	
+	//sets the resource panel to the array list of resources
+	//will need to be changed every turn
+	public void setResourcePanel(ArrayList<Integer> nums){
+		resourcePanel.setArrayList(nums);
+		loadBoard();
+	}
+	
+	//if a point in the array is true it will issue an integer that counts every time its been placed
+	public void setVertexLocations(boolean[][] bool){
+		board.setVertexArray(bool);
+	}
+	
+	//resets the vertex locations numbers will stay til this is called
+	public void resetVertexLocations(){
+		resetVertexArray();
+	}
+	
+	//will get an integer from a pop up
+	//String text will be displayed in the pop up as well
+	public int getIntegerInput(String text){
+		String input = JOptionPane.showInputDialog(text);	
+		int i = Integer.parseInt(input);
+		return i;
+	}
+	
+	//displays a string good for errors or general info
+	public void errorMessage(String text){
+		JOptionPane.showMessageDialog(null, text);
+	}
+
 	public void backToHome(){
 		remove(board);
 		remove(resourcePanel);
@@ -44,7 +85,7 @@ public class IO extends JFrame{
 		removeHomeScreen();
 		board = new GameBoard(tiles);
 		add(board, BorderLayout.CENTER);
-		board.load();
+		board.repaint();
 		add(resourcePanel, BorderLayout.EAST);
 		menu.newGameMenu();
 	}
@@ -89,21 +130,6 @@ public class IO extends JFrame{
 		board.repaint();
 		resourcePanel.repaint();
 		menu.repaint();
-	}
-	
-	public void setResourcePanel(ArrayList<Integer> nums){
-		resourcePanel.setArrayList(nums);
-		loadBoard();
-	}
-	
-	public int getIntegerInput(String text){
-		String input = JOptionPane.showInputDialog(text);	
-		int i = Integer.parseInt(input);
-		return i;
-	}
-	
-	public void errorMessage(String text){
-		JOptionPane.showMessageDialog(null, text);
 	}
 
 	public int getHomeAction(){

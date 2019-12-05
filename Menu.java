@@ -18,6 +18,12 @@ public class Menu extends JPanel {
 	private ToggleButton endTurn;
 	//endGame buttons
 	private ToggleButton homeScreen;
+	//dev card buttons
+	private ToggleButton useKnight;
+	private ToggleButton useMonopoly;
+	private ToggleButton useYearPlenty;
+	private ToggleButton useBuildRoad;
+	private ToggleButton closeWindow;
 	
 	public Menu(){
 		setLayout(new GridLayout(0, 1));
@@ -67,6 +73,21 @@ public class Menu extends JPanel {
 		
 		homeScreen = new ToggleButton("Go Back To Home Screen");
 		add(homeScreen);
+	}
+	
+	public void cardMenu(){
+		remove(newGame);
+		
+		useKnight = new ToggleButton("Use Knight");
+		add(useKnight);
+		useMonopoly = new ToggleButton("Use Monopoly");
+		add(useMonopoly);
+		useYearPlenty = new ToggleButton("Use Year of Plenty");
+		add(useYearPlenty);
+		useBuildRoad = new ToggleButton("Use Road Building");
+		add(useBuildRoad);
+		closeWindow = new ToggleButton("Close Window");
+		add(closeWindow);
 	}
 
 	public int getHomeAction(){
@@ -127,6 +148,33 @@ public class Menu extends JPanel {
 		if (homeScreen.getNewAction()){
 			homeScreen.resetActionPerformed();
 			return 1;
+		}
+		else {
+			System.out.print("");
+			return 0;
+		}
+	}
+	
+	public int getCardMenuAction(){
+		if (useKnight.getNewAction()){
+			useKnight.resetActionPerformed();
+			return 1;
+		}
+		else if (useMonopoly.getNewAction()){
+			useMonopoly.resetActionPerformed();
+			return 2;
+		}
+		else if (useYearPlenty.getNewAction()){
+			useYearPlenty.resetActionPerformed();
+			return 3;
+		}
+		else if (useBuildRoad.getNewAction()){
+			useBuildRoad.resetActionPerformed();
+			return 4;
+		}
+		else if (closeWindow.getNewAction()){
+			closeWindow.resetActionPerformed();
+			return 5;
 		}
 		else {
 			System.out.print("");
