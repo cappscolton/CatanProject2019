@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.util.*;
 import java.awt.*;
+
 public class IO extends JFrame{
 	private GameBoard board;
 	private Menu menu;
@@ -84,9 +85,8 @@ public class IO extends JFrame{
 		String input = JOptionPane.showInputDialog(text);
 		try{
 			return Integer.parseInt(input);
-		}
-		catch (NumberFormatException | NullPointerException e){
-			return -1;
+		} catch (NumberFormatException | NullPointerException e){
+			return -1; 
 		}
 	}
 	

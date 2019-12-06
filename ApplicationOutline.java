@@ -415,11 +415,14 @@ public class ApplicationOutline{
 					plrWithLongestRoad = p;
 					p.setHasLongestRoad(true);
 					winningLength = length;
+				} else {
+					p.setHasLongestRoad(false); 
 				}
-				else p.setHasLongestRoad(false);
 			}
 			return plrWithLongestRoad;
 		}
 
 }//end class
 
+
+}//end class
