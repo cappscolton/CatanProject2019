@@ -7,7 +7,7 @@ import java.util.*;
  *
  */
 public class Player{
-	public int number;
+	private int number;
 	private int victoryPoints;
 	private int numRoads; 
 	private int numSettlements;
@@ -251,6 +251,15 @@ public class Player{
 	 */
 	public void addRoad (Road r){
 		roadLocations.add(r); 
+	}
+	
+	/**getNumber
+	 * Getter method for player number
+	 *
+	 * @return a player's number (int)
+	 */
+	public int getNumber(){
+		return number; 
 	}
 	
 }

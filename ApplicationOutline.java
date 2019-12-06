@@ -275,7 +275,7 @@ public class ApplicationOutline{
 									v.setOccupant(p);
 									p.addSettlementLocation(v); 
 									v.setRollMultiplier(1);
-									io.setSettlement(v.x, v.y, p.number);
+									io.setSettlement(v.x, v.y, p.getNumber());
 									break outerloop;
 								}
 								else{
@@ -287,7 +287,7 @@ public class ApplicationOutline{
 						else{
 							if (count==vertex){
 								v.setOccupant(p);
-								io.setSettlement(v.x, v.y, p.number);
+								io.setSettlement(v.x, v.y, p.getNumber());
 								v.setRollMultiplier(1);
 								break outerloop;
 							}
@@ -326,7 +326,7 @@ public class ApplicationOutline{
 						if (count==vertex){
 							v.setRollMultiplier(2);
 							p.addCityLocation(v); 
-							io.setSettlement(v.x, v.y, p.number);
+							io.setSettlement(v.x, v.y, p.getNumber());
 							break outerloop;
 						}
 						else count++;
@@ -362,7 +362,7 @@ public class ApplicationOutline{
 								if (count==road){
 									r.setOccupant(p);
 									p.addRoad(r); 
-									io.setRoad(r.x, r.y, p.number);
+									io.setRoad(r.x, r.y, p.getNumber());
 									break outerloop;
 								}
 								else{
@@ -375,7 +375,7 @@ public class ApplicationOutline{
 							if (count==road){
 								r.setOccupant(p);
 								p.addRoad(r); 
-								io.setRoad(r.x, r.y, p.number);
+								io.setRoad(r.x, r.y, p.getNumber());
 								break outerloop;
 							}
 							else{
