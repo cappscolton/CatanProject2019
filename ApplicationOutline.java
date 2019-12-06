@@ -400,10 +400,14 @@ public class ApplicationOutline{
 				int length = board.findPlayersLongestRoad(p);
 				if (length > winningLength){
 					plrWithLongestRoad = p;
+					p.setHasLongestRoad(true);
 					winningLength = length;
+				} else {
+					p.setHasLongestRoad(false); 
 				}
 			}
 			return plrWithLongestRoad;
 		}
+
 
 }//end class

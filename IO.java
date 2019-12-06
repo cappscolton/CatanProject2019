@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.util.*;
 import java.awt.*;
+
 public class IO extends JFrame{
 	private GameBoard board;
 	private Menu menu;
@@ -82,12 +83,10 @@ public class IO extends JFrame{
 	//String text will be displayed in the pop up as well
 	public int getIntegerInput(String text){
 		String input = JOptionPane.showInputDialog(text);
-		if (!(input.equals("") || input.equals(null))){	
-			int i = Integer.parseInt(input);
-			return i;
-		}
-		else {
-			return -1;
+		try{
+			return Integer.parseInt(input);
+		} catch (NumberFormatException | NullPointerException e){
+			return -1; 
 		}
 	}
 	

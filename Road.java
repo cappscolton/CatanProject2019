@@ -13,6 +13,8 @@ public class Road {
      *  Constructor. Dummy, everything is initialized once all the roads
      *  instantiated (in Board.java)
      */
+	public Road(){}; 
+	
     public Road(int row, int col){
         x = row;
         y = col;
