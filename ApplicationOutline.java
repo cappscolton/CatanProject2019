@@ -88,6 +88,7 @@ public class ApplicationOutline{
 				//set the button to game buttons
 				System.out.println(playerTurn);
 				while (turn){
+					
 					if (first){
 						io.startGame();
 						io.loadGame();
@@ -110,17 +111,29 @@ public class ApplicationOutline{
 					
 					//build settlement
 					if (action == 1){
-						buildSettlement(playerList.get(playerTurn), io, board, false);				
+						if(playerList.get(playerTurn).getMaxSettlements() > 0){
+							buildSettlement(playerList.get(playerTurn), io, board, false);	
+						} else {
+							System.out.println("Player " + (playerTurn + 1) + " is out of settlements!"); 
+						}	
 					}
 					
 					//build road
 					if (action == 2){
-						buildRoad(playerList.get(playerTurn), io, board, true);						
+						if(playerList.get(playerTurn).getMaxRoads() >0){
+							buildRoad(playerList.get(playerTurn), io, board, true);		
+						} else {
+							System.out.println("Player " + (playerTurn + 1) + " is out of roads!"); 
+						}
 					}
 					
 					//upgrade Settlement
 					if (action == 3){
-						upgradeSettlementToCity(playerList.get(playerTurn), io, board);
+						if(playerList.get(playerTurn).getMaxCities() > 0){
+							upgradeSettlementToCity(playerList.get(playerTurn), io, board);
+						} else {
+							System.out.println("Player " + (playerTurn + 1) + " is out of cities!"); 
+						}
 					}
 					
 					//development cards 
@@ -425,4 +438,3 @@ public class ApplicationOutline{
 }//end class
 
 
-}//end class

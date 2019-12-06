@@ -14,11 +14,13 @@ public class Player{
 	//These variables to be decremented each time a user places a settlement, city, or road so that user cannot place more than the number aloted to them 
 	private int distanceFromMaxSettlements = 5; 
 	private int distanceFromMaxCities = 4; 
-	private int distanceFromMaxRoads = 15; 
+	private int distanceFromMaxRoads = 15;
 	
 	//include locations of settlements and cities (array of vertices!!!!)
 	//create array list of road locations 
-	
+	private ArrayList<Vertex>settlementLocations = new ArrayList<Vertex>(); 
+	private ArrayList<Vertex>cityLocations = new ArrayList<Vertex>(); 
+	private ArrayList<Vertex>roadLocations = new ArrayList<Vertex>(); 
 	
 	
 	private int [] playerResources = new int [5]; 
@@ -59,6 +61,7 @@ public class Player{
 				playerResources[0]--;
 				playerResources[1]--; 
 				numRoads ++; 
+				distanceFromMaxRoads--;
 			} 
 			else return false;
 		}
@@ -70,6 +73,7 @@ public class Player{
 				playerResources[4]--; 
 				playerResources[3]--; 
 				numSettlements ++; 
+				distanceFromMaxSettlements--;
 			}
 			else return false;
 		}
@@ -79,6 +83,8 @@ public class Player{
 				playerResources[2]-=3; 
 				playerResources[3]-=2;
 				numCities ++; 
+				distanceFromMaxCities--;
+				distanceFromMaxSettlements++; 
 			}
 			else return false;
 		} 
@@ -124,6 +130,26 @@ public class Player{
 	public ArrayList<Character> getDevelopmentCards(){
 		return developmentCards; 
 	}
+	
+	public int getMaxSettlements(){
+		return distanceFromMaxSettlements;
+	}
+	
+	public int getMaxRoads(){
+		return distanceFromMaxRoads;
+	}
+	
+	public int getMaxCities(){
+		return distanceFromMaxCities;
+	}
 }
+	
+	
+	
+	
+	
+	
+
+	
 	
 	

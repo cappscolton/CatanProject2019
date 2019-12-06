@@ -149,13 +149,16 @@ public class Menu extends JPanel {
 	}
 	
 	public int getEndGameAction(){
-		if (homeScreen.getNewAction()){
-			homeScreen.resetActionPerformed();
-			return 1;
-		}
-		else {
-			System.out.print("end");
-			return 0;
+		try{
+			if (homeScreen.getNewAction()){
+				homeScreen.resetActionPerformed();
+				return 1;
+			} else {
+				System.out.print("end");
+				return 0;
+			}
+		} catch (NullPointerException e){
+			return 0; 
 		}
 	}
 	
