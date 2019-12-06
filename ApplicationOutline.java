@@ -98,34 +98,20 @@ public class ApplicationOutline{
 						if(playerList.get(i).getVictoryPoints() == 10) {
 							inGame = false;
 							endGame = true;
-						}//end if 
-					}//end for if
+						}
+					}
 					
 					//gets the action of the player
 					int action = io.getInGameAction();
 					
 					//build settlement
 					if (action == 1){
-						boolean [][] availableVertexArray = getAvailabilityArray(board); 
-					/*
-						boolean of what vertices that a settlement can be placed on 
-						io.showAvailableVertices(boolean array variable)
-					*/
-						int vertex = getVertexLocation(io);
-						//-1 from vertex location means they canceled their selection
-						//for loop of the boolean array to get which specific vertex was chosen
-						
+						buildSettlement(playerList.get(playerTurn), io, board);				
 					}
 					
 					//build road
 					if (action == 2){
-					/*
-						boolean array of where roads can be placed
-						io.showAvailableRoads(boolean array variable)
-					*/
-						int vertex = getRoadLocation(io);
-						//for loop of the boolean array to get which specific vertex was chosen
-						
+						buildRoad(playerList.get(playerTurn), io, board);						
 					}
 					
 					//upgrade Settlement
@@ -167,6 +153,61 @@ public class ApplicationOutline{
 		}//end main while true
 	}//end main method
 	
+
+	public static void buildSettlement(Player p, IO io, Board board){
+		io.setVertexLocations(getVertexAvailabilityArray(board));
+		io.loadBoard();
+		int vertex = getVertexLocation(io);
+		if (vertex==-1) return;
+		//-1 from vertex location means they canceled their selection
+		//for loop of the boolean array to get which specific vertex was chosen
+		io.resetVertexArray();
+		io.loadBoard();
+		int count = 1;
+		outerloop:
+		for(Vertex[] vRow : board.getVertexArray()){
+			for(Vertex v : vRow){
+				if (v.getOccupant()==null){
+					if (count==vertex){
+						v.setOccupant(p);
+						v.setRollMultiplier(1);
+						io.setSettlement(v.x, v.y, 1);
+						break outerloop;
+					}
+					else
+						count++;
+				}
+			}
+		}
+		p.buildOrBuyDevelopmentCard("Settlement");
+	}
+
+	public static void buildRoad(Player p, IO io, Board board){
+		io.setRoadLocations(getRoadAvailabilityArray(board));
+		io.loadBoard();
+		int road = getRoadLocation(io);
+		if (road==-1) return;		
+		//-1 from road location means they canceled their selection
+		//for loop of the boolean array to get which specific vertex was chosen
+		io.resetRoadArray();
+		io.loadBoard();
+		int count = 1;
+		outerloop:
+		for(Road[] rRow : board.getRoadArray()){
+			for(Road r : rRow){
+				if (r.getOccupant()==null){
+					if (count==road){
+						r.setOccupant(p);
+						io.setRoad(r.x, r.y, 1);
+						break outerloop;
+					}
+					else
+						count++;
+				}
+			}
+		}
+		p.buildOrBuyDevelopmentCard("Road");
+	}
 	//gets the number of players via JOptionPane
 	public static int getNumberOfPlayers(IO io){
 		while (true){
@@ -187,7 +228,7 @@ public class ApplicationOutline{
 		while (true){
 			try{
 				int i = io.getIntegerInput("Enter the number of the vertex");
-				if (i > -1)
+				if (i > 0 || i== -1)
 					return i;
 				else
 					io.errorMessage("ERROR: Vertex number must positive");
@@ -202,7 +243,7 @@ public class ApplicationOutline{
 		while (true){
 			try{
 				int i = io.getIntegerInput("Enter the number of the road location");
-				if (i > 0)
+				if (i > 0 || i== -1)
 					return i;
 				else
 					io.errorMessage("ERROR: Vertex number must positive");
@@ -213,7 +254,7 @@ public class ApplicationOutline{
 		}
 	}
 	
-	public static boolean [][] getAvailabilityArray (Board board){
+	public static boolean [][] getVertexAvailabilityArray (Board board){
 		Vertex[][] vertices = board.getVertexArray();
 		boolean [][] availabilityArray = new boolean[6][];
         int[] availabilityArrayRowLengths = {7,9,11,11,9,7};
@@ -221,6 +262,20 @@ public class ApplicationOutline{
             boolean[] row = new boolean[availabilityArrayRowLengths[i]];
             for(int j=0; j<availabilityArrayRowLengths[i]; j++){
 				row[j] = (vertices[i][j].getOccupant() == null);
+			}
+			availabilityArray[i] = row;
+        }
+		return availabilityArray; 
+	}
+
+	public static boolean [][] getRoadAvailabilityArray (Board board){
+		Road[][] roads = board.getRoadArray();
+		boolean [][] availabilityArray = new boolean[11][];
+        int[] availabilityArrayRowLengths = {6, 4, 8, 5, 10, 6, 10, 5, 8, 4, 6};
+        for(int i=0; i<availabilityArray.length; i++){
+            boolean[] row = new boolean[availabilityArrayRowLengths[i]];
+            for(int j=0; j<availabilityArrayRowLengths[i]; j++){
+				row[j] = (roads[i][j].getOccupant() == null);
 			}
 			availabilityArray[i] = row;
         }

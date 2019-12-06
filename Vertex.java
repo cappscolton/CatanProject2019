@@ -3,6 +3,8 @@ import java.util.*;
 public class Vertex {
     private Player occupant = null;
     private int rollMultiplier = 0;
+    public int x;
+    public int y;
     private ArrayList<Vertex> adjacents = new ArrayList<Vertex>(2); // at least 2 adjacent vertices, most have 3
     public ArrayList<Tile> adjacentTiles = new ArrayList<Tile>(); // nearby tiles
     public ArrayList<Road> adjacentRoads = new ArrayList<Road>();
@@ -59,5 +61,8 @@ public class Vertex {
             v.adjacents.add(this);
     }
 
-    public Vertex(){}
+    public Vertex(int row, int col){
+        x=row;
+        y=col;
+    }
 }

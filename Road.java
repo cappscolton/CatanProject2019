@@ -3,14 +3,18 @@ import java.util.ArrayList;
 public class Road {
     public Vertex v1;
     public Vertex v2;
-    private Player occupant;
+    public int x;
+    public int y;
+    private Player occupant = null;
     public ArrayList<Road> adjacents = new ArrayList<Road>();
 
     /** Road
      *  Constructor. Dummy, everything is initialized once all the roads
      *  instantiated (in Board.java)
      */
-    public Road(){
+    public Road(int row, int col){
+        x = row;
+        y = col;
     }
 
     public void setOccupant(Player p){

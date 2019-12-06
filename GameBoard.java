@@ -141,7 +141,8 @@ public class GameBoard extends JPanel{
 		//prints the settlements to the board
 		for (int i = 0; i < 6; i++){
 			int gapModifier = 0;
-			for (int j = 0; j < 11; j++){
+			int[] rowLengths  = {7,9,11,11,9,7};
+			for (int j = 0; j < rowLengths[i]; j++){
 				int xInit = 0;
 				int x = 0;
 				int y = 0;
@@ -180,7 +181,8 @@ public class GameBoard extends JPanel{
 			count = 1;
 			for (int i = 0; i < 6; i++){
 				int gapModifier = 0;
-				for (int j = 0; j < 11; j++){
+				int[] rowLengths  = {7,9,11,11,9,7};
+				for (int j = 0; j < rowLengths[i]; j++){
 					int xInit = 0;
 					int x = 0;
 					int y = 0;
@@ -234,7 +236,8 @@ public class GameBoard extends JPanel{
 			int x = 0;
 			int y = 0;
 			int gapModifier = 0;
-			for (int j = 0; j < 10; j++){
+			int[] rowLengths = {6, 4, 8, 5, 10, 6, 10, 5, 8, 4, 6};
+			for (int j = 0; j < rowLengths[i]; j++){
 				//check if the roads are vertical or slanted
 				//roads are on a slanted row
 				if ((i % 2) == 0){
@@ -275,7 +278,8 @@ public class GameBoard extends JPanel{
 				int x = 0;
 				int y = 0;
 				int gapModifier = 0;
-				for (int j = 0; j < 10; j++){
+				int[] rowLengths = {6, 4, 8, 5, 10, 6, 10, 5, 8, 4, 6};
+				for (int j = 0; j < rowLengths[i]; j++){
 					//check if the roads are vertical or slanted
 					//roads are on a slanted row
 					if ((i % 2) == 0){
@@ -438,7 +442,8 @@ public class GameBoard extends JPanel{
 	//way to reset the boolean array
 	public void resetVertexArray(){
 		for (int i = 0; i < 6; i++){
-			for (int j = 0; j < 11; j++){
+			int[] rowLengths = {7,9,11,11,9,7};
+			for (int j = 0; j < rowLengths[i]; j++){
 				vertexNumbers[i][j] = false;
 			}
 		}
@@ -453,7 +458,8 @@ public class GameBoard extends JPanel{
 	//reset the array to all false
 	public void resetRoadArray(){
 		for (int i = 0; i < 11; i++){
-			for (int j = 0; j < 9; j++){
+			int[] rowLengths = {6, 4, 8, 5, 10, 6, 10, 5, 8, 4, 6};
+			for (int j = 0; j < rowLengths[i]; j++){
 				roadNumbers[i][j] = false;
 			}
 		}
@@ -679,17 +685,23 @@ public class GameBoard extends JPanel{
 	
 	//initializes the array to all false
 	private void initializeBooleanArrays(){
-		vertexNumbers = new boolean[6][11];
-		for (int i = 0; i < 5; i++){
-			for (int j = 0; j < 11; j++){
-				vertexNumbers[i][j] = false;
+		vertexNumbers = new boolean[6][];
+		int[] rowLengths = {7,9,11,11,9,7};
+		for (int i = 0; i < 6; i++){
+			boolean[] row = new boolean[rowLengths[i]];
+			for (int j = 0; j < rowLengths[i]; j++){
+				row[j] = false;
 			}
+			vertexNumbers[i] = row;
 		}
-		roadNumbers = new boolean[11][10];
+		roadNumbers = new boolean[11][];
+		int[] roadRowLengths = {6, 4, 8, 5, 10, 6, 10, 5, 8, 4, 6};
 		for (int i = 0; i < 11; i++){
-			for (int j = 0; j < 9; j++){
-				roadNumbers[i][j] = false;
+			boolean[] row = new boolean[roadRowLengths[i]];
+			for (int j = 0; j < roadRowLengths[i]; j++){
+				row[j] = false;
 			}
+			roadNumbers[i] = row;
 		}
 	}
 }//end class

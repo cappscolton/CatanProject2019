@@ -116,7 +116,7 @@ public class Board {
         for(int i=0; i<roadRowLengths.length; i++){
             Road[] row = new Road[roadRowLengths[i]];
             for(int j=0; j<row.length; j++){
-                row[j] = new Road();
+                row[j] = new Road(i, j);
             }
             roads[i] = row;
         }
@@ -134,7 +134,7 @@ public class Board {
         for(int i=0; i<vertexRowLengths.length; i++){
             Vertex[] row = new Vertex[vertexRowLengths[i]];
             for(int j=0; j<row.length; j++){
-                row[j] = new Vertex();
+                row[j] = new Vertex(i,j);
             }
             vertices[i] = row;
         }

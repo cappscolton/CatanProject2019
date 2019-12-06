@@ -64,7 +64,7 @@ public class IO extends JFrame{
 	}
 	
 	//resets the vertex locations numbers will stay til this is called
-	public void resetVertexLocations(){
+	public void resetVertexArray(){
 		board.resetVertexArray();
 	}
 	
@@ -81,9 +81,14 @@ public class IO extends JFrame{
 	//will get an integer from a pop up
 	//String text will be displayed in the pop up as well
 	public int getIntegerInput(String text){
-		String input = JOptionPane.showInputDialog(text);	
-		int i = Integer.parseInt(input);
-		return i;
+		String input = JOptionPane.showInputDialog(text);
+		if (!input.equals("-1")){	
+			int i = Integer.parseInt(input);
+			return i;
+		}
+		else {
+			return -1;
+		}
 	}
 	
 	//displays a string good for errors or general info
