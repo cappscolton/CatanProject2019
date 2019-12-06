@@ -346,7 +346,7 @@ public class GameBoard extends JPanel{
 				break;
 		}
 	}
-	
+		
 	public void setRoadImage(int row, int col, int player){
 		switch (player){
 			case 0:

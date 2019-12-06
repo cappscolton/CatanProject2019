@@ -116,12 +116,7 @@ public class ApplicationOutline{
 					
 					//upgrade Settlement
 					if (action == 3){
-					/*
-						boolean array of where current settlements are
-						io.showAvailableVertices(boolean array variable)
-					*/
-						int vertex = getVertexLocation(io);
-						//for loop of the boolean array to get which specific vertex was chosen
+						upgradeSettlementToCity(playerList.get(playerTurn), io, board);
 					}
 					
 					//development cards 
@@ -174,6 +169,7 @@ public class ApplicationOutline{
 							if (v.playerIsConnected(p)){
 								if (count==vertex){
 									v.setOccupant(p);
+									v.setRollMultiplier(1);
 									io.setSettlement(v.x, v.y, p.number);
 									break outerloop;
 								}
@@ -187,6 +183,7 @@ public class ApplicationOutline{
 							if (count==vertex){
 								v.setOccupant(p);
 									io.setSettlement(v.x, v.y, p.number);
+									v.setRollMultiplier(1);
 									break outerloop;
 							}
 							else{
@@ -197,6 +194,34 @@ public class ApplicationOutline{
 				}
 			}
 		}	
+	}
+
+	public static void upgradeSettlementToCity(Player p, IO io, Board board){
+		if (p.buildOrBuyDevelopmentCard("City"))
+		{
+			io.setVertexLocations(getCityAvailabilityArray(board, p));
+			io.loadBoard();
+			int vertex = getVertexLocation(io);
+			if (vertex==-1) return;
+			//-1 from vertex location means they canceled their selection
+			//for loop of the boolean array to get which specific vertex was chosen
+			io.resetVertexArray();
+			io.loadBoard();
+			int count = 1;
+			outerloop:
+			for(Vertex[] vRow : board.getVertexArray()){
+				for(Vertex v : vRow){
+					if (v.getRollMultiplier()==1 && v.getOccupant().equals(p)){
+						if (count==vertex){
+							v.setRollMultiplier(2);
+							io.setSettlement(v.x, v.y, p.number);
+							break outerloop;
+						}
+						else count++;
+					}
+				}
+			}
+		}
 	}
 
 	public static void buildRoad(Player p, IO io, Board board, boolean mustConnect){
@@ -231,8 +256,8 @@ public class ApplicationOutline{
 						else{
 							if (count==road){
 								r.setOccupant(p);
-									io.setRoad(r.x, r.y, 1);
-									break outerloop;
+								io.setRoad(r.x, r.y, 1);
+								break outerloop;
 							}
 							else{
 								count++;
@@ -320,6 +345,20 @@ public class ApplicationOutline{
 			availabilityArray[i] = row;
         }
 		return availabilityArray; 
+	}
+	
+	public static boolean [][] getCityAvailabilityArray (Board board, Player p){
+		Vertex[][] vertices = board.getVertexArray();
+		boolean [][] availabilityArray = new boolean[6][];
+        int[] availabilityArrayRowLengths = {7,9,11,11,9,7};
+        for(int i=0; i<availabilityArray.length; i++){
+            boolean[] row = new boolean[availabilityArrayRowLengths[i]];
+            for(int j=0; j<availabilityArrayRowLengths[i]; j++){
+				row[j] = (vertices[i][j].getRollMultiplier() == 1);
+			}
+			availabilityArray[i] = row;
+		}
+		return availabilityArray;
 	}
 	
 	

@@ -50,6 +50,10 @@ public class Vertex {
         rollMultiplier = n;
     }
 
+    public int getRollMultiplier(){
+        return rollMultiplier;
+    }    
+
     /** connect
      *  connects this Vertex to Vertex v, such that each Vertex is stored in the other's
      *  "adjacents" array.
