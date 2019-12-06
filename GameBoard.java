@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.Image;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -77,7 +78,8 @@ public class GameBoard extends JPanel{
 	
 	public GameBoard(Tile[][] tiles){
 		//loadBackGround();
-		setPreferredSize(new Dimension(1520, 1001));
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		setPreferredSize(new Dimension((int) screenSize.getWidth()-400, (int) screenSize.getHeight()-80));
 		setVisible(true);
 		initializeBooleanArrays();
 		numbersSmall = new Image[10];
