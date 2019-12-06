@@ -1,5 +1,11 @@
 import java.util.*; 
 
+/**Player
+ * This class contains the data properties and methods that are used by players.
+ *
+ * @author Abby 
+ *
+ */
 public class Player{
 	public int number;
 	private int victoryPoints;
@@ -22,9 +28,14 @@ public class Player{
 	private ArrayList<Vertex>cityLocations = new ArrayList<Vertex>(); 
 	private ArrayList<Road>roadLocations = new ArrayList<Road>(); 
 	
-	
 	private int [] playerResources = new int [5]; 
 	
+	
+	/**Player 
+	 * Constructor for player object.
+	 *
+	 * @param n is the player's number
+	 */
     public Player(int n){
 		number = n;
 		victoryPoints = 0; 
@@ -35,22 +46,35 @@ public class Player{
 		}
 	} 
 	
-	//this method should be called after each turn 
+	
+	/**calculateVitoryPoints
+	 * This method calculates a player's victory points and should be called after each turn
+	 *
+	 * @return number of victory points
+	 */
 	public int calculateVictoryPoints(){
 		victoryPoints = 0; 
 		victoryPoints += (numSettlements); 
 		victoryPoints += (2 * numCities); 
-		// TODO -- if player has largest army or longest road, victory points += 2
 		for (int i=0; i < developmentCards.size(); i++){
 			if(developmentCards.get(i).equals('V')){
 				victoryPoints += 1; 
 			} 
 		}
-		if (hasLargestArmy) victoryPoints+=2;
-		if (hasLongestRoad) victoryPoints+=2;
+		if (hasLargestArmy) 
+			victoryPoints+=2;
+		if (hasLongestRoad) 
+			victoryPoints+=2;
 		return victoryPoints; 
 	}
 
+
+	/**buildOrBuyDevelopmentCard
+	 * This method deducts players resources in exchange for roads, settlements, cities, or development cards.
+	 *
+	 * @param choice is what the player wants to buy
+	 * @return true if the player successfully purchases item 
+	 */
 	//resources in order of index: brick, lumber, ore, grain, wool
 	public boolean buildOrBuyDevelopmentCard(String choice){
 		//Roads cost 1 brick, 1 lumber
@@ -104,47 +128,111 @@ public class Player{
 		return true;
 	}
 	
+	
+	/**getVictoryPoints
+	 * Getter method for victory points
+	 *
+	 * @return victory points
+	 */
 	public int getVictoryPoints() {
 		return victoryPoints; 
 	}
 	
+	
+	/**getPlayerResources
+	 * Getter method resources
+	 *
+	 * @return integer array of resources that a player has
+	 */
 	public int[] getPlayerResources(){
 		return playerResources; 
 	}
 	
+	
+	/**setPlayerResources
+	 * Setter method for player resources
+	 * 
+	 * @param updatedArray is an integer array of resources that a player has
+	 */
 	public void setPlayerResources(int[] updatedArray){
 		playerResources = updatedArray; 
 	}
 	
-
+	
+	/**setHasLargestArmy
+	 * Setter that assigns a boolean value to the data property hasLargestArmy
+	 *
+	 * @param b is a boolean corresponding to whether or not a player has the largest army
+	*/ 
 	public void setHasLargestArmy (boolean b){
 		hasLargestArmy = b; 
 	}
 	
+	
+	/**setHasLongestRoad
+	 * Setter that assigns a boolean value to the data property hasLongestRoad
+	 *
+	 * @param b is a boolean corresponding to whether or not a player has the longest road
+	 */
 	public void setHasLongestRoad (boolean b){
 		hasLongestRoad = b; 
 	}
 	
+	
+	/**getDevelopmentCards
+	 * Getter for the development cards that a player possesses
+	 *
+	 * @return a character array list corresponding to development cards
+	 */
 	public ArrayList<Character> getDevelopmentCards(){
 		return developmentCards; 
 	}
 	
+	
+	/**getMaxSettlements
+	 * Getter for integer variable that shows how many settlements a user has left
+	 *
+	 * @return the number of settlements that a user has left to place
+	 */
 	public int getMaxSettlements(){
 		return distanceFromMaxSettlements;
 	}
 	
+	
+	/**getMaxRoads
+	 * Getter for integer variable that shows how many roads a user has left
+	 *
+	 * @return the number of roads that a user has left to place
+	 */
 	public int getMaxRoads(){
 		return distanceFromMaxRoads;
 	}
 	
+	
+	/**getMaxCities
+	 * Getter for integer variable that shows how many cities a user has left
+	 *
+	 * @return the number of cities that a user has left to place
+	 */
 	public int getMaxCities(){
 		return distanceFromMaxCities;
 	}
 	
+	
+	/**addSettlementLocation
+	 * Method that allows a vertex object to be added to the private array list containing the locations of all of a player's settlements
+	 *
+	 * @param v is a vertex on which a player has a settlement
+	 */
 	public void addSettlementLocation (Vertex v){
 		settlementLocations.add(v); 
 	}
 	
+	/**addCityLocation
+	 * Method that allows a vertex object to be added to the private array list containing the locations of all of a player's cities
+	 * 
+	 * @param v is a vertex on which a player has a city
+	 */
 	public void addCityLocation (Vertex v){
 		cityLocations.add(v);
 		if(settlementLocations.contains(v)){
@@ -152,6 +240,11 @@ public class Player{
 		}
 	}
 	
+	/**addRoad
+	 * Method that allows a road object to be added to the private array list containing the locations of all a player's roads
+	 *
+	 * @param r is a road object that the user has placed
+	 */
 	public void addRoad (Road r){
 		roadLocations.add(r); 
 	}
