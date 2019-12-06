@@ -12,6 +12,7 @@ public class IO extends JFrame{
 		setUp();
 	}
 	
+	//performs most of the actions of the constructor
 	private void setUp(){
 		//setResizeable(false);
 		setVisible(true);
@@ -25,6 +26,7 @@ public class IO extends JFrame{
 		homeScreen();
 	}
 	
+	//manipulate homeScreen
 	private void homeScreen(){
 		add(home, BorderLayout.CENTER);
 	}
@@ -37,6 +39,11 @@ public class IO extends JFrame{
 	//works for upgrading and placing
 	public void setSettlement(int row, int col, int player){
 		board.setSettlementImage(row, col, player);
+	}
+	
+	//same as set settlement but with roads
+	public void setRoad(int row, int col, int player){
+		board.setRoadImage(row, col, player);
 	}
 	
 	//will set the robber location and move the number for the tile
@@ -58,7 +65,17 @@ public class IO extends JFrame{
 	
 	//resets the vertex locations numbers will stay til this is called
 	public void resetVertexLocations(){
-		resetVertexArray();
+		board.resetVertexArray();
+	}
+	
+	//gives the board a boolean array of places roads can go to give the user something to select
+	public void setRoadLocations(boolean[][] bool){
+		board.setRoadArray(bool);
+	}
+	
+	//resets the boolean array for roads
+	public void resetRoadArray(){
+		board.resetRoadArray();
 	}
 	
 	//will get an integer from a pop up
@@ -81,6 +98,7 @@ public class IO extends JFrame{
 		menu.homeMenu();
 	}
 	
+	//creates a game to take from homescreen to beginning of the game
 	public void newGame(Tile[][] tiles){
 		removeHomeScreen();
 		board = new GameBoard(tiles);
@@ -90,6 +108,7 @@ public class IO extends JFrame{
 		menu.newGameMenu();
 	}
 	
+	//creates a new board to allow new boards to be generated
 	public void newBoard(Tile[][] tiles){
 		remove(board);
 		board = new GameBoard(tiles);
@@ -97,6 +116,13 @@ public class IO extends JFrame{
 		loadBoard();
 	}
 	
+	//removes the board
+	public void removeBoard(){
+		remove(board);
+		remove(resourcePanel);
+	}
+	
+	//used to transition to different modes of the board
 	public void startGame(){
 		menu.inGameMenu();
 	}
@@ -105,11 +131,7 @@ public class IO extends JFrame{
 		removeBoard();
 	}
 	
-	public void removeBoard(){
-		remove(board);
-		remove(resourcePanel);
-	}
-	
+	//updates the various combinations
 	public void loadHome(){
 		validate();
 		pack();
@@ -131,7 +153,8 @@ public class IO extends JFrame{
 		resourcePanel.repaint();
 		menu.repaint();
 	}
-
+	
+	//gets updates for the buttons to see if any have been pressed
 	public int getHomeAction(){
 		return menu.getHomeAction();
 	}

@@ -47,6 +47,9 @@ public class GameBoard extends JPanel{
 	private Image[][] roads;
 	
 	private boolean[][] vertexNumbers;
+	private boolean checkVertexNumbers;
+	private boolean[][] roadNumbers;
+	private boolean checkRoadNumbers;
 	private boolean displayTileCount;
 	
 	private Image[] numbersSmall;
@@ -80,12 +83,15 @@ public class GameBoard extends JPanel{
 		createMainArray();
 	}
 	
+	//overrides paintComponent
 	protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
         doDrawing(g);
     }
 	
+	//contains the method for drawing sprites on the board
+	//all of the components are placed by pixel counting
 	private void doDrawing(Graphics g) {   
         Graphics2D g2d = (Graphics2D) g;
 		
@@ -101,6 +107,7 @@ public class GameBoard extends JPanel{
 		if (baseY < 0)
 			baseY = 0;
 		
+		//prints the tiles and their numbers
 		int count = 1;
 		int countRow =  0;
 		for (Image[] row : images){
@@ -130,56 +137,8 @@ public class GameBoard extends JPanel{
             }
 			countRow++;
         }
-		count = 1;
-		for (int i = 0; i < 6; i++){
-			int gapModifier = 0;
-			for (int j = 0; j < 11; j++){
-				int xInit = 0;
-				int x = 0;
-				int y = 0;
-				if ((i - 2) <= 0){
-					xInit = (baseX + (Math.abs(i - 2)) * 105);
-					if (((j % 2) == 0) && (j != 0))
-						gapModifier += 5;
-					
-					x = (xInit + (j * 100) + gapModifier);
-					if (((j % 2) == 0) && (j != 0))
-						gapModifier += 5;
-					
-					if ((j % 2) == 0)
-						y = (baseY + (160 * i) + 50);
-					else
-						y = (baseY + (160 * i));
-				}
-				else {
-					xInit = (baseX + (i - 3) * 105);
-					if (((j % 2) == 0) && (j != 0))
-						gapModifier += 5;
-					
-					x = (xInit + (j * 100) + gapModifier);
-					if (((j % 2) == 0) && (j != 0))
-						gapModifier += 5;
-					
-					if ((j % 2) == 0)
-						y = (baseY + (160 * i));
-					else
-						y = (baseY + (160 * i) + 50);
-				}//close if 
-				
-				if (vertexNumbers[i][j]){
-					if (count < 10){
-						g2d.drawImage(getSmallNumberImage(count), x-12, y-20, this);
-					}
-					else {
-						g2d.drawImage(getSmallNumberImage(getFirstDigit(count)), x-20, y-20, this);
-						g2d.drawImage(getSmallNumberImage(getSecondDigit(count)), x, y-20, this);
-					}
-					count++;
-				}//end if of boolean array
-				
-			}//close for j
-		}//close for i	
 		
+		//prints the settlements to the board
 		for (int i = 0; i < 6; i++){
 			int gapModifier = 0;
 			for (int j = 0; j < 11; j++){
@@ -190,7 +149,6 @@ public class GameBoard extends JPanel{
 					xInit = (baseX + (Math.abs(i - 2)) * 105);
 					if (((j % 2) == 0) && (j != 0))
 						gapModifier += 5;
-					
 					x = (xInit + (j * 100) + gapModifier);
 					if (((j % 2) == 0) && (j != 0))
 						gapModifier += 5;
@@ -204,7 +162,6 @@ public class GameBoard extends JPanel{
 					xInit = (baseX + (i - 3) * 105);
 					if (((j % 2) == 0) && (j != 0))
 						gapModifier += 5;
-					
 					x = (xInit + (j * 100) + gapModifier);
 					if (((j % 2) == 0) && (j != 0))
 						gapModifier += 5;
@@ -215,11 +172,148 @@ public class GameBoard extends JPanel{
 						y = (baseY + (160 * i) + 50);
 				}//close if 
 				g2d.drawImage(settlements[i][j], x-20, y-28, this);
-				
 			}//close for j
 		}//close for i
-    }
+		
+		//prints integers for vertices
+		if (checkVertexNumbers){
+			count = 1;
+			for (int i = 0; i < 6; i++){
+				int gapModifier = 0;
+				for (int j = 0; j < 11; j++){
+					int xInit = 0;
+					int x = 0;
+					int y = 0;
+					if ((i - 2) <= 0){
+						xInit = (baseX + (Math.abs(i - 2)) * 105);
+						if (((j % 2) == 0) && (j != 0))
+							gapModifier += 5;
+						
+						x = (xInit + (j * 100) + gapModifier);
+						if (((j % 2) == 0) && (j != 0))
+							gapModifier += 5;
+						
+						if ((j % 2) == 0)
+							y = (baseY + (160 * i) + 50);
+						else
+							y = (baseY + (160 * i));
+					}
+					else {
+						xInit = (baseX + (i - 3) * 105);
+						if (((j % 2) == 0) && (j != 0))
+							gapModifier += 5;
+						
+						x = (xInit + (j * 100) + gapModifier);
+						if (((j % 2) == 0) && (j != 0))
+							gapModifier += 5;
+						
+						if ((j % 2) == 0)
+							y = (baseY + (160 * i));
+						else
+							y = (baseY + (160 * i) + 50);
+					}//close if 
+					
+					if (vertexNumbers[i][j]){
+						if (count < 10){
+							g2d.drawImage(getSmallNumberImage(count), x-12, y-20, this);
+						}
+						else {
+							g2d.drawImage(getSmallNumberImage(getFirstDigit(count)), x-20, y-20, this);
+							g2d.drawImage(getSmallNumberImage(getSecondDigit(count)), x, y-20, this);
+						}
+						count++;
+					}//end if of vertexNumbers
+				}//close for j
+			}//close for i
+		}//end if checkVertexNumbers
+		
+		//printing the roads
+		for (int i = 0; i < 11; i++){
+			int xModifier = 110;
+			int xInit = 0;
+			int x = 0;
+			int y = 0;
+			int gapModifier = 0;
+			for (int j = 0; j < 10; j++){
+				//check if the roads are vertical or slanted
+				//roads are on a slanted row
+				if ((i % 2) == 0){
+					if (i < 5){
+						xInit = (baseX + (Math.abs((i - 4) / 2)) * 105) + 10;
+						y = (baseY + ((i / 2) * 160));
+					}
+					else {
+						xInit = (baseX + (Math.abs((i - 6) / 2)) * 105) + 10;
+						y = (baseY + ((i / 2) * 160)-2);
+					}
+					if ((j % 2) == 0){
+						if (j != 0)
+							gapModifier +=10;
+						x = (xInit + ((j/2) * 200) + gapModifier);
+					}//end if ((j % 2) == 0)
+					else {
+						x = (xInit + ((j/2) * 200) + xModifier + gapModifier);
+					}//end else ((j % 2) == 0)
+				}
+				else {
+					y = (baseY + ((i / 2) * 160) + 65);
+					xInit = (baseX + ((Math.abs((i/2) - 2)) * 105) - 9);
+					x = xInit + (210 * j) ;
+				}
+				g2d.drawImage(roads[i][j], x, y, this);
+					
+			}//close for java
+		}//close for i
+		
+		//printing numbers for the roads
+		if (checkRoadNumbers){
+			int xModifier = 105;
+			//printing the roads
+			count = 1;
+			for (int i = 0; i < 11; i++){
+				int xInit = 0;
+				int x = 0;
+				int y = 0;
+				int gapModifier = 0;
+				for (int j = 0; j < 10; j++){
+					//check if the roads are vertical or slanted
+					//roads are on a slanted row
+					if ((i % 2) == 0){
+						if (i < 5)
+							xInit = (baseX + (Math.abs((i - 4) / 2)) * 105) + 45;
+						else 
+							xInit = (baseX + (Math.abs((i - 6) / 2)) * 105) + 45;
+						y = (baseY + ((i / 2) * 160) + 25);
+						if ((j % 2) == 0){
+							if (j != 0)
+								gapModifier +=10;
+							x = (xInit + ((j/2) * 200) + gapModifier);
+						}//end if ((j % 2) == 0)
+						else {
+							x = (xInit + ((j/2) * 200) + xModifier + gapModifier);
+						}//end else ((j % 2) == 0)
+					}
+					else {
+						y = (baseY + ((i / 2) * 160) + 100);
+						xInit = (baseX + ((Math.abs((i/2) - 2)) * 105) - 9);
+						x = xInit + (210 * j) + 3;
+					}
+					if (roadNumbers[i][j]){
+						if (count < 10){
+							g2d.drawImage(getSmallNumberImage(count), x-12, y-20, this);
+						}
+						else {
+							g2d.drawImage(getSmallNumberImage(getFirstDigit(count)), x-20, y-20, this);
+							g2d.drawImage(getSmallNumberImage(getSecondDigit(count)), x, y-20, this);
+						}
+						count++;
+					}//end if of roadNumbers
+				}//close for java
+			}//close for i
+		}//end if checkRoadNumbers
+    }//end doDrawing
 	
+	//sets settlement array an image and if upgrading it will turn the settlement to a city
 	public void setSettlementImage(int row, int col, int player){
 		switch (player){
 			case 0:
@@ -227,41 +321,146 @@ public class GameBoard extends JPanel{
 					settlements[row][col] = redSettlement;
 				else
 					settlements[row][col] = redCity;
+				break;
 			case 1:
 				if (settlements[row][col] == null)
 					settlements[row][col] = greenSettlement;
 				else
 					settlements[row][col] = greenCity;
+				break;
 			case 2:
 				if (settlements[row][col] == null)
 					settlements[row][col] = blueSettlement;
 				else
 					settlements[row][col] = blueCity;
+				break;
 			case 3:
 				if (settlements[row][col] == null)
 					settlements[row][col] = orangeSettlement;
 				else
 					settlements[row][col] = orangeCity;
+				break;
 		}
 	}
 	
+	public void setRoadImage(int row, int col, int player){
+		switch (player){
+			case 0:
+				if ((row % 2) == 0){
+					if (row < 5){
+						if ((col % 2) == 0)
+							roads[row][col] = redRoadUp;
+						else 
+							roads[row][col] = redRoadDown;
+					}
+					else{
+						if ((col % 2) == 0)
+							roads[row][col] = redRoadDown;
+						else 
+							roads[row][col] = redRoadUp;
+					}
+				}
+				else {
+					roads[row][col] = redRoadVert;
+				}
+				break;
+			case 1:
+				if ((row % 2) == 0){
+					if (row < 5){
+						if ((col % 2) == 0)
+							roads[row][col] = greenRoadUp;
+						else 
+							roads[row][col] = greenRoadDown;
+					}
+					else{
+						if ((col % 2) == 0)
+							roads[row][col] = greenRoadDown;
+						else 
+							roads[row][col] = greenRoadUp;
+					}
+				}
+				else {
+					roads[row][col] = greenRoadVert;
+				}
+				break;
+			case 2:
+				if ((row % 2) == 0){
+					if (row < 5){
+						if ((col % 2) == 0)
+							roads[row][col] = blueRoadUp;
+						else 
+							roads[row][col] = blueRoadDown;
+					}
+					else{
+						if ((col % 2) == 0)
+							roads[row][col] = blueRoadDown;
+						else 
+							roads[row][col] = blueRoadUp;
+					}
+				}
+				else {
+					roads[row][col] = blueRoadVert;
+				}
+				break;
+			case 3:
+				if ((row % 2) == 0){
+					if (row < 5){
+						if ((col % 2) == 0)
+							roads[row][col] = orangeRoadUp;
+						else 
+							roads[row][col] = orangeRoadDown;
+					}
+					else{
+						if ((col % 2) == 0)
+							roads[row][col] = orangeRoadDown;
+						else 
+							roads[row][col] = orangeRoadUp;
+					}
+				}
+				else {
+					roads[row][col] = orangeRoadVert;
+				}
+				break;
+		}
+	}
+	
+	//sets the location of the robber
 	public void setRobberLocation(int row, int col){
 		robberY = row;
 		robberX = col;
 	}
 	
+	//get where vertexes are able to be placed so ints can be put for choosing
 	public void setVertexArray(boolean[][] bool){
 		vertexNumbers = bool;
+		checkVertexNumbers = true;
 	}
-	
+	//way to reset the boolean array
 	public void resetVertexArray(){
 		for (int i = 0; i < 6; i++){
 			for (int j = 0; j < 11; j++){
 				vertexNumbers[i][j] = false;
 			}
 		}
+		checkVertexNumbers = false;
 	}
 	
+	//set roadNumbers to true where a number is desired
+	public void setRoadArray(boolean[][] bool){
+		roadNumbers = bool;
+		checkRoadNumbers = true;
+	}
+	//reset the array to all false
+	public void resetRoadArray(){
+		for (int i = 0; i < 11; i++){
+			for (int j = 0; j < 9; j++){
+				roadNumbers[i][j] = false;
+			}
+		}
+		checkRoadNumbers = false;
+	}
+	
+	//manipulate if the tiles should be numbered for placing the robber
 	public void turnTileCountOn(){
 		displayTileCount = false;
 	}
@@ -269,7 +468,8 @@ public class GameBoard extends JPanel{
 	public void turnTileCountOff(){
 		displayTileCount = true;
 	}
-
+	
+	//load all the sprites used by the board class
 	private void loadImages(){
         desert = new ImageIcon("tiles/Desert.png").getImage(); 
         field = new ImageIcon("tiles/Field.png").getImage();
@@ -320,6 +520,8 @@ public class GameBoard extends JPanel{
 		numbersSmall[9] = new ImageIcon("numbers/nine_small.png").getImage();
 	}
 	
+	//uses tiles to create an image array based on the tiles
+	//get the initial robber X and Y
 	private void createImageArrays(Tile[][] tiles){
 		settlements = new Image[6][11];
 		roads = new Image[11][10];
@@ -380,7 +582,7 @@ public class GameBoard extends JPanel{
 		}
 	}
 
-	//gets what image to use
+	//gets what tile image to use
 	private Image getTileImage(Tile t){
 		if (t.getTileRollResource().equals("desert"))
 			return desert;
@@ -397,7 +599,7 @@ public class GameBoard extends JPanel{
 		return null;
 	}
 	
-	//decide which image to use
+	//decide which white tile number image to use
 	private Image getNumberImage(int i){
 		switch (i){
 			case 2:
@@ -461,6 +663,7 @@ public class GameBoard extends JPanel{
 		images[4] = row5;
 	}
 	
+	//used to convert int to two digits 
 	private int getFirstDigit(int i){
 		return ((i - getSecondDigit(i)) / 10);
 	}
@@ -469,6 +672,12 @@ public class GameBoard extends JPanel{
 		return (i%10);
 	}
 	
+	//gets the int for the digit
+	private Image getSmallNumberImage(int i){
+		return numbersSmall[i];
+	}
+	
+	//initializes the array to all false
 	private void initializeBooleanArrays(){
 		vertexNumbers = new boolean[6][11];
 		for (int i = 0; i < 5; i++){
@@ -476,9 +685,11 @@ public class GameBoard extends JPanel{
 				vertexNumbers[i][j] = false;
 			}
 		}
-	}
-	
-	private Image getSmallNumberImage(int i){
-		return numbersSmall[i];
+		roadNumbers = new boolean[11][10];
+		for (int i = 0; i < 11; i++){
+			for (int j = 0; j < 9; j++){
+				roadNumbers[i][j] = false;
+			}
+		}
 	}
 }//end class
