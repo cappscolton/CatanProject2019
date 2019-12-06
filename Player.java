@@ -11,7 +11,7 @@ public class Player{
 	private boolean hasLargestArmy = false; 
 	private boolean hasLongestRoad = false; 
 	
-	//These variables to be decremented each time a user places a settlement, city, or road so that user cannot place more than the number aloted to them 
+	//These variables to be decremented each time a user places a settlement, city, or road so that user cannot place more than the number alotted to them 
 	private int distanceFromMaxSettlements = 5; 
 	private int distanceFromMaxCities = 4; 
 	private int distanceFromMaxRoads = 15;
@@ -20,7 +20,7 @@ public class Player{
 	//create array list of road locations 
 	private ArrayList<Vertex>settlementLocations = new ArrayList<Vertex>(); 
 	private ArrayList<Vertex>cityLocations = new ArrayList<Vertex>(); 
-	private ArrayList<Vertex>roadLocations = new ArrayList<Vertex>(); 
+	private ArrayList<Road>roadLocations = new ArrayList<Road>(); 
 	
 	
 	private int [] playerResources = new int [5]; 
@@ -33,9 +33,7 @@ public class Player{
 		for(int i = 0; i < playerResources.length; i++){
 			playerResources[i] = 100;  
 		}
-	}
-	
-	//TODO -- use tileRollNumber and tileResource from tile class 
+	} 
 	
 	//this method should be called after each turn 
 	public int calculateVictoryPoints(){
@@ -142,6 +140,22 @@ public class Player{
 	public int getMaxCities(){
 		return distanceFromMaxCities;
 	}
+	
+	public void addSettlementLocation (Vertex v){
+		settlementLocations.add(v); 
+	}
+	
+	public void addCityLocation (Vertex v){
+		cityLocations.add(v);
+		if(settlementLocations.contains(v)){
+			settlementLocations.remove(v); 
+		}
+	}
+	
+	public void addRoad (Road r){
+		roadLocations.add(r); 
+	}
+	
 }
 	
 	

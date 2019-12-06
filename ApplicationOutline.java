@@ -176,12 +176,12 @@ public class ApplicationOutline{
 	}
 
 	public static void buildSettlement(Player p, IO io, Board board, boolean mustConnect){
-		if (p.buildOrBuyDevelopmentCard("Settlement"))
-		{
+		if (p.buildOrBuyDevelopmentCard("Settlement")){
 			io.setVertexLocations(getVertexAvailabilityArray(board, p, mustConnect));
 			io.loadBoard();
 			int vertex = getVertexLocation(io);
-			if (vertex==-1) return;
+			if (vertex==-1) 
+				return;
 			//-1 from vertex location means they canceled their selection
 			//for loop of the boolean array to get which specific vertex was chosen
 			io.resetVertexArray();
@@ -195,6 +195,7 @@ public class ApplicationOutline{
 							if (v.playerIsConnected(p)){
 								if (count==vertex){
 									v.setOccupant(p);
+									p.addSettlementLocation(v); 
 									v.setRollMultiplier(1);
 									io.setSettlement(v.x, v.y, p.number);
 									break outerloop;
@@ -240,6 +241,7 @@ public class ApplicationOutline{
 					if (v.getRollMultiplier()==1 && v.getOccupant().equals(p)){
 						if (count==vertex){
 							v.setRollMultiplier(2);
+							p.addCityLocation(v); 
 							io.setSettlement(v.x, v.y, p.number);
 							break outerloop;
 						}
@@ -270,6 +272,7 @@ public class ApplicationOutline{
 							if (r.playerIsConnected(p)){
 								if (count==road){
 									r.setOccupant(p);
+									p.addRoad(r); 
 									io.setRoad(r.x, r.y, p.number);
 									break outerloop;
 								}
@@ -282,6 +285,7 @@ public class ApplicationOutline{
 						else{
 							if (count==road){
 								r.setOccupant(p);
+								p.addRoad(r); 
 								io.setRoad(r.x, r.y, p.number);
 								break outerloop;
 							}
