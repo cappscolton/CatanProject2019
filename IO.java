@@ -36,6 +36,11 @@ public class IO extends JFrame{
 		remove(home);
 	}
 	
+	//sets player to show on the game board
+	public void setTurnInfo(int player, int VP, int roll){
+		board.setTurnInfo(player, VP, roll);
+	}
+	
 	//row is the y, col is the x, player is the player 0-3
 	//works for upgrading and placing
 	public void setSettlement(int row, int col, int player){

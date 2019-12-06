@@ -23,6 +23,7 @@ public class Menu extends JPanel {
 	private ToggleButton useMonopoly;
 	private ToggleButton useYearPlenty;
 	private ToggleButton useBuildRoad;
+	private ToggleButton buyDevCard;
 	private ToggleButton closeWindow;
 	
 	public Menu(){
@@ -59,7 +60,7 @@ public class Menu extends JPanel {
 		add(buildRoad);
 		upgradeSettlement = new ToggleButton("Upgrade Settlement");
 		add(upgradeSettlement);
-		developmentCards = new ToggleButton("See Development Cards");
+		developmentCards = new ToggleButton("Development Cards");
 		add(developmentCards);
 		endTurn = new ToggleButton("End Turn");
 		add(endTurn);
@@ -87,6 +88,8 @@ public class Menu extends JPanel {
 		add(useYearPlenty);
 		useBuildRoad = new ToggleButton("Use Road Building");
 		add(useBuildRoad);
+		buyDevCard = new ToggleButton("Buy New Card");
+		add(buyDevCard);
 		closeWindow = new ToggleButton("Close Window");
 		add(closeWindow);
 	}
@@ -153,7 +156,8 @@ public class Menu extends JPanel {
 			if (homeScreen.getNewAction()){
 				homeScreen.resetActionPerformed();
 				return 1;
-			} else {
+			} 
+			else {
 				System.out.print("end");
 				return 0;
 			}
@@ -178,6 +182,10 @@ public class Menu extends JPanel {
 		else if (useBuildRoad.getNewAction()){
 			useBuildRoad.resetActionPerformed();
 			return 4;
+		}
+		else if (buyDevCard.getNewAction()){
+			buyDevCard.resetActionPerformed();
+			return 6;
 		}
 		else if (closeWindow.getNewAction()){
 			closeWindow.resetActionPerformed();

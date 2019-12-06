@@ -69,6 +69,11 @@ public class GameBoard extends JPanel{
 	private int baseX;
 	private int baseY;
 	
+	private int player;
+	private int VP;
+	private int roll;
+	private Image playerInfo;
+	private Image[] numbers;
 	
 	public GameBoard(Tile[][] tiles){
 		//loadBackGround();
@@ -76,11 +81,15 @@ public class GameBoard extends JPanel{
 		setVisible(true);
 		initializeBooleanArrays();
 		numbersSmall = new Image[10];
+		numbers = new Image[10];
 		loadImages();
 		displayTileCount = true;
 		//setTiles(tiles);
 		createImageArrays(tiles);
 		createMainArray();
+		player = 0; 
+		VP = 0; 
+		roll = 0;
 	}
 	
 	//overrides paintComponent
@@ -106,6 +115,24 @@ public class GameBoard extends JPanel{
 			baseX = 0;
 		if (baseY < 0)
 			baseY = 0;
+		//prints the players turn 
+		g2d.drawImage(playerInfo, 10, 10, this);
+		g2d.drawImage(getBigNumberImage(player+1), 260, 20, this);
+		
+		if (VP < 10){
+			g2d.drawImage(getBigNumberImage(VP), 140, 130, this);
+		}
+		else {
+			g2d.drawImage(getBigNumberImage(getFirstDigit(VP)), 140, 130, this);
+			g2d.drawImage(getBigNumberImage(getSecondDigit(VP)), 180, 130, this);
+		}
+		if (roll < 10){
+			g2d.drawImage(getBigNumberImage(roll), 180, 240, this);
+		}
+		else {
+			g2d.drawImage(getBigNumberImage(getFirstDigit(roll)), 180, 240, this);
+			g2d.drawImage(getBigNumberImage(getSecondDigit(roll)), 220, 240, this);
+		}
 		
 		//prints the tiles and their numbers
 		int count = 1;
@@ -317,6 +344,13 @@ public class GameBoard extends JPanel{
 		}//end if checkRoadNumbers
     }//end doDrawing
 	
+	//sets player to display who's turn it is
+	public void setTurnInfo(int p, int vp, int r){
+		player = p;
+		VP = vp;
+		roll = r;
+	}
+	
 	//sets settlement array an image and if upgrading it will turn the settlement to a city
 	public void setSettlementImage(int row, int col, int player){
 		switch (player){
@@ -524,6 +558,17 @@ public class GameBoard extends JPanel{
 		numbersSmall[7] = new ImageIcon("numbers/seven_small.png").getImage();
 		numbersSmall[8] = new ImageIcon("numbers/eight_small.png").getImage();
 		numbersSmall[9] = new ImageIcon("numbers/nine_small.png").getImage();
+		playerInfo = new ImageIcon("images/pInfo.png").getImage();
+		numbers[0] = new ImageIcon("numbers/zero.png").getImage();
+		numbers[1] = new ImageIcon("numbers/one.png").getImage();
+		numbers[2] = new ImageIcon("numbers/two.png").getImage();
+		numbers[3] = new ImageIcon("numbers/three.png").getImage();
+		numbers[4] = new ImageIcon("numbers/four.png").getImage();
+		numbers[5] = new ImageIcon("numbers/five.png").getImage();
+		numbers[6] = new ImageIcon("numbers/six.png").getImage();
+		numbers[7] = new ImageIcon("numbers/seven.png").getImage();
+		numbers[8] = new ImageIcon("numbers/eight.png").getImage();
+		numbers[9] = new ImageIcon("numbers/nine.png").getImage();
 	}
 	
 	//uses tiles to create an image array based on the tiles
@@ -689,6 +734,11 @@ public class GameBoard extends JPanel{
 	//gets the int for the digit
 	private Image getSmallNumberImage(int i){
 		return numbersSmall[i];
+	}
+	
+	//get the int of the digit
+	private Image getBigNumberImage(int i){
+		return numbers[i];
 	}
 	
 	//initializes the array to all false
