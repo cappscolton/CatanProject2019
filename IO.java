@@ -151,6 +151,7 @@ public class IO extends JFrame{
 		validate();
 		pack();
 		board.repaint();
+		resourcePanel.repaint();
 	}
 	
 	public void loadGame(){

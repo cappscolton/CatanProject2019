@@ -57,10 +57,10 @@ public class ResourcePanel extends JPanel{
 		cards = new Image[5];
 		numbers = new Image[10];
 		cards[0] = new ImageIcon("cards/Brick.png").getImage(); 
-		cards[1] = new ImageIcon("cards/Rock.png").getImage(); 
-		cards[2] = new ImageIcon("cards/Sheep.png").getImage(); 
+		cards[1] = new ImageIcon("cards/Wood.png").getImage(); 
+		cards[2] = new ImageIcon("cards/Rock.png").getImage(); 
 		cards[3] = new ImageIcon("cards/Wheat.png").getImage(); 
-		cards[4] = new ImageIcon("cards/Wood.png").getImage(); 
+		cards[4] = new ImageIcon("cards/Sheep.png").getImage(); 
 		
 		numbers[0] = new ImageIcon("numbers/zero.png").getImage();
 		numbers[1] = new ImageIcon("numbers/one.png").getImage();

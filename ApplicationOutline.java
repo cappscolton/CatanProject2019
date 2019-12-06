@@ -64,6 +64,7 @@ public class ApplicationOutline{
 				// TODO: check for 7 and integrate robber methods
 				distributeResources(roll, board);
 				io.setTurnInfo(playerTurn, playerList.get(playerTurn).calculateVictoryPoints(), roll);
+				
 				io.loadBoard();
 
 				/* Phase 2: Allow user to spend resources */
@@ -73,7 +74,9 @@ public class ApplicationOutline{
 						io.loadGame();
 						first = false;
 					}
-					
+
+
+					updateResources(playerList.get(playerTurn), board, io);
 					updateLongestRoad(playerList, board);
 					//TODO: update largest army
 
@@ -224,6 +227,15 @@ public class ApplicationOutline{
 		}		
 	}
 
+	public static void updateResources(Player p, Board board, IO io){
+		ArrayList<Integer> resources = new ArrayList<Integer>(5);
+		for(int i : p.getPlayerResources()){
+			resources.add(i);
+		}
+		io.setResourcePanel(resources);
+		io.loadBoard();
+	}
+
 	public static void placeInitialBuildings(ArrayList<Player> playerList, IO io, Board board){
 		for (int i=0; i<playerList.size(); i++){
 			io.setTurnInfo(i, playerList.get(i).calculateVictoryPoints(), 0);
@@ -243,15 +255,14 @@ public class ApplicationOutline{
 	public static void updateLongestRoad(ArrayList<Player> playerList, Board board){
 		for (int i = 0; i < playerList.size(); i++){
 			playerList.get(i).setHasLongestRoad(false);
-			playerList.get(i).setHasLargestArmy(false);
 		}
 		Player p = findPlayerWithLongestRoad(board, playerList);
-		if (p!=null) p.setHasLargestArmy(true);
+		if (p!=null) p.setHasLongestRoad(true);
 	}
 
 	public static void buildSettlement(Player p, IO io, Board board, boolean mustConnect, boolean isFree){
 		if (p.getMaxSettlements()<=0){
-			io.errorMessage("Player " + (p.number+1) + " is out of settlements!"); 
+			io.errorMessage("Player " + (p.getNumber()+1) + " is out of settlements!"); 
 			return;
 		}
 		if (p.buildOrBuyDevelopmentCard("Settlement", isFree)){
@@ -275,7 +286,7 @@ public class ApplicationOutline{
 									v.setOccupant(p);
 									p.addSettlementLocation(v); 
 									v.setRollMultiplier(1);
-									io.setSettlement(v.x, v.y, p.number);
+									io.setSettlement(v.x, v.y, p.getNumber());
 									break outerloop;
 								}
 								else{
@@ -287,7 +298,7 @@ public class ApplicationOutline{
 						else{
 							if (count==vertex){
 								v.setOccupant(p);
-								io.setSettlement(v.x, v.y, p.number);
+								io.setSettlement(v.x, v.y, p.getNumber());
 								v.setRollMultiplier(1);
 								break outerloop;
 							}
@@ -305,7 +316,7 @@ public class ApplicationOutline{
 
 	public static void upgradeSettlementToCity(Player p, IO io, Board board){
 		if(p.getMaxCities() <= 0){
-			io.errorMessage("Player " + (p.number+1) + " is out of cities!");
+			io.errorMessage("Player " + (p.getNumber()+1) + " is out of cities!");
 			return;
 		}
 		if (p.buildOrBuyDevelopmentCard("City", false))
@@ -326,7 +337,7 @@ public class ApplicationOutline{
 						if (count==vertex){
 							v.setRollMultiplier(2);
 							p.addCityLocation(v); 
-							io.setSettlement(v.x, v.y, p.number);
+							io.setSettlement(v.x, v.y, p.getNumber());
 							break outerloop;
 						}
 						else count++;
@@ -339,7 +350,7 @@ public class ApplicationOutline{
 
 	public static void buildRoad(Player p, IO io, Board board, boolean mustConnect, boolean isFree){
 		if (p.getMaxRoads()<=0){
-			io.errorMessage("Player " + (p.number+1) + " is out of roads!"); 
+			io.errorMessage("Player " + (p.getNumber()+1) + " is out of roads!"); 
 			return;
 		}
 		if (p.buildOrBuyDevelopmentCard("Road", isFree))
@@ -362,7 +373,7 @@ public class ApplicationOutline{
 								if (count==road){
 									r.setOccupant(p);
 									p.addRoad(r); 
-									io.setRoad(r.x, r.y, p.number);
+									io.setRoad(r.x, r.y, p.getNumber());
 									break outerloop;
 								}
 								else{
@@ -375,7 +386,7 @@ public class ApplicationOutline{
 							if (count==road){
 								r.setOccupant(p);
 								p.addRoad(r); 
-								io.setRoad(r.x, r.y, p.number);
+								io.setRoad(r.x, r.y, p.getNumber());
 								break outerloop;
 							}
 							else{
@@ -518,7 +529,7 @@ public class ApplicationOutline{
 			int winningLength = 0;
 			for (Player p : players){
 				int length = board.findPlayersLongestRoad(p);
-				if (length > winningLength){
+				if (length > winningLength && length >=5){
 					plrWithLongestRoad = p;
 					p.setHasLongestRoad(true);
 					winningLength = length;

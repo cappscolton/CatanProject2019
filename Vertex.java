@@ -75,7 +75,7 @@ public class Vertex {
     public void distributeResources(int roll){
         if (occupant!=null){
             for (Tile t : adjacentTiles){
-                if (t.getTileRollNumber()==roll || t.getTileRollNumber()==-1){
+                if (t.getTileRollNumber()==roll || roll==-1){
                     String resource = t.getTileRollResource();
                     if (resource.equals("wheat"))
                         occupant.getPlayerResources()[3]++;
