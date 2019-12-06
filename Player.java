@@ -37,12 +37,12 @@ public class Player{
 	 * @param n is the player's number
 	 */
     public Player(int n){
-		number = n;
+		number = n-1;
 		victoryPoints = 0; 
 		//This for loop is used to populate the array containing the numbers of each resource that a player possesses
 		//The elements in the array correspond to the number of bricks, lumber, ore, grain, and wool respectively 
 		for(int i = 0; i < playerResources.length; i++){
-			playerResources[i] = 100;  
+			playerResources[i] = 0;  
 		}
 	} 
 	
@@ -76,12 +76,14 @@ public class Player{
 	 * @return true if the player successfully purchases item 
 	 */
 	//resources in order of index: brick, lumber, ore, grain, wool
-	public boolean buildOrBuyDevelopmentCard(String choice){
+	public boolean buildOrBuyDevelopmentCard(String choice, boolean free){
 		//Roads cost 1 brick, 1 lumber
 		if(choice.equalsIgnoreCase("Road")){
-			if (playerResources[0] > 0 && playerResources[1] > 0){
-				playerResources[0]--;
-				playerResources[1]--; 
+			if ((playerResources[0] > 0 && playerResources[1] > 0) || free){
+				if(!free){
+					playerResources[0]--;
+					playerResources[1]--; 
+				}
 				numRoads ++; 
 				distanceFromMaxRoads--;
 			} 
@@ -89,11 +91,13 @@ public class Player{
 		}
 		//Settlements cost 1 brick, 1 lumber, 1 wool, 1 grain 
 		else if (choice.equalsIgnoreCase("Settlement")){
-			if(playerResources[0] > 0 && playerResources[1] > 0 && playerResources[4] > 0 && playerResources[3] > 0) {
-				playerResources[0]--; 
-				playerResources[1]--; 
-				playerResources[4]--; 
-				playerResources[3]--; 
+			if((playerResources[0] > 0 && playerResources[1] > 0 && playerResources[4] > 0 && playerResources[3] > 0) || free) {
+				if (!free){
+					playerResources[0]--; 
+					playerResources[1]--; 
+					playerResources[4]--; 
+					playerResources[3]--; 
+				}
 				numSettlements ++; 
 				distanceFromMaxSettlements--;
 			}

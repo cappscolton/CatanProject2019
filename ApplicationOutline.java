@@ -2,95 +2,72 @@ import java.util.*;
 
 public class ApplicationOutline{
 	
-
-	
 	public static void main(String[] args){
-		//initialize array/arraylist of players
-		ArrayList<Player>playerList = new ArrayList<Player>(4); 
 		
-		//initialize the board
-		Board board = new Board();
+		Board board = new Board(); // initialize the board
 		Tile[][] tiles = board.getTiles();
 		
-		//load the inital launch and home
-		IO io = new IO();
+		IO io = new IO(); // initialize IO
 		io.loadHome();
 		
 		//important variables
 		int numPlayers = 0;
-		
+		ArrayList<Player>playerList = new ArrayList<Player>(4); //initialize array/arraylist of players
 		//set up booleans for loops
 		boolean homeScreen = true;
 		boolean newGame = false;
 		boolean inGame = false;
 		boolean endGame = false;
 		
+		/* Game Logic Loop */
+
 		while (true){
-			//loop for the homeScreen
-			while (homeScreen){
-				int action = io.getHomeAction();
-				//gets if the user wants to start a new game
+			while (homeScreen){ //loop for the homeScreen
+				int action = io.getHomeAction(); //UI waits for user to start a game
 				if (action == 1){
 					io.newGame(tiles);
 					io.loadGame();
 					homeScreen = false;
 					newGame = true;
-					System.out.println("newGame");
 				}
 			}//end while homeScreen
 			
-			//loop for generating a new game
-			while (newGame){
-				//gets the number of players
-				if (numPlayers == 0){
-					numPlayers = getNumberOfPlayers(io);
-					Player player1 = new Player(1); 
-					playerList.add(player1); 
-					if (numPlayers >= 2) {
-						Player player2 = new Player(2); 
-						playerList.add(player2); 
-					}
-					if (numPlayers >= 3) {
-						Player player3 = new Player(3); 
-						playerList.add(player3);
-					}
-					if (numPlayers == 4) {
-						Player player4 = new Player(4); 
-						playerList.add(player4); 
-					}
-				}
-				
-				//gets the action of the player
-				int action = io.getNewGameAction();
-				
-				//player wants to make a new board
-				if (action == 1){
+			
+			while (newGame){ //loop for generating a new game
+				if (numPlayers == 0)
+					numPlayers = initializePlayers(playerList, io, board);
+
+				int action = io.getNewGameAction(); //gets the action of the player from UI
+
+				if (action == 1){ //player wants to make a new board
 					board = new Board();
 					tiles = board.getTiles();
 					io.newBoard(tiles);
 				}
-				//wants to start the game
-				else if (action == 2){
+				
+				else if (action == 2){ //wants to start the game
 					newGame = false;
 					inGame = true;
 					System.out.println("starting game");
 				}
-			}//end while newGame
+			}//end pre-game UI loop
 			
 			//set up variables for turn logic
 			int playerTurn = 0;
 			boolean turn = true;
-			//first time set
 			boolean first = true;
-			//loop for inGame
+
 			gameloop:
-			while (inGame){
-				//set the button to game buttons
-				int roll = 2;
-				io.setTurnInfo(playerTurn, playerList.get(playerTurn).calculateVictoryPoints(), roll);//needs to the roll number set to what it should be (2-12)
+			while (inGame){ // game logic loop
+				/* Phase 1: Roll and distribute resources */
+				int roll = rollDie() + rollDie();
+				// TODO: check for 7 and integrate robber methods
+				distributeResources(roll, board);
+				io.setTurnInfo(playerTurn, playerList.get(playerTurn).calculateVictoryPoints(), roll);
 				io.loadBoard();
+
+				/* Phase 2: Allow user to spend resources */
 				while (turn){
-					
 					if (first){
 						io.startGame();
 						io.loadGame();
@@ -98,6 +75,7 @@ public class ApplicationOutline{
 					}
 					
 					updateLongestRoad(playerList, board);
+					//TODO: update largest army
 
 					//check if a player has won
 					for (int i = 0; i < numPlayers; i++){
@@ -113,35 +91,21 @@ public class ApplicationOutline{
 					
 					//build settlement
 					if (action == 1){
-						if(playerList.get(playerTurn).getMaxSettlements() > 0){
-							buildSettlement(playerList.get(playerTurn), io, board, false);	
-						} else {
-							System.out.println("Player " + (playerTurn + 1) + " is out of settlements!"); 
-						}	
+						buildSettlement(playerList.get(playerTurn), io, board, false, false);	
 					}
 					
 					//build road
 					if (action == 2){
-						if(playerList.get(playerTurn).getMaxRoads() >0){
-							buildRoad(playerList.get(playerTurn), io, board, true);		
-						} else {
-							System.out.println("Player " + (playerTurn + 1) + " is out of roads!"); 
-						}
+						buildRoad(playerList.get(playerTurn), io, board, true, false);		
 					}
 					
 					//upgrade Settlement
 					if (action == 3){
-						if(playerList.get(playerTurn).getMaxCities() > 0){
-							upgradeSettlementToCity(playerList.get(playerTurn), io, board);
-						} else {
-							System.out.println("Player " + (playerTurn + 1) + " is out of cities!"); 
-						}
+						upgradeSettlementToCity(playerList.get(playerTurn), io, board);
 					}
 					
 					//development cards 
 					if (action == 4){
-						//get the actual arraylist of the player
-						
 						ArrayList<Character> cards = new ArrayList<>();
 						cards.add('K');
 						cards.add('K');
@@ -155,35 +119,30 @@ public class ApplicationOutline{
 							
 							//use Knight
 							if (cardAction == 1){
-								
 								//close window and exit loop
 								looking = false;
 								dv.dispose();
 							}
 							//use monopoly card
 							else if (cardAction == 2){
-								
 								//close window and exit loop
 								looking = false;
 								dv.dispose();
 							}
 							//use Year of Plenty
 							else if (cardAction == 3){
-								
 								//close window and exit loop
 								looking = false;
 								dv.dispose();
 							}
 							//road building
 							else if (cardAction == 4){
-								
 								//close window and exit loop
 								looking = false;
 								dv.dispose();
 							}
 							//buy dev Card
 							else if (cardAction == 6){
-								
 								//add dev card to arraylist and repaint via dv.load()
 							}
 							//close window
@@ -195,18 +154,21 @@ public class ApplicationOutline{
 						} 
 					}
 					
-					//end turn 
+					//action == end turn
 					if (action == 5){
 						turn = false;
 					}
-				}//end while turn
-				playerTurn++;
+				} //end of turn loop
+
+				
+				playerTurn++; //cycle through players
 				if (playerTurn == numPlayers)
 					playerTurn = 0;
-				turn = true;
+				turn = true; //restart turn loop
+				
 			}//end inGame
 			
-			while (endGame){
+			while (endGame){ // someone has reached 10 VP
 				int action = io.getEndGameAction();
 				
 				//back to homeScreen
@@ -218,7 +180,65 @@ public class ApplicationOutline{
 			}
 		}//end main while true
 	}//end main method
-	
+
+
+
+
+
+
+
+
+	/* Game Logic Methods Below */
+
+	public static int rollDie(){
+		Random r = new Random();
+		return r.nextInt(6)+1;
+	}
+
+	public static int initializePlayers(ArrayList<Player> playerList, IO io, Board board){
+		int numPlayers = getNumberOfPlayers(io);
+		Player player1 = new Player(1); 
+		playerList.add(player1); 
+		if (numPlayers >= 2) {
+			Player player2 = new Player(2); 
+			playerList.add(player2); 
+		}
+		if (numPlayers >= 3) {
+			Player player3 = new Player(3); 
+			playerList.add(player3);
+		}
+		if (numPlayers == 4) {
+			Player player4 = new Player(4); 
+			playerList.add(player4); 
+		}
+		placeInitialBuildings(playerList, io, board);
+		return numPlayers;
+	}
+
+	public static void distributeResources(int roll, Board board){
+		Vertex[][] vertices = board.getVertexArray();
+		for (Vertex[] vRow : vertices){
+			for(Vertex v : vRow){
+				v.distributeResources(roll);
+			}
+		}		
+	}
+
+	public static void placeInitialBuildings(ArrayList<Player> playerList, IO io, Board board){
+		for (int i=0; i<playerList.size(); i++){
+			io.setTurnInfo(i, playerList.get(i).calculateVictoryPoints(), 0);
+			buildSettlement(playerList.get(i), io, board, false, true);
+			buildRoad(playerList.get(i), io, board, true, true);
+		}
+		for (int i=playerList.size()-1; i>=0; i--){
+			io.setTurnInfo(i, playerList.get(i).calculateVictoryPoints(), 0);
+			buildSettlement(playerList.get(i), io, board, false, true);
+			buildRoad(playerList.get(i), io, board, true, true);
+		}
+		io.setTurnInfo(0, playerList.get(0).calculateVictoryPoints(), 0);
+		distributeResources(-1, board);
+
+	}
 
 	public static void updateLongestRoad(ArrayList<Player> playerList, Board board){
 		for (int i = 0; i < playerList.size(); i++){
@@ -229,8 +249,12 @@ public class ApplicationOutline{
 		if (p!=null) p.setHasLargestArmy(true);
 	}
 
-	public static void buildSettlement(Player p, IO io, Board board, boolean mustConnect){
-		if (p.buildOrBuyDevelopmentCard("Settlement")){
+	public static void buildSettlement(Player p, IO io, Board board, boolean mustConnect, boolean isFree){
+		if (p.getMaxSettlements()<=0){
+			io.errorMessage("Player " + (p.number+1) + " is out of settlements!"); 
+			return;
+		}
+		if (p.buildOrBuyDevelopmentCard("Settlement", isFree)){
 			io.setVertexLocations(getVertexAvailabilityArray(board, p, mustConnect));
 			io.loadBoard();
 			int vertex = getVertexLocation(io);
@@ -274,11 +298,17 @@ public class ApplicationOutline{
 					}
 				}
 			}
-		}	
+		}
+		else io.errorMessage("You cannot afford to build a settlement. This building costs 1 lumber, 1 brick, 1 wool, and 1 grain.");
+			
 	}
 
 	public static void upgradeSettlementToCity(Player p, IO io, Board board){
-		if (p.buildOrBuyDevelopmentCard("City"))
+		if(p.getMaxCities() <= 0){
+			io.errorMessage("Player " + (p.number+1) + " is out of cities!");
+			return;
+		}
+		if (p.buildOrBuyDevelopmentCard("City", false))
 		{
 			io.setVertexLocations(getCityAvailabilityArray(board, p));
 			io.loadBoard();
@@ -304,10 +334,15 @@ public class ApplicationOutline{
 				}
 			}
 		}
+		else io.errorMessage("You cannot afford to build a city. This building costs 2 grain and 3 ore.");
 	}
 
-	public static void buildRoad(Player p, IO io, Board board, boolean mustConnect){
-		if (p.buildOrBuyDevelopmentCard("Road"))
+	public static void buildRoad(Player p, IO io, Board board, boolean mustConnect, boolean isFree){
+		if (p.getMaxRoads()<=0){
+			io.errorMessage("Player " + (p.number+1) + " is out of roads!"); 
+			return;
+		}
+		if (p.buildOrBuyDevelopmentCard("Road", isFree))
 		{
 			io.setRoadLocations(getRoadAvailabilityArray(board, p, mustConnect));
 			io.loadBoard();
@@ -350,7 +385,8 @@ public class ApplicationOutline{
 					}
 				}
 			}
-		}	
+		}
+		else io.errorMessage("You cannot afford to build a road. This upgrade costs 1 lumber and 1 brick.");	
 	}
 
 	//gets the number of players via JOptionPane

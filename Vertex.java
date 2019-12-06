@@ -72,6 +72,27 @@ public class Vertex {
         return false;
     }
 
+    public void distributeResources(int roll){
+        if (occupant!=null){
+            for (Tile t : adjacentTiles){
+                if (t.getTileRollNumber()==roll || t.getTileRollNumber()==-1){
+                    String resource = t.getTileRollResource();
+                    if (resource.equals("wheat"))
+                        occupant.getPlayerResources()[3]++;
+                    else if (resource.equals("wood"))
+                        occupant.getPlayerResources()[1]++;
+                    else if (resource.equals("sheep"))
+                        occupant.getPlayerResources()[4]++;
+                    else if (resource.equals("ore"))
+                        occupant.getPlayerResources()[2]++;
+                    else if (resource.equals("brick"))
+                        occupant.getPlayerResources()[0]++;
+                }
+                
+            }
+        }
+    }
+
     public Vertex(int row, int col){
         x=row;
         y=col;
