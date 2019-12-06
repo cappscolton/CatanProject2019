@@ -50,6 +50,7 @@ public class Board {
                 }
             }
         }
+        if (startingRoad==null) return 0;
         return lengthOfRoad(checkedRoads, startingRoad, 1);
     }
 

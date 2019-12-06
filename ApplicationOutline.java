@@ -83,6 +83,7 @@ public class ApplicationOutline{
 			//first time set
 			boolean first = true;
 			//loop for inGame
+			gameloop:
 			while (inGame){
 				//set the button to game buttons
 				System.out.println(playerTurn);
@@ -93,11 +94,14 @@ public class ApplicationOutline{
 						first = false;
 					}
 					
+					updateLongestRoad(playerList, board);
+
 					//check if a player has won
 					for (int i = 0; i < numPlayers; i++){
-						if(playerList.get(i).getVictoryPoints() == 10) {
+						if(playerList.get(i).calculateVictoryPoints() >= 10) {
 							inGame = false;
 							endGame = true;
+							break gameloop;
 						}
 					}
 					
@@ -149,6 +153,15 @@ public class ApplicationOutline{
 	}//end main method
 	
 
+	public static void updateLongestRoad(ArrayList<Player> playerList, Board board){
+		for (int i = 0; i < playerList.size(); i++){
+			playerList.get(i).setHasLongestRoad(false);
+			playerList.get(i).setHasLargestArmy(false);
+		}
+		Player p = findPlayerWithLongestRoad(board, playerList);
+		if (p!=null) p.setHasLargestArmy(true);
+	}
+
 	public static void buildSettlement(Player p, IO io, Board board, boolean mustConnect){
 		if (p.buildOrBuyDevelopmentCard("Settlement"))
 		{
@@ -164,7 +177,7 @@ public class ApplicationOutline{
 			outerloop:
 			for(Vertex[] vRow : board.getVertexArray()){
 				for(Vertex v : vRow){
-					if (v.getOccupant()==null){
+					if (v.getOccupant()==null && !v.hasNeighboringSettlement()){
 						if (mustConnect){
 							if (v.playerIsConnected(p)){
 								if (count==vertex){
@@ -182,9 +195,9 @@ public class ApplicationOutline{
 						else{
 							if (count==vertex){
 								v.setOccupant(p);
-									io.setSettlement(v.x, v.y, p.number);
-									v.setRollMultiplier(1);
-									break outerloop;
+								io.setSettlement(v.x, v.y, p.number);
+								v.setRollMultiplier(1);
+								break outerloop;
 							}
 							else{
 								count++;
@@ -244,7 +257,7 @@ public class ApplicationOutline{
 							if (r.playerIsConnected(p)){
 								if (count==road){
 									r.setOccupant(p);
-									io.setRoad(r.x, r.y, 1);
+									io.setRoad(r.x, r.y, p.number);
 									break outerloop;
 								}
 								else{
@@ -256,7 +269,7 @@ public class ApplicationOutline{
 						else{
 							if (count==road){
 								r.setOccupant(p);
-								io.setRoad(r.x, r.y, 1);
+								io.setRoad(r.x, r.y, p.number);
 								break outerloop;
 							}
 							else{
@@ -322,7 +335,7 @@ public class ApplicationOutline{
         for(int i=0; i<availabilityArray.length; i++){
             boolean[] row = new boolean[availabilityArrayRowLengths[i]];
             for(int j=0; j<availabilityArrayRowLengths[i]; j++){
-				row[j] = (vertices[i][j].getOccupant() == null);
+				row[j] = (vertices[i][j].getOccupant() == null && !vertices[i][j].hasNeighboringSettlement());
 				if (mustConnect)
 					row[j] = (row[j] && vertices[i][j].playerIsConnected(p));
 			}
@@ -400,10 +413,13 @@ public class ApplicationOutline{
 				int length = board.findPlayersLongestRoad(p);
 				if (length > winningLength){
 					plrWithLongestRoad = p;
+					p.setHasLongestRoad(true);
 					winningLength = length;
 				}
+				else p.setHasLongestRoad(false);
 			}
 			return plrWithLongestRoad;
 		}
 
 }//end class
+

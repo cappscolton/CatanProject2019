@@ -46,9 +46,10 @@ public class Player{
 				victoryPoints += 1; 
 			} 
 		}
+		if (hasLargestArmy) victoryPoints+=2;
+		if (hasLongestRoad) victoryPoints+=2;
 		return victoryPoints; 
 	}
-
 
 	//resources in order of index: brick, lumber, ore, grain, wool
 	public boolean buildOrBuyDevelopmentCard(String choice){

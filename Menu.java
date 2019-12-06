@@ -154,7 +154,7 @@ public class Menu extends JPanel {
 			return 1;
 		}
 		else {
-			System.out.print("");
+			System.out.print("end");
 			return 0;
 		}
 	}
