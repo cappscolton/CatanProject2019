@@ -251,7 +251,7 @@ public class ApplicationOutline{
 
 	public static void buildSettlement(Player p, IO io, Board board, boolean mustConnect, boolean isFree){
 		if (p.getMaxSettlements()<=0){
-			io.errorMessage("Player " + (p.number+1) + " is out of settlements!"); 
+			io.errorMessage("Player " + (p.getNumber()+1) + " is out of settlements!"); 
 			return;
 		}
 		if (p.buildOrBuyDevelopmentCard("Settlement", isFree)){
@@ -305,7 +305,7 @@ public class ApplicationOutline{
 
 	public static void upgradeSettlementToCity(Player p, IO io, Board board){
 		if(p.getMaxCities() <= 0){
-			io.errorMessage("Player " + (p.number+1) + " is out of cities!");
+			io.errorMessage("Player " + (p.getNumber()+1) + " is out of cities!");
 			return;
 		}
 		if (p.buildOrBuyDevelopmentCard("City", false))
@@ -339,7 +339,7 @@ public class ApplicationOutline{
 
 	public static void buildRoad(Player p, IO io, Board board, boolean mustConnect, boolean isFree){
 		if (p.getMaxRoads()<=0){
-			io.errorMessage("Player " + (p.number+1) + " is out of roads!"); 
+			io.errorMessage("Player " + (p.getNumber()+1) + " is out of roads!"); 
 			return;
 		}
 		if (p.buildOrBuyDevelopmentCard("Road", isFree))
