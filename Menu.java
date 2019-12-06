@@ -33,6 +33,7 @@ public class Menu extends JPanel {
 		buttons = new JButton[4];
 	}
 	
+	//adds and removes the menu buttons based on what the application is going to
 	public void homeMenu(){
 		newGame = new ToggleButton("New Game");
 		add(newGame);
@@ -89,7 +90,10 @@ public class Menu extends JPanel {
 		closeWindow = new ToggleButton("Close Window");
 		add(closeWindow);
 	}
-
+	
+	//gets if any of the buttons have been pressed
+	//if a button is pressed reverts it back and passes 
+	//which button was hit up through io to application
 	public int getHomeAction(){
 		if (newGame.getNewAction()){
 			//System.out.println("1");
