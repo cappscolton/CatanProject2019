@@ -82,7 +82,7 @@ public class IO extends JFrame{
 	//String text will be displayed in the pop up as well
 	public int getIntegerInput(String text){
 		String input = JOptionPane.showInputDialog(text);
-		if (!input.equals("-1")){	
+		if (!(input.equals("") || input.equals(null))){	
 			int i = Integer.parseInt(input);
 			return i;
 		}

@@ -1,4 +1,5 @@
 import java.util.ArrayList;    
+import java.util.Objects;
 
 public class Road {
     public Vertex v1;
@@ -17,12 +18,22 @@ public class Road {
         y = col;
     }
 
+    public Road(){}
+
     public void setOccupant(Player p){
         occupant = p;
     }
 
     public Player getOccupant(){
         return occupant;
+    }
+
+    public boolean playerIsConnected(Player p){
+        for (Road r : adjacents){
+            if (Objects.equals(p, r.getOccupant()) || Objects.equals(this.v1.getOccupant(), p) || Objects.equals(this.v2.getOccupant(), p))
+                return true;
+        }
+        return false;
     }
 
     public boolean equals(Object o){

@@ -61,6 +61,13 @@ public class Vertex {
             v.adjacents.add(this);
     }
 
+    public boolean playerIsConnected(Player p){
+        for (Vertex v : adjacents){
+            if (v.getOccupant().equals(p)) return true;
+        }
+        return false;
+    }
+
     public Vertex(int row, int col){
         x=row;
         y=col;

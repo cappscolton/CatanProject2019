@@ -1,6 +1,7 @@
 import java.util.*; 
 
 public class Player{
+	public int number;
 	private int victoryPoints;
 	private int numRoads; 
 	private int numSettlements;
@@ -22,12 +23,13 @@ public class Player{
 	
 	private int [] playerResources = new int [5]; 
 	
-    public Player(){
+    public Player(int n){
+		number = n;
 		victoryPoints = 0; 
 		//This for loop is used to populate the array containing the numbers of each resource that a player possesses
 		//The elements in the array correspond to the number of bricks, lumber, ore, grain, and wool respectively 
 		for(int i = 0; i < playerResources.length; i++){
-			playerResources[i] = 0;  
+			playerResources[i] = 100;  
 		}
 	}
 	
@@ -49,41 +51,52 @@ public class Player{
 
 
 	//resources in order of index: brick, lumber, ore, grain, wool
-	public void buildOrBuyDevelopmentCard(String choice){
+	public boolean buildOrBuyDevelopmentCard(String choice){
 		//Roads cost 1 brick, 1 lumber
-		if(choice.equalsIgnoreCase("Road") && playerResources[0] > 0 && playerResources[1] > 0){
-			playerResources[0]--;
-			playerResources[1]--; 
-			numRoads ++; 
-		} 
+		if(choice.equalsIgnoreCase("Road")){
+			if (playerResources[0] > 0 && playerResources[1] > 0){
+				playerResources[0]--;
+				playerResources[1]--; 
+				numRoads ++; 
+			} 
+			else return false;
+		}
 		//Settlements cost 1 brick, 1 lumber, 1 wool, 1 grain 
-		else if (choice.equalsIgnoreCase("Settlement") && playerResources[0] > 0 && 
-		playerResources[1] > 0 && playerResources[4] > 0 && playerResources[3] > 0) {
-			playerResources[0]--; 
-			playerResources[1]--; 
-			playerResources[4]--; 
-			playerResources[3]--; 
-			numSettlements ++; 
+		else if (choice.equalsIgnoreCase("Settlement")){
+			if(playerResources[0] > 0 && playerResources[1] > 0 && playerResources[4] > 0 && playerResources[3] > 0) {
+				playerResources[0]--; 
+				playerResources[1]--; 
+				playerResources[4]--; 
+				playerResources[3]--; 
+				numSettlements ++; 
+			}
+			else return false;
 		}
 		//Cities cost three ore and 2 grain 
-		else if (choice.equalsIgnoreCase("City") && playerResources[2] >= 3 && playerResources[3] >= 2){
-			playerResources[2]-=3; 
-			playerResources[3]-=2;
-			numCities ++; 
+		else if (choice.equalsIgnoreCase("City")){
+			if (playerResources[2] >= 3 && playerResources[3] >= 2){
+				playerResources[2]-=3; 
+				playerResources[3]-=2;
+				numCities ++; 
+			}
+			else return false;
 		} 
 		//Development cards cost 1 ore, 1 wool, 1 grain 
-		else if (choice.equalsIgnoreCase("Buy a Development Card") && playerResources[2] > 0 &&
-		playerResources[4] > 0 && playerResources[3] > 0) {
-			//the exact name of this choice is subject to change; "Buying a Development Card" is just a place holder
-			playerResources[2]--;
-			playerResources[4]--;			
-			playerResources[3]--;
-			//add a random development card to the array list of player's development cards
-			Character newDevCard = DevCards.getCard(); 
-			if(newDevCard != 'N'){
-				developmentCards.add(newDevCard); 
+		else if (choice.equalsIgnoreCase("Buy a Development Card")) {
+			if (playerResources[2] > 0 && playerResources[4] > 0 && playerResources[3] > 0) {
+				//the exact name of this choice is subject to change; "Buying a Development Card" is just a place holder
+				playerResources[2]--;
+				playerResources[4]--;			
+				playerResources[3]--;
+				//add a random development card to the array list of player's development cards
+				Character newDevCard = DevCards.getCard(); 
+				if(newDevCard != 'N'){
+					developmentCards.add(newDevCard); 
+				}
 			}
+			else return false;		
 		}
+		return true;
 	}
 	
 	public int getVictoryPoints() {

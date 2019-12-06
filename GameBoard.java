@@ -529,8 +529,16 @@ public class GameBoard extends JPanel{
 	//uses tiles to create an image array based on the tiles
 	//get the initial robber X and Y
 	private void createImageArrays(Tile[][] tiles){
-		settlements = new Image[6][11];
-		roads = new Image[11][10];
+		settlements = new Image[6][];
+		int[] vertexRowLengths = {7,9,11,11,9,7};
+		for (int i = 0; i < 6; i++){
+			settlements[i] = new Image[vertexRowLengths[i]];
+		}
+		roads = new Image[11][];
+		int[] roadRowLengths = {6, 4, 8, 5, 10, 6, 10, 5, 8, 4, 6};
+		for (int i = 0; i < 11; i++){
+			roads[i] = new Image[roadRowLengths[i]];
+		}
 		tileNumber = new int[5][5];
 		for (int i = 0; i < 5; i++){
 			for (int j = 0; j < 5; j++){
