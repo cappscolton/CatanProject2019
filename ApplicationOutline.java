@@ -18,6 +18,8 @@ public class ApplicationOutline{
 		boolean newGame = false;
 		boolean inGame = false;
 		boolean endGame = false;
+
+
 		/* Game Logic Loop */
 
 		while (true){
@@ -47,7 +49,6 @@ public class ApplicationOutline{
 				else if (action == 2){ //wants to start the game
 					newGame = false;
 					inGame = true;
-					System.out.println("starting game");
 				}
 			}//end pre-game UI loop
 			
@@ -60,7 +61,7 @@ public class ApplicationOutline{
 			while (inGame){ // game logic loop
 				/* Phase 1: Roll and distribute resources */
 				int roll = rollDie() + rollDie();
-				if (roll==7){
+				if (roll==7){ // rob players with more than 7 resources on dice roll 7
 					for (Player p : playerList){
 						Robber.cutHand(p);
 					}
@@ -76,9 +77,9 @@ public class ApplicationOutline{
 						first = false;
 					}
 
-					io.setTurnInfo(playerTurn, playerList.get(playerTurn).calculateVictoryPoints(), roll);
-					updateResources(playerList.get(playerTurn), board, io);
-					updateLongestRoad(playerList, board);
+					io.setTurnInfo(playerTurn, playerList.get(playerTurn).calculateVictoryPoints(), roll); //display victory points, current player, and dice
+					updateResources(playerList.get(playerTurn), board, io); // keep resource panel up to date.
+					updateLongestRoad(playerList, board); // recalculate longest road.
 					//TODO: update largest army
 
 					//check if a player has won
@@ -112,7 +113,7 @@ public class ApplicationOutline{
 					if (action == 4){
 
 						ArrayList<Character> cards = playerList.get(playerTurn).getDevelopmentCards();
-						cards.add('R');
+						cards.add('R'); // for demonstration - free dev cards
 						cards.add('V');
 						cards.add('P');
 						
@@ -126,6 +127,12 @@ public class ApplicationOutline{
 							//use Knight
 							if (cardAction == 1){
 								//close window and exit loop
+								for (Character C : cards){
+									if (C=='K') {
+										cards.remove(C);
+										break;
+									}
+								}
 								looking = false;
 								dv.dispose();
 							}
@@ -133,6 +140,12 @@ public class ApplicationOutline{
 							else if (cardAction == 2){
 								//close window and exit loop
 								looking = false;
+								for (Character C : cards){
+									if (C=='M') {
+										cards.remove(C);
+										break;
+									}
+								}
 								dv.dispose();
 							}
 							//use Year of Plenty
@@ -143,15 +156,21 @@ public class ApplicationOutline{
 								int resource2 = io.getIntegerInput("Select a free resource:\n1)Brick\n2)Lumber\n3)Ore\n4)Grain\n5)Wool");
 								p.getPlayerResources()[resource2-1]++;
 								updateResources(p, board, io);
+								for (Character C : cards){ // remove the card from the players inventory
+									if (C=='P') {
+										cards.remove(C);
+										break;
+									}
+								}
 								looking = false;
 								dv.dispose();
 							}
 							//road building
 							else if (cardAction == 4){
 								dv.dispose();
+								buildRoad(p, io, board, true, true); // 2 free roads
 								buildRoad(p, io, board, true, true);
-								buildRoad(p, io, board, true, true);
-								for (Character C : cards){
+								for (Character C : cards){ // remove the card from the players inventory
 									if (C=='R') {
 										cards.remove(C);
 										break;
@@ -165,7 +184,7 @@ public class ApplicationOutline{
 									io.errorMessage("You don't have the resources to buy a card.");
 								};
 								updateResources(p,board,io);
-								dv.updateCardsPanel(p.getDevelopmentCards());
+								dv.updateCardsPanel(p.getDevelopmentCards()); // display the players cards up to date
 								
 							}
 							//close window

@@ -50,6 +50,10 @@ public class Vertex {
         rollMultiplier = n;
     }
 
+    /** getRollMultiplier
+     *  getter. gets the resource distrubtion multiplier for the vertex.
+     *  1 for settlements, 2 for cities, 0 unoccupied.
+     */
     public int getRollMultiplier(){
         return rollMultiplier;
     }    
@@ -65,6 +69,11 @@ public class Vertex {
             v.adjacents.add(this);
     }
 
+    /** playerIsConnected
+     *  looks at nearby roads to see if they are occupied by the same player
+     *  making this vertex a valid placement location.
+     *  @return true if the player is connected to this vertex, false otherwise
+     */
     public boolean playerIsConnected(Player p){
         for (Vertex v : adjacents){
             if (v.getOccupant().equals(p)) return true;
@@ -72,6 +81,11 @@ public class Vertex {
         return false;
     }
 
+    /** distributeResources
+     *  Loops through adjacent tiles to determine if the dice roll
+     *  warants resource distribution. If so, give resources to the occupant of this
+     *  Vertex (if there is one).
+     */
     public void distributeResources(int roll){
         if (occupant!=null){
             for (Tile t : adjacentTiles){
@@ -93,6 +107,9 @@ public class Vertex {
         }
     }
 
+    /** Vertex
+     * Constructor. Row and column / x and y in the 2D vertex array of the board.
+     */
     public Vertex(int row, int col){
         x=row;
         y=col;

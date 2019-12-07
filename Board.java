@@ -28,18 +28,34 @@ public class Board {
         return tiles;
     }
 
+    /** getDeck
+     * getter for the Development Card deck
+     * @return DevCards object storing remaining deck
+     */
     public DevCards getDeck(){
         return deck;
     }
 
+    /** getVertexArray
+     * getter for vertices of the board
+     * @return 2D jagged array of Vertex objects
+     */
     public Vertex[][] getVertexArray(){
         return vertices;
     }
 
+    /** getRoadArray
+     * getter for the roads of the board
+     * @return 2D jagged array of Road objects
+     */
     public Road[][] getRoadArray(){
         return roads;
     }
 
+    /** findPlayersLongestRoad
+     * Algorithmically loop through player's roads to find their longest segment
+     * @return length of that longest segment
+     */
     public int findPlayersLongestRoad(Player p){
         Road startingRoad = null;
         ArrayList<Road> checkedRoads = new ArrayList<Road>();
@@ -148,12 +164,16 @@ public class Board {
         return vertices;
     }
 
+    /** linkAdjacentRoads
+     * Roads next to each other are stored in adjecents array.
+     * Loop through to ensure this.
+     */  
     private void linkAdjacentRoads(){
         for (Road[] rRow : roads){
             for (Road r : rRow){
                 for (Road r1 : r.v1.adjacentRoads)
-                    if (!r1.equals(r))
-                        r.adjacents.add(r1);
+                    if (!r1.equals(r)) //not comparing to self
+                        r.adjacents.add(r1); // connect adjacent row
                 for (Road r1 : r.v2.adjacentRoads)
                     if (!r1.equals(r))
                         r.adjacents.add(r1);
@@ -161,12 +181,19 @@ public class Board {
         }
     }
 
+    /** linkTilesToRoads
+     * Loop through roads calling linkTilesToRoadsForRow
+     */
     private void linkTilesToRoads(Tile[][] tiles, Road[][] roads){
         for (int i=0; i<tiles.length; i++){
             linkTilesToRoadsForRow(roads, tiles, i);
         }
     }
 
+    /** linkTilesToRoads
+     * Loop through a row of roads and link them to nearby tiles
+     * by storing them in arrays in each other.
+     */
     private void linkTilesToRoadsForRow(Road[][] roads, Tile[][] tiles, int row){
         for (int i=0; i<tiles[row].length; i++){
             Road r = roads[row*2][i*2];
@@ -183,6 +210,12 @@ public class Board {
         }
     }
 
+    /** lengthOfRoad
+     * Find the length of a segment starting at Road r. Recursive.
+     * @param checkedRoads a list to store already checked roads to avoid infinite loops
+     * @param r the road we are starting at and branching out from
+     * @param length current length of the road (for recursing)
+     */
     private int lengthOfRoad(ArrayList<Road> checkedRoads, Road r, int length){
         int longestAdjacent = length;
         for (Road adj : r.adjacents){

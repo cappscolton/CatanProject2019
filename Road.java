@@ -13,23 +13,37 @@ public class Road {
      *  Constructor. Dummy, everything is initialized once all the roads
      *  instantiated (in Board.java)
      */
-	//public Road(){}; 
-	
+    public Road(){}
+    
+    /** Road
+     *  Constructor. row and column location in the board 2D array as parameters.
+     */
     public Road(int row, int col){
         x = row;
         y = col;
     }
 
-    public Road(){}
-
+    /** setOccupant
+     *  Setter. Sets occupant to Player object of this road
+     */
     public void setOccupant(Player p){
         occupant = p;
     }
 
+    /** setOccupant
+     *  getter. gets occupant Player object of this road
+     */
     public Player getOccupant(){
         return occupant;
     }
 
+    /** playerIsConnected
+     *  check nearby roads and vertices to see if an adjacent settlement
+     *  or road is occupied by the same player (which tells us if this road is connected)
+     *  for checking validity of placement at this road's location.
+     * @return true if valid/connected, false otherwise
+     * @param p the player who is trying to occupy this road.
+     */
     public boolean playerIsConnected(Player p){
         for (Road r : adjacents){
             if (Objects.equals(p, r.getOccupant()) || Objects.equals(this.v1.getOccupant(), p) || Objects.equals(this.v2.getOccupant(), p))
@@ -38,6 +52,10 @@ public class Road {
         return false;
     }
 
+    /** equals
+     * two roads are equal if they possess the 2 same vertices
+     * @return true if equal, false otherwise.
+     */
     public boolean equals(Object o){
         Road r = (Road)(o);
         return ((this.v1==r.v1 && this.v2==r.v2) || (this.v2==r.v1 && this.v1==r.v2));

@@ -1,3 +1,10 @@
+/* <Tile.java>
+ * Colton Capps - CIS 200 S
+ * An object to represent at tile on a board for Settlers of Catan.
+ * The tile has 6 vertices (is hexagonal) and 6 roads.
+ * It is also associated with a dice roll number to distribute resources
+ * when that number is rolled and a resource value to specify what resource.
+ */
 import java.util.ArrayList;
 
 public class Tile{
@@ -45,25 +52,28 @@ public class Tile{
         return tileRollResource;
     }
 
+    /** getTileRollResource
+     *  setter. Sets the resource of the tile. Used for resource distribution.
+     */
     public void setTileRollResource(String s){
         tileRollResource = s;
     }
 
+    /** getRoads
+     *  getter. gets the roads that border this tile.
+     *  @return array of 6 roads.
+     */
     public Road[] getRoads(){
         return roads;
     }
 
+    /** getVertices
+     *  getter. gets the vertices that border this tile.
+     *  @return array of 6 vertices.
+     */
     public Vertex[] getVertices(){
         return vertices;
     }
-
-
-    
-
-    /** Road
-     *  A class that represents a connection between two Vertex objects
-	 */
-
 
     /** createRoads
      *  Creates 6 roads for a tile and stores them in this tile.
@@ -73,9 +83,6 @@ public class Tile{
             roads[i] = new Road(); //floor mod to link 5 to 0
         }
     }
-
-
-
 
     /** Tile
      *  constructor. Creates a new Tile object
