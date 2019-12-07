@@ -81,7 +81,7 @@ public class GameBoard extends JPanel{
 	public GameBoard(Tile[][] tiles){
 		//loadBackGround();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		setPreferredSize(new Dimension((int) screenSize.getWidth()-400, (int) screenSize.getHeight()-80));
+		setPreferredSize(new Dimension(1500, 980));
 		setVisible(true);
 		initializeBooleanArrays();
 		numbersSmall = new Image[10];
