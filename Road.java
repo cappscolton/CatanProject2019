@@ -1,3 +1,11 @@
+/* Road.java
+ * Colton Capps
+ * Represents a road that borders a Tile object residing in the Board
+ * of a game of Catan. Each road contains two vertices and an occupant.
+ * This file contains methods to use/modify these values in the Board class
+ * and in the Application class where our main game loop runs. 
+ */
+
 import java.util.ArrayList;    
 import java.util.Objects;
 

@@ -1,3 +1,13 @@
+/* Vertex.java
+ * Colton Capps
+ * A Vertex object represents a point at which Tile objects meet
+ * on the Board for the game Catan. Each vertex contains a Player
+ * occupant, multiplier for game functionality and 
+ * arrays of nearby Vertices, Tiles, and Roads.
+ * Contains methods to use/modify these adjacents/occupant/multipliers
+ * in Application.java
+ */
+
 import java.util.*;
 
 public class Vertex {

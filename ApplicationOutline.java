@@ -1,3 +1,11 @@
+/* Application.java
+ * Contains the main function which loops
+ * with a UI and many game logic features. Manipulates arrays
+ * of Players, Tiles, Vertices, and more while communicating 
+ * through an IO class to a UI, to implement turn logic featured
+ * in the popular board game Settlers of Catan. 
+ */
+
 import java.util.*;
 
 public class ApplicationOutline{
@@ -76,10 +84,11 @@ public class ApplicationOutline{
 						first = false;
 					}
 
-					io.setTurnInfo(playerTurn, playerList.get(playerTurn).calculateVictoryPoints(), roll); //display victory points, current player, and dice
 					updateResources(playerList.get(playerTurn), board, io); // keep resource panel up to date.
 					updateLongestRoad(playerList, board); // recalculate longest road.
-					//TODO: update largest army
+					updateLargestArmy(playerList);
+					io.setTurnInfo(playerTurn, playerList.get(playerTurn).calculateVictoryPoints(), roll); //display victory points, current player, and dice
+					
 
 					//check if a player has won
 					for (int i = 0; i < numPlayers; i++){
@@ -115,6 +124,9 @@ public class ApplicationOutline{
 						cards.add('R'); // for demonstration - free dev cards
 						cards.add('V');
 						cards.add('P');
+						cards.add('K');
+						cards.add('K');
+						cards.add('K');
 						
 						
 						DevelopmentCards dv = new DevelopmentCards(cards);
@@ -334,6 +346,20 @@ public class ApplicationOutline{
 		}
 		Player p = findPlayerWithLongestRoad(board, playerList);
 		if (p!=null) p.setHasLongestRoad(true);
+	}
+
+	/** updateLargestArmy
+	 * Check for a new largest army by looping thorugh players. Update the boolean in the
+	 * Player with the largest army to "true", and the others to "false".
+	 * @param playerList ArrayList of Player objects to be returned to main loop for further use.
+	 * @param board Board object storing the data necessary for game logic.
+	 */
+	public static void updateLargestArmy(ArrayList<Player> playerList){
+		for (int i = 0; i < playerList.size(); i++){
+			playerList.get(i).setHasLargestArmy(false);
+		}
+		Player p = findPlayerWithLargestArmy(playerList);
+		if (p!=null) p.setHasLargestArmy(true);
 	}
 
 	/** buildSettlement
@@ -629,6 +655,30 @@ public class ApplicationOutline{
 		return availabilityArray;
 	}
 	
+	/** findPlayerWithLongestRoad
+		 * Loops through players calling methods to determine the size of their army. 
+		 * Returns the Player object with the largest army.
+		 * @param board Board object storing the data necessary for game logic.
+		 * @param players List of our players
+		 * @return Player with the largest army.
+		 */
+	public static Player findPlayerWithLargestArmy(ArrayList<Player> playerList){
+		Player winningPlayer = null;
+		int winningArmySize = 0;
+		for(Player p : playerList){
+			ArrayList<Character> cards = p.getDevelopmentCards();
+			int armySize = 0;
+			for (Character c : cards){
+				if (c=='K') armySize++;
+			}
+			if (armySize>winningArmySize && armySize >= 3){
+				winningPlayer = p;
+				winningArmySize = armySize;
+			}
+		}
+		return winningPlayer;
+	}
+
 	public static int biggestArmy(Player[] p,int f) {
 		int currentBiggest=0; //The player with the biggest army
 		int toBeat = 0;//the number of knight cards needed for a player to get the biggest army
