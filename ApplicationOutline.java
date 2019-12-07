@@ -35,9 +35,6 @@ public class ApplicationOutline{
 			
 			
 			while (newGame){ //loop for generating a new game
-				if (numPlayers == 0)
-					numPlayers = initializePlayers(playerList, io, board);
-
 				int action = io.getNewGameAction(); //gets the action of the player from UI
 
 				if (action == 1){ //player wants to make a new board
@@ -49,6 +46,8 @@ public class ApplicationOutline{
 				else if (action == 2){ //wants to start the game
 					newGame = false;
 					inGame = true;
+					if (numPlayers == 0)
+						numPlayers = initializePlayers(playerList, io, board);
 				}
 			}//end pre-game UI loop
 			
