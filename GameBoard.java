@@ -76,6 +76,8 @@ public class GameBoard extends JPanel{
 	private Image playerInfo;
 	private Image[] numbers;
 	
+	private Image buildCosts;
+	
 	public GameBoard(Tile[][] tiles){
 		//loadBackGround();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -117,7 +119,7 @@ public class GameBoard extends JPanel{
 			baseX = 0;
 		if (baseY < 0)
 			baseY = 0;
-		//prints the players turn 
+		//prints the players info 
 		g2d.drawImage(playerInfo, 10, 10, this);
 		g2d.drawImage(getBigNumberImage(player+1), 260, 20, this);
 		
@@ -135,6 +137,10 @@ public class GameBoard extends JPanel{
 			g2d.drawImage(getBigNumberImage(getFirstDigit(roll)), 180, 240, this);
 			g2d.drawImage(getBigNumberImage(getSecondDigit(roll)), 220, 240, this);
 		}
+		
+		//paint build cost card
+		g2d.drawImage(buildCosts, 10, 650, this);
+		
 		
 		//prints the tiles and their numbers
 		int count = 1;
@@ -571,6 +577,7 @@ public class GameBoard extends JPanel{
 		numbers[7] = new ImageIcon("numbers/seven.png").getImage();
 		numbers[8] = new ImageIcon("numbers/eight.png").getImage();
 		numbers[9] = new ImageIcon("numbers/nine.png").getImage();
+		buildCosts = new ImageIcon("images/Building_Costs.png").getImage();
 	}
 	
 	//uses tiles to create an image array based on the tiles
