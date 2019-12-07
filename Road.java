@@ -54,7 +54,9 @@ public class Road {
      */
     public boolean playerIsConnected(Player p){
         for (Road r : adjacents){
-            if (Objects.equals(p, r.getOccupant()) || Objects.equals(this.v1.getOccupant(), p) || Objects.equals(this.v2.getOccupant(), p))
+            boolean case1 = r.getOccupant()!=null && Objects.equals(p, r.getOccupant());
+            boolean case2 = (this.v1.getOccupant()!=null && this.v1.getOccupant()==p) || (this.v2.getOccupant()!=null && this.v2.getOccupant()==p);
+            if ( case1 || case2 )
                 return true;
         }
         return false;

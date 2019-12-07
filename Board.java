@@ -310,10 +310,11 @@ public class Board {
         }
         else {
             int nextRowOffset = (row>4) ? 0 : 1;
+            int nextRowOffset1 = (row>5) ? 1 : 0;
             int offset = 0;
             for (int col=0; col<roads[row].length; col++){
                 roads[row][col].v1 = vertices[vertexRow+1][offset+nextRowOffset];
-                roads[row][col].v2 = vertices[vertexRow][offset];
+                roads[row][col].v2 = vertices[vertexRow][offset+nextRowOffset1];
                 if (!roads[row][col].v1.adjacentRoads.contains(roads[row][col])){
                     roads[row][col].v1.adjacentRoads.add(roads[row][col]);
                 }
