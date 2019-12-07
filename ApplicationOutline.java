@@ -232,11 +232,24 @@ public class ApplicationOutline{
 
 	/* Game Logic Methods Below */
 
+	/** rollDie
+	 * Roll a 6 sided die and return the random value.
+	 * @return random integer 1-6
+	 */
 	public static int rollDie(){
 		Random r = new Random();
 		return r.nextInt(6)+1;
 	}
 
+	/** initializePlayers
+	 * Prompt the user for the number of players.
+	 * Create an ArrayList of Player objects accordingly
+	 * then allow the Players to place their initial settlements/roads.
+	 * @param playerList ArrayList of Player objects to be returned to main loop for further use.
+	 * @param io IO object that allows communication to UI.
+	 * @param board Board object storing the data necessary for game logic.
+	 * @return int number of players in the newly generated list.
+	 */
 	public static int initializePlayers(ArrayList<Player> playerList, IO io, Board board){
 		int numPlayers = getNumberOfPlayers(io);
 		Player player1 = new Player(1); 
@@ -257,6 +270,12 @@ public class ApplicationOutline{
 		return numPlayers;
 	}
 
+	/** distributeResources
+	 * Loop through all the vertices in the board and call the method
+	 * that distributes resources based on the dice roll.
+	 * @param roll integer dice roll value
+	 * @param board Board object storing the data necessary for game logic.
+	 */
 	public static void distributeResources(int roll, Board board){
 		Vertex[][] vertices = board.getVertexArray();
 		for (Vertex[] vRow : vertices){
@@ -266,6 +285,12 @@ public class ApplicationOutline{
 		}		
 	}
 
+	/** updateResources
+	 * Update the panel of the UI that displays the resources of the current player.
+	 * @param p current player - display their resources
+	 * @param board Board object storing the data necessary for game logic.
+	 * @param io IO object that allows communication to UI.
+	 */
 	public static void updateResources(Player p, Board board, IO io){
 		ArrayList<Integer> resources = new ArrayList<Integer>(5);
 		for(int i : p.getPlayerResources()){
@@ -275,6 +300,13 @@ public class ApplicationOutline{
 		io.loadBoard();
 	}
 
+	/** placeInitialBuildings
+	 * Place 2 settlements and 2 roads for each player for free.
+	 * Loop through players forward once, then backwards.
+	 * @param playerList ArrayList of Player objects to be returned to main loop for further use.
+	 * @param io IO object that allows communication to UI.
+	 * @param board Board object storing the data necessary for game logic.
+	 */
 	public static void placeInitialBuildings(ArrayList<Player> playerList, IO io, Board board){
 		for (int i=0; i<playerList.size(); i++){
 			io.setTurnInfo(i, playerList.get(i).calculateVictoryPoints(), 0);
@@ -291,6 +323,12 @@ public class ApplicationOutline{
 
 	}
 
+	/** updateLongestRoad
+	 * Check for a new longest road by looping thorugh players. Update the boolean in the
+	 * Player with the longest road to "true", and the others to "false".
+	 * @param playerList ArrayList of Player objects to be returned to main loop for further use.
+	 * @param board Board object storing the data necessary for game logic.
+	 */
 	public static void updateLongestRoad(ArrayList<Player> playerList, Board board){
 		for (int i = 0; i < playerList.size(); i++){
 			playerList.get(i).setHasLongestRoad(false);
@@ -299,6 +337,15 @@ public class ApplicationOutline{
 		if (p!=null) p.setHasLongestRoad(true);
 	}
 
+	/** buildSettlement
+	 * Build a settlement by displaying available veritces with numbers on the UI
+	 * then prompting the user to select one and checking if the build is valid.
+	 * @param p Player who is trying to build
+	 * @param io IO object that allows communication to UI.
+	 * @param board Board object storing the data necessary for game logic.
+	 * @param mustConnect determines whether the Vertex must be connected to previous buildings - only case when it mustn't is initial placements.
+	 * @param isFree removes resource cost - this is for initial placements when the user has no resources
+	 */
 	public static void buildSettlement(Player p, IO io, Board board, boolean mustConnect, boolean isFree){
 		if (p.getMaxSettlements()<=0){
 			io.errorMessage("Player " + (p.getNumber()+1) + " is out of settlements!"); 
@@ -355,6 +402,13 @@ public class ApplicationOutline{
 			
 	}
 
+	/** upgradeSettlementToCity
+	 * Upgrade a settlement to a city by displaying available veritces with numbers on the UI
+	 * then prompting the user to select one and checking if the build is valid.
+	 * @param p Player who is trying to build
+	 * @param io IO object that allows communication to UI.
+	 * @param board Board object storing the data necessary for game logic.
+	 */
 	public static void upgradeSettlementToCity(Player p, IO io, Board board){
 		if(p.getMaxCities() <= 0){
 			io.errorMessage("Player " + (p.getNumber()+1) + " is out of cities!");
@@ -392,6 +446,15 @@ public class ApplicationOutline{
 		else io.errorMessage("You cannot afford to build a city. This building costs 2 grain and 3 ore.");
 	}
 
+	/** buildRoad
+	 * Build a road by displaying available veritces with numbers on the UI
+	 * then prompting the user to select one and checking if the build is valid.
+	 * @param p Player who is trying to build
+	 * @param io IO object that allows communication to UI.
+	 * @param board Board object storing the data necessary for game logic.
+	 * @param mustConnect determines whether the Vertex must be connected to previous buildings - only case when it mustn't is initial placements.
+	 * @param isFree removes resource cost - this is for initial placements and Road Building dev card
+	 */
 	public static void buildRoad(Player p, IO io, Board board, boolean mustConnect, boolean isFree){
 		if (p.getMaxRoads()<=0){
 			io.errorMessage("Player " + (p.getNumber()+1) + " is out of roads!"); 
@@ -463,6 +526,7 @@ public class ApplicationOutline{
 		}//end while true
 	}//end getNumberOfPlayers
 	
+	// gets the users integer selection from UI prompt
 	public static int getVertexLocation(IO io){
 		while (true){
 			try{
@@ -478,6 +542,7 @@ public class ApplicationOutline{
 		}
 	}
 	
+	// gets the users integer selection from UI prompt
 	public static int getRoadLocation(IO io){
 		while (true){
 			try{
@@ -493,6 +558,15 @@ public class ApplicationOutline{
 		}
 	}
 	
+	/** getVertexAvailabilityArray
+	 * Loops through Vertex 2D array of board and creates a boolean array of the same shape
+	 * Each boolean tells us whether Player p is able to build there. This will tell us
+	 * where we can indicate availability on the UI.
+	 * @param board Board object storing the data necessary for game logic.
+	 * @param p Player who is trying to build
+	 * @param mustConnect determines whether the Vertex must be connected to previous buildings - only case when it mustn't is initial placements.
+	 * @return 2D array of booleans corresponding to 2D array in board
+	 */
 	public static boolean [][] getVertexAvailabilityArray (Board board, Player p, boolean mustConnect){
 		Vertex[][] vertices = board.getVertexArray();
 		boolean [][] availabilityArray = new boolean[6][];
@@ -509,6 +583,15 @@ public class ApplicationOutline{
 		return availabilityArray; 
 	}
 
+	/** getRoadAvailabilityArray
+	 * Loops through Road 2D array of board and creates a boolean array of the same shape
+	 * Each boolean tells us whether Player p is able to build there. This will tell us
+	 * where we can indicate availability on the UI.
+	 * @param board Board object storing the data necessary for game logic.
+	 * @param p Player who is trying to build
+	 * @param mustConnect determines whether the Road must be connected to previous buildings - only case when it mustn't is initial placements.
+	 * @return 2D array of booleans corresponding to 2D array in board
+	 */
 	public static boolean [][] getRoadAvailabilityArray (Board board, Player p, boolean mustConnect){
 		Road[][] roads = board.getRoadArray();
 		boolean [][] availabilityArray = new boolean[11][];
@@ -525,6 +608,14 @@ public class ApplicationOutline{
 		return availabilityArray; 
 	}
 	
+	/** getRoadAvailabilityArray
+	 * Loops through Vertex 2D array of board and creates a boolean array of the same shape
+	 * Each boolean tells us whether Player p is able to upgrade the settlement at the corresponding vertex in the Vertex[][]. 
+	 * This will tell us where we can indicate availability on the UI.
+	 * @param board Board object storing the data necessary for game logic.
+	 * @param p Player who is trying to build
+	 * @return 2D array of booleans corresponding to 2D array in board
+	 */
 	public static boolean [][] getCityAvailabilityArray (Board board, Player p){
 		Vertex[][] vertices = board.getVertexArray();
 		boolean [][] availabilityArray = new boolean[6][];
@@ -538,7 +629,6 @@ public class ApplicationOutline{
 		}
 		return availabilityArray;
 	}
-	
 	
 	public static int biggestArmy(Player[] p,int f) {
 		int currentBiggest=0; //The player with the biggest army
@@ -571,6 +661,13 @@ public class ApplicationOutline{
 			return currentBiggest;
 		}//end biggestArmy
 	
+		/** findPlayerWithLongestRoad
+		 * Loops through players calling methods to determine the length of their longest road. 
+		 * Returns the Player object with the longest segment.
+		 * @param board Board object storing the data necessary for game logic.
+		 * @param players List of our players
+		 * @return Player with the longest segment
+		 */
 		public static Player findPlayerWithLongestRoad(Board board, ArrayList<Player> players){
 			Player plrWithLongestRoad=null;
 			int winningLength = 0;
