@@ -18,6 +18,7 @@ public class Board {
     private Vertex[][] vertices;
     private Road[][] roads;
     private Robber robber;
+    private DevCards deck;
 
     /** getTiles
      * getter for the array containing our Tiles
@@ -25,6 +26,10 @@ public class Board {
      */
     public Tile[][] getTiles(){
         return tiles;
+    }
+
+    public DevCards getDeck(){
+        return deck;
     }
 
     public Vertex[][] getVertexArray(){
@@ -71,6 +76,7 @@ public class Board {
         tiles = createTileArray();
         vertices = createVertexArray();
         roads = createRoadArray();
+        deck = new DevCards();
 
         linkTilesToVertices(tiles, vertices);
         linkRoadsToVertices(roads, vertices);

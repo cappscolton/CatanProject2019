@@ -93,7 +93,13 @@ public class CardsPanel extends JPanel{
 		}		
 	}
 	
-	private void totalCards(ArrayList<Character> cards){
+	public void totalCards(ArrayList<Character> cards){
+		knightCount=0;
+		roadCount=0;
+		yearCount=0;
+		yearCount=0;
+		monopolyCount=0;
+		victoryCount=0;
 		for (int i = 0; i < cards.size(); i++){
 			switch (cards.get(i)){
 				case 'K':

@@ -76,7 +76,7 @@ public class Player{
 	 * @return true if the player successfully purchases item 
 	 */
 	//resources in order of index: brick, lumber, ore, grain, wool
-	public boolean buildOrBuyDevelopmentCard(String choice, boolean free){
+	public boolean buildOrBuyDevelopmentCard(String choice, boolean free, DevCards deck){
 		//Roads cost 1 brick, 1 lumber
 		if(choice.equalsIgnoreCase("Road")){
 			if ((playerResources[0] > 0 && playerResources[1] > 0) || free){
@@ -111,6 +111,7 @@ public class Player{
 				numCities ++; 
 				distanceFromMaxCities--;
 				distanceFromMaxSettlements++; 
+				numSettlements--;
 			}
 			else return false;
 		} 
@@ -122,7 +123,7 @@ public class Player{
 				playerResources[4]--;			
 				playerResources[3]--;
 				//add a random development card to the array list of player's development cards
-				Character newDevCard = DevCards.getCard(); 
+				Character newDevCard = deck.getCard();
 				if(newDevCard != 'N'){
 					developmentCards.add(newDevCard); 
 				}

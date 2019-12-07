@@ -18,7 +18,6 @@ public class ApplicationOutline{
 		boolean newGame = false;
 		boolean inGame = false;
 		boolean endGame = false;
-		
 		/* Game Logic Loop */
 
 		while (true){
@@ -61,10 +60,12 @@ public class ApplicationOutline{
 			while (inGame){ // game logic loop
 				/* Phase 1: Roll and distribute resources */
 				int roll = rollDie() + rollDie();
-				// TODO: check for 7 and integrate robber methods
-				distributeResources(roll, board);
-				io.setTurnInfo(playerTurn, playerList.get(playerTurn).calculateVictoryPoints(), roll);
-				
+				if (roll==7){
+					for (Player p : playerList){
+						Robber.cutHand(p);
+					}
+				}
+				distributeResources(roll, board);			
 				io.loadBoard();
 
 				/* Phase 2: Allow user to spend resources */
@@ -75,7 +76,7 @@ public class ApplicationOutline{
 						first = false;
 					}
 
-
+					io.setTurnInfo(playerTurn, playerList.get(playerTurn).calculateVictoryPoints(), roll);
 					updateResources(playerList.get(playerTurn), board, io);
 					updateLongestRoad(playerList, board);
 					//TODO: update largest army
@@ -109,15 +110,17 @@ public class ApplicationOutline{
 					
 					//development cards 
 					if (action == 4){
-						ArrayList<Character> cards = new ArrayList<>();
-						cards.add('K');
-						cards.add('K');
-						cards.add('K');
+
+						ArrayList<Character> cards = playerList.get(playerTurn).getDevelopmentCards();
+						cards.add('R');
+						cards.add('V');
+						cards.add('P');
 						
 						
 						DevelopmentCards dv = new DevelopmentCards(cards);
 						boolean looking = true;
 						while (looking){
+							Player p = playerList.get(playerTurn);
 							int cardAction = dv.getAction();
 							
 							//use Knight
@@ -134,19 +137,36 @@ public class ApplicationOutline{
 							}
 							//use Year of Plenty
 							else if (cardAction == 3){
-								//close window and exit loop
+								int resource1 = io.getIntegerInput("Select a free resource:\n1)Brick\n2)Lumber\n3)Ore\n4)Grain\n5)Wool");
+								p.getPlayerResources()[resource1-1]++;
+								updateResources(p, board, io);
+								int resource2 = io.getIntegerInput("Select a free resource:\n1)Brick\n2)Lumber\n3)Ore\n4)Grain\n5)Wool");
+								p.getPlayerResources()[resource2-1]++;
+								updateResources(p, board, io);
 								looking = false;
 								dv.dispose();
 							}
 							//road building
 							else if (cardAction == 4){
-								//close window and exit loop
-								looking = false;
 								dv.dispose();
+								buildRoad(p, io, board, true, true);
+								buildRoad(p, io, board, true, true);
+								for (Character C : cards){
+									if (C=='R') {
+										cards.remove(C);
+										break;
+									}
+								}
+								looking = false;								
 							}
 							//buy dev Card
 							else if (cardAction == 6){
-								//add dev card to arraylist and repaint via dv.load()
+								if (!p.buildOrBuyDevelopmentCard("Buy a Development Card", false, board.getDeck())){
+									io.errorMessage("You don't have the resources to buy a card.");
+								};
+								updateResources(p,board,io);
+								dv.updateCardsPanel(p.getDevelopmentCards());
+								
 							}
 							//close window
 							else if (cardAction == 5){
@@ -265,16 +285,18 @@ public class ApplicationOutline{
 			io.errorMessage("Player " + (p.getNumber()+1) + " is out of settlements!"); 
 			return;
 		}
-		if (p.buildOrBuyDevelopmentCard("Settlement", isFree)){
+		if (p.buildOrBuyDevelopmentCard("Settlement", isFree, board.getDeck())){
 			io.setVertexLocations(getVertexAvailabilityArray(board, p, mustConnect));
 			io.loadBoard();
-			int vertex = getVertexLocation(io);
-			if (vertex==-1) 
-				return;
-			//-1 from vertex location means they canceled their selection
-			//for loop of the boolean array to get which specific vertex was chosen
+			int vertex=-1;
+			do{
+				vertex = getVertexLocation(io);
+			} while (vertex==-1);
 			io.resetVertexArray();
 			io.loadBoard();
+			//-1 from vertex location means they canceled their selection
+			//for loop of the boolean array to get which specific vertex was chosen
+			
 			int count = 1;
 			outerloop:
 			for(Vertex[] vRow : board.getVertexArray()){
@@ -319,16 +341,19 @@ public class ApplicationOutline{
 			io.errorMessage("Player " + (p.getNumber()+1) + " is out of cities!");
 			return;
 		}
-		if (p.buildOrBuyDevelopmentCard("City", false))
+		if (p.buildOrBuyDevelopmentCard("City", false, board.getDeck()))
 		{
 			io.setVertexLocations(getCityAvailabilityArray(board, p));
 			io.loadBoard();
-			int vertex = getVertexLocation(io);
-			if (vertex==-1) return;
-			//-1 from vertex location means they canceled their selection
-			//for loop of the boolean array to get which specific vertex was chosen
+			int vertex = -1;
+			do{
+				vertex = getVertexLocation(io);
+			}while (vertex==-1);
 			io.resetVertexArray();
 			io.loadBoard();
+			//-1 from vertex location means they canceled their selection
+			//for loop of the boolean array to get which specific vertex was chosen
+			
 			int count = 1;
 			outerloop:
 			for(Vertex[] vRow : board.getVertexArray()){
@@ -353,16 +378,19 @@ public class ApplicationOutline{
 			io.errorMessage("Player " + (p.getNumber()+1) + " is out of roads!"); 
 			return;
 		}
-		if (p.buildOrBuyDevelopmentCard("Road", isFree))
+		if (p.buildOrBuyDevelopmentCard("Road", isFree, board.getDeck()))
 		{
 			io.setRoadLocations(getRoadAvailabilityArray(board, p, mustConnect));
 			io.loadBoard();
-			int road = getRoadLocation(io);
-			if (road==-1) return;		
-			//-1 from road location means they canceled their selection
-			//for loop of the boolean array to get which specific vertex was chosen
+			int road = -1;
+			do{
+				road = getRoadLocation(io);
+			} while (road==-1);
 			io.resetRoadArray();
 			io.loadBoard();
+			//-1 from road location means they canceled their selection
+			//for loop of the boolean array to get which specific vertex was chosen
+			
 			int count = 1;
 			outerloop:
 			for(Road[] rRow : board.getRoadArray()){

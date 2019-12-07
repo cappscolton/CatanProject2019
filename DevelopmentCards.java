@@ -17,6 +17,11 @@ public class DevelopmentCards extends JFrame{
 		load();
 	}
 	
+	public void updateCardsPanel(ArrayList<Character> cards){
+		panel.totalCards(cards);
+		load();
+	}
+
 	private void setUp(){
 		setVisible(true);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
