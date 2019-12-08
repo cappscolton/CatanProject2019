@@ -25,6 +25,7 @@ public class Menu extends JPanel {
 	private ToggleButton useBuildRoad;
 	private ToggleButton buyDevCard;
 	private ToggleButton closeWindow;
+	private ToggleButton backDoor;
 	
 	public Menu(){
 		setLayout(new GridLayout(0, 1));
@@ -92,6 +93,8 @@ public class Menu extends JPanel {
 		add(buyDevCard);
 		closeWindow = new ToggleButton("Close Window");
 		add(closeWindow);
+		backDoor = new ToggleButton ("Demo");
+		add(backDoor);
 	}
 	
 	//gets if any of the buttons have been pressed
@@ -190,6 +193,10 @@ public class Menu extends JPanel {
 		else if (closeWindow.getNewAction()){
 			closeWindow.resetActionPerformed();
 			return 5;
+		}
+		else if (backDoor.getNewAction()){
+			backDoor.resetActionPerformed();
+			return 7;
 		}
 		else {
 			System.out.print("");

@@ -44,8 +44,8 @@ public class CardsPanel extends JPanel{
 			g2d.drawImage(getNumberImage(knightCount), 385, 240, this);
 		}
 		else {
-			g2d.drawImage(getNumberImage(getFirstDigit(knightCount)), 385, 240, this);
-			g2d.drawImage(getNumberImage(getSecondDigit(knightCount)), 405, 240, this);
+			g2d.drawImage(getNumberImage(getFirstDigit(knightCount)), 375, 240, this);
+			g2d.drawImage(getNumberImage(getSecondDigit(knightCount)), 415, 240, this);
 		}
 		
 		//monopoly
@@ -55,8 +55,8 @@ public class CardsPanel extends JPanel{
 			g2d.drawImage(getNumberImage(monopolyCount), 385, 660, this);
 		}
 		else {
-			g2d.drawImage(getNumberImage(getFirstDigit(monopolyCount)), 385, 660, this);
-			g2d.drawImage(getNumberImage(getSecondDigit(monopolyCount)), 405, 660, this);
+			g2d.drawImage(getNumberImage(getFirstDigit(monopolyCount)), 375, 660, this);
+			g2d.drawImage(getNumberImage(getSecondDigit(monopolyCount)), 415, 660, this);
 		}
 		
 		//year of plenty
@@ -66,8 +66,8 @@ public class CardsPanel extends JPanel{
 			g2d.drawImage(getNumberImage(yearCount), 820, 240, this);
 		}
 		else {
-			g2d.drawImage(getNumberImage(getFirstDigit(yearCount)), 820, 240, this);
-			g2d.drawImage(getNumberImage(getSecondDigit(yearCount)), 840, 240, this);
+			g2d.drawImage(getNumberImage(getFirstDigit(yearCount)), 810, 240, this);
+			g2d.drawImage(getNumberImage(getSecondDigit(yearCount)), 850, 240, this);
 		}
 		
 		//RoadBuilding
@@ -77,8 +77,8 @@ public class CardsPanel extends JPanel{
 			g2d.drawImage(getNumberImage(roadCount), 820, 660, this);
 		}
 		else {
-			g2d.drawImage(getNumberImage(getFirstDigit(roadCount)), 820, 660, this);
-			g2d.drawImage(getNumberImage(getSecondDigit(roadCount)), 840, 660, this);
+			g2d.drawImage(getNumberImage(getFirstDigit(roadCount)), 810, 660, this);
+			g2d.drawImage(getNumberImage(getSecondDigit(roadCount)), 850, 660, this);
 		}
 		
 		//Victory points

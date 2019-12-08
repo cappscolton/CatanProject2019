@@ -66,18 +66,28 @@ public class ApplicationOutline{
 
 			gameloop:
 			while (inGame){ // game logic loop
+			
+			
+				System.out.println("inGame");
+			
 				/* Phase 1: Roll and distribute resources */
 				int roll = rollDie() + rollDie();
+				System.out.println("3");
 				if (roll==7){ // rob players with more than 7 resources on dice roll 7
 					for (Player p : playerList){
 						Robber.cutHand(p);
 					}
 				}
-				distributeResources(roll, board);			
+				System.out.println("1");
+				distributeResources(roll, board);
+				System.out.println("2");				
 				io.loadBoard();
 
 				/* Phase 2: Allow user to spend resources */
 				while (turn){
+					
+					System.out.println("turn");
+					
 					if (first){
 						io.startGame();
 						io.loadGame();
@@ -104,7 +114,7 @@ public class ApplicationOutline{
 					
 					//build settlement
 					if (action == 1){
-						buildSettlement(playerList.get(playerTurn), io, board, false, false);	
+						buildSettlement(playerList.get(playerTurn), io, board, true, false);	
 					}
 					
 					//build road
@@ -120,14 +130,7 @@ public class ApplicationOutline{
 					//development cards 
 					if (action == 4){
 
-						ArrayList<Character> cards = playerList.get(playerTurn).getDevelopmentCards();
-						cards.add('R'); // for demonstration - free dev cards
-						cards.add('V');
-						cards.add('P');
-						cards.add('K');
-						cards.add('K');
-						cards.add('K');
-						
+						ArrayList<Character> cards = playerList.get(playerTurn).getDevelopmentCards();						
 						
 						DevelopmentCards dv = new DevelopmentCards(cards);
 						boolean looking = true;
@@ -198,6 +201,17 @@ public class ApplicationOutline{
 								dv.updateCardsPanel(p.getDevelopmentCards()); // display the players cards up to date
 								
 							}
+							//demo give cards
+							else if (cardAction == 7){
+								//give the cards
+								cards.add('R'); // for demonstration - free dev cards
+								cards.add('V');
+								cards.add('P');
+								cards.add('K');
+								cards.add('K');
+								cards.add('K');
+								dv.updateCardsPanel(p.getDevelopmentCards());
+							}
 							//close window
 							else if (cardAction == 5){
 								//close window and exit loop
@@ -211,6 +225,10 @@ public class ApplicationOutline{
 					if (action == 5){
 						turn = false;
 					}
+					
+					System.out.println("turn");
+
+					
 				} //end of turn loop
 
 				
@@ -219,6 +237,8 @@ public class ApplicationOutline{
 					playerTurn = 0;
 				turn = true; //restart turn loop
 				
+				
+				System.out.println("inGame");
 			}//end inGame
 			
 			while (endGame){ // someone has reached 10 VP
